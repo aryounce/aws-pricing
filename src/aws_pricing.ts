@@ -6,9 +6,9 @@ import { SettingsSheetGenerator } from "./settings/settings_sheet_generator";
 function onOpen(e) {
     let ui = SpreadsheetApp.getUi()
     let menu = ui.createAddonMenu()
-    menu.addSubMenu(ui.createMenu('Defaults')
-        .addItem('New Settings Sheet', '_newDefaultsSheet'))
-    menu.addItem('Show Help', '_showHelpDialog')
+    menu.addItem("New settings sheet", '_newDefaultsSheet')
+    menu.addSeparator()
+    menu.addItem('Show help', '_showHelpDialog')
     menu.addToUi()
 
     Logger.log("Started aws-pricing")

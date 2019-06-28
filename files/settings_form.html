@@ -29,7 +29,7 @@
                     <label for="<?= _setting[0] ?>"><?= _setting[1].name() ?></label>
                     <select name="<?= _setting[0] ?>">
                         <? var _setting_values = _setting[1].getAllDisplay();
-                           var _keys = Object.keys(_setting_values);
+                           var _keys = Object.keys(_setting_values).sort();
                            for (var _j = 0; _j < _keys.length; _j++) {
                                var _key = _keys[_j];
                                var _setting_value = _setting_values[_key]; ?>
