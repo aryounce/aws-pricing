@@ -1,0 +1,78 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    </head>
+    <body>
+        <p>
+            Select the defaults to generate a named range with those settings.
+        </p>
+        <form>
+
+                <div class="block form-group">
+                    <label for="sheet_name">New sheet name</label>
+                    <input type=text name="sheet_name" value="<?= defaultSheetName ?>">
+                </div>
+                <br>
+
+                <div class="block form-group">
+                    <label for="range_name">New named range</label>
+                    <input type=text name="range_name" value="<?= defaultRangeName ?>">
+                    <i>Other suggestions would be `prodEnv` or `stgEnv` for per-environment settings.</i>
+                </div>
+                <br>
+
+                <? for (var _i = 0; _i < settings.length; _i++) {
+                    var _setting = settings[_i];
+                    ?>
+
+                <div class="block form-group">
+                    <label for="<?= _setting[0] ?>"><?= _setting[1].name() ?></label>
+                    <select name="<?= _setting[0] ?>">
+                        <? var _setting_values = _setting[1].getAllDisplay();
+                           var _keys = Object.keys(_setting_values);
+                           for (var _j = 0; _j < _keys.length; _j++) {
+                               var _key = _keys[_j];
+                               var _setting_value = _setting_values[_key]; ?>
+
+                               <option value="<?= _key ?>" 
+                                <? if (_key === _setting[1].defaultSetting()) { ?>
+                                    selected
+                                <? }; ?>
+                                ><?= _setting_value ?></option>
+
+                        <? } ?>
+                    </select>
+                </div>
+                <br>
+
+                <? }; ?>
+    
+                <div class="block form-group">
+                    <input type="submit" name="commit" value="Create" class="action" onclick="submitForm()">
+                    <input type="button" value="Close" onclick="closeDialog()">
+                </div>
+
+        </form>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+        </script>
+        <script>
+            function selectValue(name) {
+                return $('select[name=' + name + ']').children("option:selected").val();
+            };
+            function submitForm() {
+                var values = {
+                    'sheet_name': $('input[name=sheet_name]').val(),
+                    'range_name': $('input[name=range_name]').val()
+                };
+                <? for (var _i = 0; _i < settings.length; _i++) { ?>
+                    values["<?= settings[_i][0] ?>"] = selectValue("<?= settings[_i][0] ?>");
+                <? }; ?>
+
+                google.script.run.withSuccessHandler(closeDialog).<?!= submitCb ?>(values);
+            };
+            function closeDialog() {
+                google.script.host.close();
+            };
+        </script>
+    </body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "name": "aws-pricing",
+  "version": "0.0.1",
+  "description": "AWS pricing in your Google Sheets",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "@types/google-apps-script": "0.0.53",
+    "marked": "^0.6.2"
+  },
+  "devDependencies": {
+    "clasp": "^1.0.0"
+  },
+  "scripts": {
+    "marked": "marked",
+    "build-help": "./scripts/build-help.sh",
+    "deploy": "npm run build-help && clasp push",
+    "test": "npm run deploy && echo && clasp run runAllTests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mheffner/aws-pricing.git"
+  },
+  "author": "Mike Heffner",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mheffner/aws-pricing/issues"
+  },
+  "homepage": "https://github.com/mheffner/aws-pricing#readme"
+}
