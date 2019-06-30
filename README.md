@@ -52,7 +52,7 @@ To minimize repetition of standard instance type properties, the `EC2()` functio
 * `purchase_term`
 * `operating_system`
 
-The add-on provides an easy way to configure and generate a named range of configuration settings. Find the "Aws-pricing" menu under the "Add-ons" top-level menu and select "Aws-pricing -> Defaults -> New Settings Sheet". This will popup a dialog to configure and generate a new sheet with named settings range.
+The add-on provides an easy way to configure and generate a named range of configuration settings. Find the "AWS Pricing" menu under the "Add-ons" top-level menu and select "New settings sheet". This will popup a dialog to configure and generate a new sheet with named settings range.
 
 ### Pricing Duration
 

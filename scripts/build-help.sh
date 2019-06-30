@@ -33,7 +33,7 @@ cat >> $FINAL <<EOF
 
 <div class="sidebar bottom">
   <span class="gray">
-    AWS Pricing by Mike Heffner. Find this document on <a href="https://github.com/mheffner/aws-pricing" target="_blank">GitHub</a>
+    AWS Pricing by <a href="https://github.com/mheffner" target="_blank">Mike Heffner</a>. Find this document on <a href="https://github.com/mheffner/aws-pricing" target="_blank">GitHub</a>.
   </span>
 </div>
 EOF

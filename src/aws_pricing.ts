@@ -7,8 +7,7 @@ function onOpen(e) {
     let ui = SpreadsheetApp.getUi()
     let menu = ui.createAddonMenu()
     menu.addItem("New settings sheet", '_newDefaultsSheet')
-    menu.addSeparator()
-    menu.addItem('Show help', '_showHelpDialog')
+    menu.addItem('Show manual', '_showManualDialog')
     menu.addToUi()
 
     Logger.log("Started aws-pricing")
@@ -18,7 +17,7 @@ function onInstall(e) {
     onOpen(e);
   }
 
-function _showHelpDialog() {
+function _showManualDialog() {
     _initContext()
 
     let ui = SpreadsheetApp.getUi()
