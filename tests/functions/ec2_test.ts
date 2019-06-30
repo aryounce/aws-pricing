@@ -1,4 +1,4 @@
-import { EC2_OD, EC2_LINUX_OD, EC2_WINDOWS_OD, EC2_RHEL_OD, EC2_SUSE_OD, EC2 } from "../../src/functions/ec2";
+import { EC2_OD, EC2_LINUX_OD, EC2_WINDOWS_OD, EC2_RHEL_OD, EC2_SUSE_OD, EC2, EC2_LINUX_MSSQL_OD, EC2_WINDOWS_MSSQL_OD } from "../../src/functions/ec2";
 import { TestSuite } from "../_framework/test_suitee";
 import { TestRun } from "../_framework/test_runn";
 
@@ -36,6 +36,18 @@ export class EC2FunctionTestSuite extends TestSuite {
 
         t.describe("EC2 case sensitivity", function() {
             t.areEqual(0.192, EC2_LINUX_OD("M5.XLARGE", "US-EAST-1"))
+        })
+
+        t.describe("EC2 MSSQL", function() {
+            t.areEqual(0.282, EC2_LINUX_MSSQL_OD("m5.xlarge", "ca-central-1", "web"))
+            t.areEqual(0.694, EC2_LINUX_MSSQL_OD("m5.xlarge", "ca-central-1", "std"))
+            t.areEqual(1.714, EC2_LINUX_MSSQL_OD("m5.xlarge", "ca-central-1", "enterprise"))
+            t.areEqual(0.466, EC2_WINDOWS_MSSQL_OD("m5.xlarge", "ca-central-1", "web"))
+            t.areEqual(0.282, EC2_LINUX_MSSQL_OD("m5.xlarge", "ca-central-1", "WEB"))
+
+            t.willThrow(function() {
+                EC2_LINUX_MSSQL_OD("m5.xlarge", "ca-central-1", undefined)
+            }, "missing")
         })
 
         t.describe("EC2 with invalid settings", function() {

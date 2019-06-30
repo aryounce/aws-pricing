@@ -53,6 +53,12 @@ export class EC2OperatingSystem {
             throw `Invalid base operating system: ${baseOs}`
         }
 
+        if (!sqlLicense) {
+            throw `Missing SQL License`
+        }
+
+        sqlLicense = sqlLicense.toLowerCase()
+
         if (sqlLicense != "std" && sqlLicense != "web" && sqlLicense != "enterprise") {
             throw `Invalid Microsoft SQL license: ${sqlLicense}`
         }
