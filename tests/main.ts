@@ -1,4 +1,4 @@
-import { TestRunner } from "./_framework/test_runnerr";
+import { TestRunner } from "./_framework/test_runner";
 import { EC2FunctionTestSuite } from "./functions/ec2_test";
 import { EC2InstanceTestSuite } from "./ec2_instance_test";
 import { PriceConverterTestSuite } from "./price_converter_test";

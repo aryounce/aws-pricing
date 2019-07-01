@@ -1,7 +1,5 @@
 import { TestSuite } from "./_framework/test_suite";
 import { TestRun } from "./_framework/test_run";
-import { DefaultSettings } from "../src/settings/default_settings";
-import { Regions } from "../src/settings/regions";
 import { ctxt } from "../src/context";
 
 export class SettingsTestSuite extends TestSuite {
