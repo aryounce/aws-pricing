@@ -1,6 +1,6 @@
 import { EC2_OD, EC2_LINUX_OD, EC2_WINDOWS_OD, EC2_RHEL_OD, EC2_SUSE_OD, EC2, EC2_LINUX_MSSQL_OD, EC2_WINDOWS_MSSQL_OD } from "../../src/functions/ec2";
-import { TestSuite } from "../_framework/test_suitee";
-import { TestRun } from "../_framework/test_runn";
+import { TestSuite } from "../_framework/test_suite";
+import { TestRun } from "../_framework/test_run";
 
 export class EC2FunctionTestSuite extends TestSuite {
     name() {

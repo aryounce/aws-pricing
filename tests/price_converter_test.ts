@@ -1,5 +1,5 @@
-import { TestSuite } from "./_framework/test_suitee";
-import { TestRun } from "./_framework/test_runn";
+import { TestSuite } from "./_framework/test_suite";
+import { TestRun } from "./_framework/test_run";
 import { PriceConverter, PriceDuration } from "../src/price_converter";
 
 export class PriceConverterTestSuite extends TestSuite {
