@@ -1,0 +1,27 @@
+short_description
+-----------------
+
+Import AWS pricing data to your Google Spreadsheets for easy cloud cost analysis.
+
+long_description
+----------------
+
+Import the latest AWS pricing data to your Google Spreadsheet using simple functions. Reduce the time spent and mistakes made copying-and-pasting snapshots of pricing data into your cloud cost analysis sheets. Data is pulled directly from the latest APIs. Quickly update prices as you modify purchasing options, operating system, and region details.
+
+The easy-to-use settings generator makes it simple to specify once the per-environment purchasing details and use in multiple cell locations.
+
+post-install tip
+----------------
+
+Call one of the many EC2* functions from any cell to import the latest AWS pricing data.
+
+help URL
+--------
+
+https://github.com/mheffner/aws-pricing
+
+
+report issue URL
+----------------
+
+https://github.com/mheffner/aws-pricing/issues
