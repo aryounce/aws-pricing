@@ -17,6 +17,7 @@
     "marked": "marked",
     "build-help": "./scripts/build-help.sh",
     "deploy": "npm run build-help && clasp push",
+    "release": "npm run deploy && ./scripts/release.sh",
     "test": "npm run deploy && echo && clasp run runAllTests"
   },
   "repository": {
