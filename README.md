@@ -1,6 +1,6 @@
 # AWS Pricing
 
-Add AWS pricing information to your Google Sheets. Prices are pulled directly from the latest AWS price sheets.
+The AWS Pricing [Google Sheets add-on][addon] allows you to incorporate the latest AWS pricing data in your Google Sheets spreadsheets. This makes it easy to perform cloud cost analysis directly in Sheets without error-prone copy-and-paste from pricing websites. Pricing data tracks the latest discounts from AWS.
 
 ## Examples
 
@@ -11,13 +11,13 @@ The following function entered into a Google Sheet cell will return the hourly p
 
 # Installation
 
-Add the "aws-pricing" addon to your Google sheet.
+Add the *AWS Pricing* [addon][addon] to your Google Sheets document.
 
 # Usage
 
 ## Supported services
 
-Currently supporting the following options (more to come):
+The following services are currently supported with more to come:
 
 * EC2 instances (Linux and Windows)
 * Pricing options: ondemand
@@ -78,3 +78,4 @@ This currently pulls data from the pricing data files used on the main EC2 prici
 
 * Inspired by [aws-pricing-helper](https://github.com/marcy-terui/gs-aws-pricing-helper)
 
+[addon]: https://chrome.google.com/webstore/detail/aws-pricing/obdnfnkckkmjcpeegkhkmpnoiaidhicd
