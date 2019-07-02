@@ -3,16 +3,12 @@ import { EC2FunctionTestSuite } from "./functions/ec2_test";
 import { EC2InstanceTestSuite } from "./ec2_instance_test";
 import { PriceConverterTestSuite } from "./price_converter_test";
 import { SettingsTestSuite } from "./settings_tests";
-import { Context, _setContext } from "../src/context";
-import { RegionsList } from "../src/regions_list";
+import { _setContext, _initContext } from "../src/context";
+import { CacheLoaderTestSuite } from "./cache_loader_test";
 
 function runAllTests(): string {
     return TestRunner.runAllTests(function(t) {
-        let _context = new Context.Builder()
-            .withSpreadsheetApp(null)
-            .withRegionsList(RegionsList.load())
-            .build()
-        _setContext(_context)
+        _initContext(null)
 
         t.describe("validate test runner", function() {
             t.areEqual(1, 1)
@@ -34,5 +30,6 @@ function runAllTests(): string {
         new EC2InstanceTestSuite().test(t)
         new PriceConverterTestSuite().test(t)
         new SettingsTestSuite().test(t)
+        new CacheLoaderTestSuite().test(t)
     })
 }

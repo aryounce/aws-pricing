@@ -1,16 +1,24 @@
 import { DefaultSettings } from "./settings/default_settings";
 import { RegionsList } from "./regions_list";
+import { AwsDataLoader } from "./aws_data_loader";
 
 
 export class Context {
     constructor(readonly spreadsheetApp: GoogleAppsScript.Spreadsheet.SpreadsheetApp,
          readonly defaultSettings: DefaultSettings,
-         readonly regionsList: RegionsList) {
+         readonly regionsList: RegionsList,
+         readonly awsDataLoader: AwsDataLoader) {
     }
 
     static Builder = class {
+        private awsDataLoader: AwsDataLoader
         private spreadsheetApp: GoogleAppsScript.Spreadsheet.SpreadsheetApp
         private regionsList: RegionsList
+
+        withAwsDataLoader(awsDataLoader: AwsDataLoader): this {
+            this.awsDataLoader = awsDataLoader
+            return this
+        }
 
         withSpreadsheetApp(spreadsheetApp: GoogleAppsScript.Spreadsheet.SpreadsheetApp): this {
             this.spreadsheetApp = spreadsheetApp
@@ -25,7 +33,7 @@ export class Context {
         build(): Context {
             return new Context(this.spreadsheetApp,
                 new DefaultSettings(this.regionsList),
-                this.regionsList)
+                this.regionsList, this.awsDataLoader)
         }
     }
 }
@@ -33,16 +41,19 @@ export class Context {
 // Provide a single static reference to context
 let _mainContext: Context = null
 
-export function _initContext() {
+export function _initContext(app = SpreadsheetApp) {
     if (_mainContext != null) {
         return
     }
 
     Logger.log("Initializing context")
 
+    let awsLoader = new AwsDataLoader()
+
     let context = new Context.Builder()
-        .withSpreadsheetApp(SpreadsheetApp)
-        .withRegionsList(RegionsList.load())
+        .withAwsDataLoader(awsLoader)
+        .withSpreadsheetApp(app)
+        .withRegionsList(RegionsList.load(awsLoader))
         .build()
     _setContext(context)
 }

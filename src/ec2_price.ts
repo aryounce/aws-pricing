@@ -1,9 +1,8 @@
-import { loadPriceData } from "./prices";
 import { OSType, EC2OperatingSystem } from "./models/ec2_operating_systems";
 import { InstancePrice } from "./models/instance_price";
 import { EC2Instance } from "./models/ec2_instance";
 import { PriceDuration } from "./price_converter";
-import { InvocationSettings } from "./settings/invocation_settings";
+import { ctxt } from "./context";
 
 export class EC2Price {
     private readonly instance: EC2Instance
@@ -48,8 +47,8 @@ export class EC2Price {
         } else {
             pricePath = this.ec2PriceDataPath(region, term, os)
         }
-    
-        let prices = loadPriceData(pricePath);
+
+        let prices = this.loadPriceData(pricePath);
     
         let insts = prices.filter(price => price.attributes['aws:ec2:instanceType'] == instance.getInstanceType());
     
@@ -62,5 +61,12 @@ export class EC2Price {
         }
         
         return new InstancePrice(insts[0])
+    }
+
+    private loadPriceData(pricePath: string) {
+        let body = ctxt().awsDataLoader.loadPath(pricePath)
+
+        let resp = JSON.parse(body)
+        return resp.prices
     }
 }
