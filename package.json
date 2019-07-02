@@ -7,8 +7,8 @@
     "test": "tests"
   },
   "dependencies": {
-    "@types/google-apps-script": "0.0.53",
-    "marked": "^0.6.2"
+    "@types/google-apps-script": "0.0.54",
+    "marked": "^0.6.3"
   },
   "devDependencies": {
     "clasp": "^1.0.0"
