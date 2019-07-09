@@ -39,7 +39,7 @@ export class InvocationSettings {
                 continue
             }
 
-            settings[k] = map[k].toLowerCase()
+            settings[k] = this.scrubValue(map[k])
         }
 
         return this.load(settings);
@@ -58,7 +58,7 @@ export class InvocationSettings {
             let key = row[0]
 
             settings[key] = overrides[key] ? overrides[key] : row[1]
-            settings[key] = settings[key].toLowerCase()
+            settings[key] = this.scrubValue(settings[key])
         }
 
         return this.load(settings)
@@ -103,5 +103,9 @@ export class InvocationSettings {
             settings["platform"] = settings["operating_system"]
             delete settings["operating_system"]
         }
+    }
+
+    private static scrubValue(value: any): string {
+        return value.toString().toLowerCase()
     }
 }

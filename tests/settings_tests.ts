@@ -48,6 +48,16 @@ export class SettingsTestSuite extends TestSuite {
                 'payment_option': 'no_upfront'
             })
             t.areEqual([true,null], s.validate())
+
+            // Test when not all values were string
+            let confArray = [
+                ['region', 'us-east-1'],
+                ['platform', 'linux'],
+                ['purchase_type', 'ondemand'],
+                ['purchase_term', 1]
+            ]
+            s = InvocationSettings.loadFromRange( <Array<Array<string>>> confArray, {})
+            t.areEqual([true,null], s.validate())
         })
 
         t.describe("invocation settings invalid", function() {
