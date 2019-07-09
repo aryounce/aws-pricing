@@ -84,6 +84,19 @@ export class EC2FunctionTestSuite extends TestSuite {
             // test override
             t.areEqual(0.214, EC2(settings, "m5.xlarge", "ca-central-1"))
         })
+
+        t.describe("EC2 RI", function() {
+            let settings = [
+                ['region', 'us-east-1'],
+                ['platform', 'linux'],
+                ['purchase_type', 'reserved'],
+                ['offering_class', 'standard'],
+                ['purchase_term', '1'],
+                ['payment_option', 'partial_upfront']
+            ]
+
+            t.areClose(0.116447, EC2(settings, "m5.xlarge"), 0.00001)
+        })
     }
 
 }

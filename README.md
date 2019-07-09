@@ -21,7 +21,7 @@ Add the *AWS Pricing* [addon][addon] to your Google Sheets document.
 The following services are currently supported with more to come:
 
 * EC2 instances (Linux and Windows)
-* Pricing options: ondemand
+* Pricing options: ondemand and reserved
 
 ## Functions
 
@@ -41,9 +41,12 @@ _Parameters_
 * `settingsRange`: Either an explicit spreadsheet range or named range containing default instance type settings, see below.
 * `instType`: name of instance represented as `<class>.<size>`, eg `m5.xlarge`
 * `region`: name of AWS region, eg `us-east-1` and `eu-west-1`
-* `purchaseType`: name of the purchasing type, currently just `ondemand`
+* `purchaseType`: name of the purchasing type, either `ondemand` or `reserved`
 * `platform`: name of OS platform, currently supports: `linux`, `windows`, `rhel`, `suse`, `linux_std` (Linux SQL Standard), `linux_web` (Linux SQL Web), `linux_enterprise` (Linux SQL Enterprise), `windows_std` (Windows SQL Std), `windows_web` (Windows SQL Web), `windows_enterprise` (Windows SQL Enterprise)
 * `sqlLicense`: name of MSSQL license, either: `std`, `web`, or `enterprise`
+* `offeringClass`: type of reserved instance, either `standard` or `convertible`
+* `purchaseTerm`: duration of reserved instance purchase in years, either `1` or `3`
+* `paymentOption`: payment option of reserved instance, either `no_upfront`, `partial_upfront`, or `all_upfront`
 
 ### Default instance settings
 
@@ -53,11 +56,18 @@ To minimize repetition of standard instance type properties, the `EC2()` functio
 * `platform`
 * `purchase_type`
 
+If the `purchase_type` is `reserved`, the following settings are required:
+
+* `offering_class`
+* `purchase_term`
+* `payment_option`
+
+
 The add-on provides an easy way to configure and generate a named range of configuration settings. Find the "AWS Pricing" menu under the "Add-ons" top-level menu and select "New settings sheet". This will popup a dialog to configure and generate a new sheet with named settings range.
 
 ### Pricing Duration
 
-Prices are currently returned in hourly durations.
+Prices are currently returned in hourly durations. The price is the *effective* hourly rate when using reserved instances.
 
 # Notes
 
@@ -67,12 +77,12 @@ This currently pulls data from the pricing data files used on the main EC2 prici
 
 ## Future support
 
-* Reserved Instance pricing
 * Daily, Monthly, Yearly pricing
 * Data transfer
 * EBS
 * RDS
 * Elasticache
+* Upfront down-payments for Partial and All Upfront RI's, along with hourly rates
 * More services as requested
 
 ## References

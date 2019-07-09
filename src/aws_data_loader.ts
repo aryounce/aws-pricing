@@ -1,5 +1,9 @@
 import { CacheLoader } from "./cache_loader";
 
+interface AwsDataLoaderTransform {
+    (value: string): string
+}
+
 export class AwsDataLoader {
     static readonly baseHost = 'https://a0.p.awsstatic.com'
     static readonly expireTimeSeconds = 3600
@@ -10,7 +14,7 @@ export class AwsDataLoader {
         this.cache = new CacheLoader(CacheService.getScriptCache())
     }
 
-    loadPath(path: string): string {
+    loadPath(path: string, transform?: AwsDataLoaderTransform): string {
         let data = this.cache.get(path)
         if (data != null) {
             return data
@@ -19,13 +23,17 @@ export class AwsDataLoader {
         let url = this.buildUrl(path)
         data = this.loadUrl(url)
 
+        if (transform) {
+            data = transform(data)
+        }
+
         this.cache.put(path, data, AwsDataLoader.expireTimeSeconds)
 
         return data
     }
 
     private loadUrl(url: string) {
-        let resp = UrlFetchApp.fetch(url);  
+        let resp = UrlFetchApp.fetch(url)
         if (resp.getResponseCode() != 200) {
             throw "Unable to load the URL: " + url;
         }
