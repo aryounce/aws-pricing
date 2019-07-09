@@ -26,16 +26,24 @@
                     ?>
 
                 <div class="block form-group">
-                    <label for="<?= _setting[0] ?>"><?= _setting[1].name() ?></label>
-                    <select name="<?= _setting[0] ?>">
-                        <? var _setting_values = _setting[1].getAllDisplay();
+                    <label for="<?= _setting.key ?>"><?= _setting.setting.name() ?></label>
+                    <?
+                        var _select_class = "";
+                        var _select_disabled = "";
+                        if (_setting.toggle) {
+                            _select_class = "ri_toggle";
+                            _select_disabled = "disabled=\"disabled\"";
+                        };
+                    ?>
+                    <select name="<?= _setting.key ?>" onchange="selectChanged(this)" class="<?= _select_class ?>" <?!= _select_disabled ?> >
+                        <? var _setting_values = _setting.setting.getAllDisplay();
                            var _keys = Object.keys(_setting_values).sort();
                            for (var _j = 0; _j < _keys.length; _j++) {
                                var _key = _keys[_j];
                                var _setting_value = _setting_values[_key]; ?>
 
                                <option value="<?= _key ?>" 
-                                <? if (_key === _setting[1].defaultSetting()) { ?>
+                                <? if (_key === _setting.setting.defaultSetting()) { ?>
                                     selected
                                 <? }; ?>
                                 ><?= _setting_value ?></option>
@@ -46,7 +54,7 @@
                 <br>
 
                 <? }; ?>
-    
+
                 <div class="block form-group">
                     <input type="submit" name="commit" value="Create" class="action" onclick="submitForm()">
                     <input type="button" value="Close" onclick="closeDialog()">
@@ -56,6 +64,19 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
         </script>
         <script>
+            function selectChanged(elem) {
+                if (elem.name !== "purchase_type") {
+                    return;
+                }
+
+                var value = elem.value;
+                if (value === "ondemand") {
+                    $('select.ri_toggle').attr('disabled', 'disabled');
+                } else if (value === "reserved") {
+                    $('select.ri_toggle').removeAttr('disabled');
+                };
+            };
+
             function selectValue(name) {
                 return $('select[name=' + name + ']').children("option:selected").val();
             };
@@ -65,7 +86,7 @@
                     'range_name': $('input[name=range_name]').val()
                 };
                 <? for (var _i = 0; _i < settings.length; _i++) { ?>
-                    values["<?= settings[_i][0] ?>"] = selectValue("<?= settings[_i][0] ?>");
+                    values["<?= settings[_i].key ?>"] = selectValue("<?= settings[_i].key ?>");
                 <? }; ?>
 
                 google.script.run.withSuccessHandler(closeDialog).<?!= submitCb ?>(values);

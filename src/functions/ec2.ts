@@ -1,18 +1,18 @@
-import { EC2OperatingSystem } from "../models/ec2_operating_systems";
+import { EC2Platform } from "../models/ec2_platform";
 import { InvocationSettings } from "../settings/invocation_settings";
 import { PriceDuration } from "../price_converter";
 import { EC2Price } from "../ec2_price";
-import { ctxt, _initContext } from "../context";
+import { _initContext } from "../context";
+import { SettingKeys } from "../settings/setting_keys";
 
 function _ec2(settings: InvocationSettings, instType: string)  {
     if (!instType) {
         throw "Instance type is not set"
     }
 
-    for (let setting of ctxt().defaultSettings.getSettingKeys()) {
-        if (!settings.get(setting)) {
-            throw `Required EC2 property unset: ${setting}`
-        }
+    let [ret, msg] = settings.validate()
+    if (!ret) {
+        throw msg
     }
 
     let ec2Prices = new EC2Price(settings, instType)
@@ -20,7 +20,7 @@ function _ec2(settings: InvocationSettings, instType: string)  {
     return ec2Prices.get(PriceDuration.Hourly)
 }
 
-function _ec2_full(instType: string, region: string, term: string, operating_system: string) {
+function _ec2_full(instType: string, region: string, purchaseType: string, platform: string) {
     _initContext()
 
     if (!instType) {
@@ -31,19 +31,18 @@ function _ec2_full(instType: string, region: string, term: string, operating_sys
         throw "Region is not set"
     }
 
-    if (!term) {
-        throw "Purchase term is not set"
+    if (!purchaseType) {
+        throw "Purchase type is not set"
     }
 
-    if (!operating_system) {
-        throw "Operating system is not set"
+    if (!platform) {
+        throw "Platform is not set"
     }
 
-    let settingsMap = {
-        'region': region,
-        'purchase_term': term,
-        'operating_system': operating_system
-    }
+    let settingsMap = {}
+    settingsMap[SettingKeys.Region] = region
+    settingsMap[SettingKeys.PurchaseType] = purchaseType
+    settingsMap[SettingKeys.Platform] = platform
 
     let settings = InvocationSettings.loadFromMap(settingsMap)
 
@@ -69,7 +68,7 @@ export function EC2(settingsRange: Array<Array<string>>, instType: string, regio
     let overrides = {}
 
     if (region) {
-        overrides['region'] = region
+        overrides[SettingKeys.Region] = region
     }
 
     let settings = InvocationSettings.loadFromRange(settingsRange, overrides)
@@ -82,12 +81,12 @@ export function EC2(settingsRange: Array<Array<string>>, instType: string, regio
  * 
  * @param instType
  * @param region
- * @param operating_system
+ * @param platform
  * @returns price
  * @customfunction
  */
-export function EC2_OD(instType: string, region: string, operating_system: string) {
-    return _ec2_full(instType, region, "ondemand", operating_system)
+export function EC2_OD(instType: string, region: string, platform: string) {
+    return _ec2_full(instType, region, "ondemand", platform)
 }
 
 /**
@@ -112,7 +111,7 @@ export function EC2_LINUX_OD(instType: string, region: string) {
  * @customfunction
  */
 export function EC2_LINUX_MSSQL_OD(instType: string, region: string, sqlLicense: string) {
-    return EC2_OD(instType, region, EC2OperatingSystem.msSqlLicenseToType("linux", sqlLicense))
+    return EC2_OD(instType, region, EC2Platform.msSqlLicenseToType("linux", sqlLicense))
 }
 
 /**
@@ -161,5 +160,5 @@ export function EC2_WINDOWS_OD(instType: string, region: string) {
  * @customfunction
  */
 export function EC2_WINDOWS_MSSQL_OD(instType: string, region: string, sqlLicense: string) {
-    return EC2_OD(instType, region, EC2OperatingSystem.msSqlLicenseToType("windows", sqlLicense))
+    return EC2_OD(instType, region, EC2Platform.msSqlLicenseToType("windows", sqlLicense))
 }

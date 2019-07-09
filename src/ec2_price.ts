@@ -1,8 +1,9 @@
-import { OSType, EC2OperatingSystem } from "./models/ec2_operating_systems";
+import { EC2PlatformType, EC2Platform } from "./models/ec2_platform";
 import { InstancePrice } from "./models/instance_price";
 import { EC2Instance } from "./models/ec2_instance";
 import { PriceDuration } from "./price_converter";
 import { ctxt } from "./context";
+import { SettingKeys } from "./settings/setting_keys";
 
 export class EC2Price {
     private readonly instance: EC2Instance
@@ -12,40 +13,44 @@ export class EC2Price {
     }
 
     get(duration: PriceDuration): number {
-        let instPrice = this.ec2GetPrice(this.instance, this.settings.get('region'),
-            this.settings.get('purchase_term'), this.osType())
+        if (this.setting(SettingKeys.PurchaseType) !== "ondemand") {
+            throw "Only supports `ondemand` currently."
+        }
+
+        let instPrice = this.ec2GetPrice(this.instance, this.setting(SettingKeys.Region),
+            this.setting(SettingKeys.PurchaseType), this.platformType())
 
         return instPrice.unitPrice()
     }
 
-    private osType(): OSType {
-        let operating_system = this.settings.get('operating_system')
+    private platformType(): EC2PlatformType {
+        let platform = this.setting(SettingKeys.Platform)
 
-        let osType = EC2OperatingSystem.nameToType(operating_system)
+        let osType = EC2Platform.nameToType(platform)
         if (osType == null) {
-            throw `Unknown operating system: ${operating_system}`
+            throw `Unknown EC2 platform: ${platform}`
         }
 
         return osType
     }
 
-    private ec2PrevGenPriceDataPath(region: string, term: string, os: OSType): string {
+    private ec2PrevGenPriceDataPath(region: string, purchaseType: string, platform: EC2PlatformType): string {
         return Utilities.formatString('/pricing/1.0/ec2/region/%s/previous-generation/%s/%s/index.json',
-            region, term, EC2OperatingSystem.typeToUriPath(os))
+            region, purchaseType, EC2Platform.typeToUriPath(platform))
     }
 
-    private ec2PriceDataPath(region: string, term: string, os: OSType): string {
+    private ec2PriceDataPath(region: string, purchaseType: string, platform: EC2PlatformType): string {
         return Utilities.formatString('/pricing/1.0/ec2/region/%s/%s/%s/index.json',
-            region, term, EC2OperatingSystem.typeToUriPath(os))
+            region, purchaseType, EC2Platform.typeToUriPath(platform))
     }
 
-    private ec2GetPrice(instance: EC2Instance, region: string, term: string, os: OSType): InstancePrice {
+    private ec2GetPrice(instance: EC2Instance, region: string, purchaseType: string, platform: EC2PlatformType): InstancePrice {
         let pricePath = null
     
         if (instance.isPreviousGeneration()) {
-            pricePath = this.ec2PrevGenPriceDataPath(region, term, os)
+            pricePath = this.ec2PrevGenPriceDataPath(region, purchaseType, platform)
         } else {
-            pricePath = this.ec2PriceDataPath(region, term, os)
+            pricePath = this.ec2PriceDataPath(region, purchaseType, platform)
         }
 
         let prices = this.loadPriceData(pricePath);
@@ -68,5 +73,9 @@ export class EC2Price {
 
         let resp = JSON.parse(body)
         return resp.prices
+    }
+
+    private setting(name: SettingKeys): string {
+        return this.settings.get(name)
     }
 }

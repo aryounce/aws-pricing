@@ -1,14 +1,14 @@
 import { ISettings } from "./isettings";
 import { Utils } from "../_utils";
 
-// TODO: dedup with EC2OS
-export class OperatingSystems implements ISettings {
+// TODO: dedup with EC2Platform
+export class Platforms implements ISettings {
     private static readonly available = ['linux', 'windows', 'rhel', 'suse', 'linux_std', 'linux_web',
         'linux_enterprise', 'windows_std', 'windows_web', 'windows_enterprise']
-    private static readonly availableMap = Utils.lookupMap(OperatingSystems.available)
+    private static readonly availableMap = Utils.lookupMap(Platforms.available)
 
     name(): string {
-        return "Operating System"
+        return "Platform"
     }
 
     defaultSetting(): string {
@@ -16,15 +16,15 @@ export class OperatingSystems implements ISettings {
     }
 
     valid(name: string) {
-        return OperatingSystems[name] != undefined
+        return Platforms.availableMap[name] != undefined
     }
 
     getAll() {
-        return OperatingSystems.available
+        return Platforms.available
     }
 
     getAllDisplay() {
-        return OperatingSystems.available.reduce(function(map, elem) {
+        return Platforms.available.reduce(function(map, elem) {
             map[elem] = elem
             return map
         }, {})

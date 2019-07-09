@@ -21,7 +21,7 @@ export class EC2FunctionTestSuite extends TestSuite {
 
             t.willThrow(function() {
                 EC2_OD("m5.xlarge", "us-east-1", undefined)
-            }, "operating system")
+            }, "platform")
         })
 
         t.describe("EC2 Windows on-demand", function() {
@@ -57,19 +57,19 @@ export class EC2FunctionTestSuite extends TestSuite {
 
             t.willThrow(function() {
                 EC2([], "m5.xlarge")
-            }, "property unset")
+            }, "missing required")
 
             t.willThrow(function() {
                 EC2([["region"]], "m5.xlarge")
-            }, "property unset")
+            }, "missing required")
 
             t.willThrow(function() {
                 EC2([["region", ""]], "m5.xlarge")
-            }, "property unset")
+            }, "missing required")
 
             t.willThrow(function() {
                 EC2([["region", undefined]], "m5.xlarge")
-            }, "property unset")
+            }, "missing required")
         })
 
         t.describe("EC2 with valid settings", function() {

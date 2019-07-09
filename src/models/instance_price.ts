@@ -1,5 +1,3 @@
-import { PriceConverter, PriceDuration } from "../price_converter";
-
 export class InstancePrice {
     constructor(private readonly price: any) {
     }
