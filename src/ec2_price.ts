@@ -57,7 +57,7 @@ export class EC2Price {
             throw "too many matches"
         }
         if (insts.length == 0) {
-            throw `Can not find instance type ${instance.getInstanceType()}`
+            throw `Can not find instance type ${instance.getInstanceType()} in ${region}`
         }
         
         return new InstancePrice(insts[0])
