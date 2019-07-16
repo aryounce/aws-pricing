@@ -22,6 +22,10 @@ export class EC2FunctionTestSuite extends TestSuite {
             t.willThrow(function() {
                 EC2_OD("m5.xlarge", "us-east-1", undefined)
             }, "platform")
+
+            t.willThrow(function() {
+                EC2_LINUX_OD("mX5.xlarge", "us-east-1")
+            }, "Can not find instance")
         })
 
         t.describe("EC2 Windows on-demand", function() {

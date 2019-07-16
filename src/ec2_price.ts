@@ -63,7 +63,7 @@ export class EC2Price {
             throw `Found too many instances that matched ${this.instance.getInstanceType()}`
         }
         if (insts.length == 0) {
-            throw `Can not find instance type ${instance.getInstanceType()} of ${EC2OperatingSystem.typeToString(os)} in ${region}`
+            throw `Can not find instance type ${instance.getInstanceType()} of ${EC2Platform.typeToString(platform)} in ${region}`
         }
         
         return new InstancePrice(insts[0], this.isReserved())
