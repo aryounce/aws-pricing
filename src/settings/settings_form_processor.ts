@@ -4,8 +4,11 @@ interface FormValues {
     sheet_name: string,
     range_name: string,
     region: string,
+    platform: string,
+    purchase_type: string,
+    offering_class: string,
     purchase_term: string,
-    operating_system: string
+    payment_option: string
 }
 
 export class SettingsFormProcessor {
@@ -19,8 +22,11 @@ export class SettingsFormProcessor {
 
         let selections = {
             region: values.region,
+            platform: values.platform,
+            purchaseType: values.purchase_type,
+            offeringClass: values.offering_class,
             purchaseTerm: values.purchase_term,
-            operatingSystem: values.operating_system
+            paymentOption: values.payment_option
         }
 
         this.sheetGenerator.generate(values.sheet_name, values.range_name, selections)

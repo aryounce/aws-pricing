@@ -1,4 +1,12 @@
 import { ctxt } from "../context";
+import { ISettings } from "./isettings";
+import { SettingKeys } from "./setting_keys";
+
+interface SettingFormOption {
+    key: string,
+    setting: ISettings,
+    toggle?: boolean
+}
 
 export class SettingsFormBuilder {
     private static readonly defaultSheetName = "AWS Pricing Settings"
@@ -9,10 +17,13 @@ export class SettingsFormBuilder {
 
     generate(submitCb: string) {
         let defaultSettings = ctxt().defaultSettings
-        let settings = [
-            ['region', defaultSettings.getSetting('region')],
-            ['purchase_term', defaultSettings.getSetting('purchase_term')],
-            ['operating_system', defaultSettings.getSetting('operating_system')]
+        let settings: SettingFormOption[] = [
+            this.newSettingOption(SettingKeys.Region),
+            this.newSettingOption(SettingKeys.Platform),
+            this.newSettingOption(SettingKeys.PurchaseType),
+            this.newSettingOption(SettingKeys.OfferingClass, true),
+            this.newSettingOption(SettingKeys.PurchaseTerm, true),
+            this.newSettingOption(SettingKeys.PaymentOption, true)
         ]
 
         let t = HtmlService.createTemplateFromFile('files/settings_form')
@@ -65,5 +76,18 @@ export class SettingsFormBuilder {
         }
 
         throw "Unable to find unique name for named range, remove existing named ranges"
+    }
+
+    private newSettingOption(key: SettingKeys, toggle?: boolean): SettingFormOption {
+        let opt: SettingFormOption = {
+            key: key,
+            setting: ctxt().defaultSettings.getSetting(key)
+        }
+
+        if (toggle) {
+            opt.toggle = toggle
+        }
+
+        return opt
     }
 }

@@ -1,4 +1,3 @@
-import { loadCacheBustUrl } from "../prices";
 import { ISettings } from "./isettings";
 import { RegionsList } from "../regions_list";
 import { Utils } from "../_utils";

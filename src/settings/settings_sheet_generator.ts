@@ -1,9 +1,13 @@
 import { DefaultSettings } from "./default_settings";
+import { SettingKeys } from "./setting_keys";
 
 interface FormSelections {
     region: string,
+    platform: string,
+    purchaseType: string,
+    offeringClass: string,
     purchaseTerm: string,
-    operatingSystem: string
+    paymentOption: string
 }
 
 export class SettingsSheetGenerator {
@@ -29,23 +33,42 @@ export class SettingsSheetGenerator {
         range.setFontSize(14).setFontWeight('bold').setFontLine('underline')
         range.setNote("Modify these settings to adjust price functions.")
     
-        range = sheet.getRange(2, 1, 3)
-        let nameValues = [['region'], ['purchase_term'], ['operating_system']]
+        let settings = [
+            SettingKeys.Region,
+            SettingKeys.Platform,
+            SettingKeys.PurchaseType,
+            SettingKeys.OfferingClass,
+            SettingKeys.PurchaseTerm,
+            SettingKeys.PaymentOption
+        ]
+
+        range = sheet.getRange(2, 1, settings.length)
+        let nameValues = settings.reduce(function(ar, elem) {
+            ar.push([elem])
+            return ar
+        }, [])
+
         range.setValues(nameValues)
      
-        range = sheet.getRange(2, 2, 3)
-        let validators = []
+        let validators = settings.reduce((ar, elem) => {
+            ar.push([this.buildDataValidation(elem)])
+            return ar
+        }, [])
     
-        validators.push([this.buildDataValidation("region")])
-        validators.push([this.buildDataValidation("purchase_term")])
-        validators.push([this.buildDataValidation("operating_system")])
-    
+        range = sheet.getRange(2, 2, validators.length)
         range.setDataValidations(validators)
     
-        nameValues = [[selections.region], [selections.purchaseTerm], [selections.operatingSystem]]
+        nameValues = [
+            [selections.region],
+            [selections.platform],
+            [selections.purchaseType],
+            [selections.offeringClass],
+            [selections.purchaseTerm],
+            [selections.paymentOption]
+        ]
         range.setValues(nameValues)
     
-        range = sheet.getRange(2, 1, 3, 2)
+        range = sheet.getRange(2, 1, nameValues.length, 2)
         range.setFontSize(14).setFontFamily('Courier New')
         
         sheet.setColumnWidth(1, 200)

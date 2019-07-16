@@ -177,7 +177,8 @@ export class TestRun {
         }
     
         for (var i = 0; i < expected.length; i++) {
-            if (expected[i].constructor === Array && actual[i].constructor === Array) {
+            if (expected[i] && expected[i].constructor === Array &&
+                actual[i] && actual[i].constructor === Array) {
                 if (!this.doTheseListsMatch(expected[i], actual[i])) {
                     return false;
                 }
