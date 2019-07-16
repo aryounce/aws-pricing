@@ -76,7 +76,7 @@ export class EC2FunctionTestSuite extends TestSuite {
             }, "missing required")
         })
 
-        t.describe("EC2 with valid settings", function() {
+        t.describe("EC2 with valid settings", () => {
             let settings = [
                 ["region", "us-east-1"],
                 ["purchase_term", "ondemand"],
@@ -87,6 +87,9 @@ export class EC2FunctionTestSuite extends TestSuite {
 
             // test override
             t.areEqual(0.214, EC2(settings, "m5.xlarge", "ca-central-1"))
+
+            t.areEqual(0.214,
+                 EC2(this.settings("ca-central-1", "linux", "ondemand", "standard", 1, "all_upfront"), "m5.xlarge"))
         })
 
         t.describe("EC2 RI", () => {
@@ -105,10 +108,14 @@ export class EC2FunctionTestSuite extends TestSuite {
     }
 
     private ri(region: string, platform: string, offeringClass: string, term: number, paymentOption: string) {
+        return this.settings(region, platform, 'reserved', offeringClass, term, paymentOption)
+    }
+
+    private settings(region: string, platform: string, purchaseType: string, offeringClass: string, term: number, paymentOption: string) {
         return [
             ['region', region],
             ['platform', platform],
-            ['purchase_type', 'reserved'],
+            ['purchase_type', purchaseType],
             ['offering_class', offeringClass],
             ['purchase_term', term.toString()],
             ['payment_option', paymentOption]
