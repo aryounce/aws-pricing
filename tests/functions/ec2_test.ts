@@ -89,18 +89,29 @@ export class EC2FunctionTestSuite extends TestSuite {
             t.areEqual(0.214, EC2(settings, "m5.xlarge", "ca-central-1"))
         })
 
-        t.describe("EC2 RI", function() {
-            let settings = [
-                ['region', 'us-east-1'],
-                ['platform', 'linux'],
-                ['purchase_type', 'reserved'],
-                ['offering_class', 'standard'],
-                ['purchase_term', '1'],
-                ['payment_option', 'partial_upfront']
-            ]
+        t.describe("EC2 RI", () => {
+            t.areClose(0.116447, EC2(this.linuxRi('us-east-1', 'standard', 1, 'partial_upfront'), "m5.xlarge"), 0.00001)
+            t.areClose(0.134123, EC2(this.linuxRi('us-east-1', 'convertible', 1, 'partial_upfront'), "m5.xlarge"), 0.00001)
+            t.areClose(0.123, EC2(this.linuxRi('us-east-1', 'standard', 1, 'no_upfront'), "m5.xlarge"), 0.00001)
+            t.areClose(0.114498, EC2(this.linuxRi('us-east-1', 'standard', 1, 'all_upfront'), "m5.xlarge"), 0.00001)
+            t.areClose(0.073706, EC2(this.linuxRi('us-east-1', 'standard', 3, 'all_upfront'), "m5.xlarge"), 0.00001)
 
-            t.areClose(0.116447, EC2(settings, "m5.xlarge"), 0.00001)
+            t.areClose(0.099201, EC2(this.linuxRi('us-west-1', 'standard', 3, 'all_upfront'), "m5.xlarge"), 0.00001)
         })
     }
 
+    private linuxRi(region: string, offeringClass: string, term: number, paymentOption: string) {
+        return this.ri(region, 'linux',offeringClass, term, paymentOption)
+    }
+
+    private ri(region: string, platform: string, offeringClass: string, term: number, paymentOption: string) {
+        return [
+            ['region', region],
+            ['platform', platform],
+            ['purchase_type', 'reserved'],
+            ['offering_class', offeringClass],
+            ['purchase_term', term.toString()],
+            ['payment_option', paymentOption]
+        ]
+    }
 }
