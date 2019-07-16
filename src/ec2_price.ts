@@ -23,12 +23,12 @@ export class EC2Price {
     private platformType(): EC2PlatformType {
         let platform = this.setting(SettingKeys.Platform)
 
-        let osType = EC2Platform.nameToType(platform)
-        if (osType == null) {
+        let pType = EC2Platform.nameToType(platform)
+        if (pType == null) {
             throw `Unknown EC2 platform: ${platform}`
         }
 
-        return osType
+        return pType
     }
 
     private ec2PrevGenPriceDataPath(region: string, purchaseType: string, platform: EC2PlatformType): string {
