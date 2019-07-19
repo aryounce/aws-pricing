@@ -1,6 +1,7 @@
-import { EC2_OD, EC2_LINUX_OD, EC2_WINDOWS_OD, EC2_RHEL_OD, EC2_SUSE_OD, EC2, EC2_LINUX_MSSQL_OD, EC2_WINDOWS_MSSQL_OD } from "../../src/functions/ec2";
+import { EC2_OD, EC2_LINUX_OD, EC2_WINDOWS_OD, EC2_RHEL_OD, EC2_SUSE_OD, EC2, EC2_LINUX_MSSQL_OD, EC2_WINDOWS_MSSQL_OD } from "../../src/functions/ec2_od";
 import { TestSuite } from "../_framework/test_suite";
 import { TestRun } from "../_framework/test_run";
+import { EC2_LINUX_CONV_RI_ALL, EC2_LINUX_MSSQL_CONV_RI_ALL, EC2_RHEL_CONV_RI_ALL, EC2_WINDOWS_MSSQL_STD_RI_PARTIAL } from "../../src/functions/gen/ec2_ri_gen";
 
 export class EC2FunctionTestSuite extends TestSuite {
     name() {
@@ -100,6 +101,13 @@ export class EC2FunctionTestSuite extends TestSuite {
             t.areClose(0.073706, EC2(this.linuxRi('us-east-1', 'standard', 3, 'all_upfront'), "m5.xlarge"), 0.00001)
 
             t.areClose(0.099201, EC2(this.linuxRi('us-west-1', 'standard', 3, 'all_upfront'), "m5.xlarge"), 0.00001)
+        })
+
+        t.describe("EC2 RI functions", () => {
+            t.areClose(0.131621, EC2_LINUX_CONV_RI_ALL("m5.xlarge", "us-east-1", "1"), 0.00001)
+            t.areClose(0.191667, EC2_RHEL_CONV_RI_ALL("m5.xlarge", "us-east-1", "1"), 0.00001)
+            t.areClose(0.199201, EC2_LINUX_MSSQL_CONV_RI_ALL("m5.xlarge", "us-east-1", "web", "1"), 0.00001)
+            t.areClose(0.742195, EC2_WINDOWS_MSSQL_STD_RI_PARTIAL("m5.xlarge", "us-east-2", "std", "3"), 0.00001)
         })
     }
 
