@@ -6,7 +6,7 @@ topdir = File.join(from, "..")
 outfilename = 'ec2_ri_gen.ts'
 outfile = File.join(topdir, 'src/functions/gen', outfilename)
 
-f = File.open(outfile, File::CREAT|File::TRUNC|File::WRONLY, 0644)
+f = File.open(outfile, File::CREAT|File::TRUNC|File::WRONLY, 0664)
 
 f.write <<~EOF
 /* DO NOT EDIT -- this file is generated */
