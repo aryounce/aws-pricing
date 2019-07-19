@@ -15,8 +15,9 @@
   },
   "scripts": {
     "marked": "marked",
+    "gencode": "./scripts/gen-funcs.rb",
     "build-help": "./scripts/build-help.sh",
-    "deploy": "npm run build-help && clasp push",
+    "deploy": "npm run gencode && npm run build-help && clasp push",
     "release": "npm run deploy && ./scripts/release.sh",
     "test": "npm run deploy && echo && clasp run runAllTests"
   },
