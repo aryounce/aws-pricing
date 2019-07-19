@@ -29,7 +29,7 @@ The following services are currently supported with more to come:
 
 These define the parameters used in the following functions and instance settings.
 
-* `instType`: name of instance represented as `<class>.<size>`, eg `m5.xlarge`
+* `instanceType`: name of instance represented as `<class>.<size>`, eg `m5.xlarge`
 * `region`: name of AWS region, eg `us-east-1` and `eu-west-1`
 * `purchaseType`: name of the purchasing type, either `ondemand` or `reserved`
 * `platform`: name of OS platform, currently supports: `linux`, `windows`, `rhel`, `suse`, `linux_std` (Linux SQL Standard), `linux_web` (Linux SQL Web), `linux_enterprise` (Linux SQL Enterprise), `windows_std` (Windows SQL Std), `windows_web` (Windows SQL Web), `windows_enterprise` (Windows SQL Enterprise)
@@ -44,7 +44,7 @@ To minimize the repetition of standard instance pricing details, the `EC2()` fun
 
 This approach makes it simple to define per-environment or per-organization pricing policy defaults and reference them per unique instance type.
 
-* `EC2(settingsRange, instType, region: optional)`: (`region` is optional and overrides `settingsRange`)
+* `EC2(settingsRange, instanceType, region: optional)`: (`region` is optional and overrides `settingsRange`)
 
  The supported property names and the supported values match the parameters defined earlier. The following parameters are required:
 
@@ -64,13 +64,13 @@ The add-on provides an easy way to configure and generate a named range of confi
 
 To explicitly grab on-demand pricing use these functions:
 
-* `EC2_OD(instType, region, platform)`
-* `EC2_LINUX_OD(instType, region)`
-* `EC2_RHEL_OD(instType, region)`
-* `EC2_SUSE_OD(instType, region)`
-* `EC2_WINDOWS_OD(instType, region)`
-* `EC2_LINUX_MSSQL_OD(instType, region, sqlLicense)`
-* `EC2_WINDOWS_MSSQL_OD(instType, region, sqlLicense)`
+* `EC2_OD(instanceType, region, platform)`
+* `EC2_LINUX_OD(instanceType, region)`
+* `EC2_RHEL_OD(instanceType, region)`
+* `EC2_SUSE_OD(instanceType, region)`
+* `EC2_WINDOWS_OD(instanceType, region)`
+* `EC2_LINUX_MSSQL_OD(instanceType, region, sqlLicense)`
+* `EC2_WINDOWS_MSSQL_OD(instanceType, region, sqlLicense)`
 
 ### EC2 RI Functions
 

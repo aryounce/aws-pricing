@@ -4,8 +4,8 @@ import { InvocationSettings } from "../settings/invocation_settings";
 import { _initContext } from "../context";
 import { SettingKeys } from "../settings/setting_keys";
 
-export function _ec2(settings: InvocationSettings, instType: string)  {
-    if (!instType) {
+export function _ec2(settings: InvocationSettings, instanceType: string)  {
+    if (!instanceType) {
         throw "Instance type is not set"
     }
 
@@ -14,16 +14,16 @@ export function _ec2(settings: InvocationSettings, instType: string)  {
         throw msg
     }
 
-    let ec2Prices = new EC2Price(settings, instType)
+    let ec2Prices = new EC2Price(settings, instanceType)
 
     return ec2Prices.get(PriceDuration.Hourly)
 }
 
-export function _ec2_full(instType: string, region: string, purchaseType: string, platform: string,
+export function _ec2_full(instanceType: string, region: string, purchaseType: string, platform: string,
     offeringClass?: string, purchaseTerm?: string, paymentOption?: string) {
     _initContext()
 
-    if (!instType) {
+    if (!instanceType) {
         throw "Instance type is not set"
     }
 
@@ -64,5 +64,5 @@ export function _ec2_full(instType: string, region: string, purchaseType: string
 
     let settings = InvocationSettings.loadFromMap(settingsMap)
 
-    return _ec2(settings, instType)
+    return _ec2(settings, instanceType)
 }
