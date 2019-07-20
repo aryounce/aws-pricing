@@ -3,13 +3,14 @@ import { EC2Price } from "../ec2_price";
 import { InvocationSettings } from "../settings/invocation_settings";
 import { _initContext } from "../context";
 import { SettingKeys } from "../settings/setting_keys";
+import { EC2SettingsValidator } from "../settings/ec2_settings_validator";
 
 export function _ec2(settings: InvocationSettings, instanceType: string)  {
     if (!instanceType) {
         throw "Instance type is not set"
     }
 
-    let [ret, msg] = settings.validate()
+    let [ret, msg] = new EC2SettingsValidator(settings).validate()
     if (!ret) {
         throw msg
     }
