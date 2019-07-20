@@ -19,6 +19,4 @@ export class EBSSettingsValidator extends SettingsValidator {
     protected get(key: string): string {
         return this.settings.get(key)
     }
-
-    
 }

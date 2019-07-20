@@ -73,7 +73,5 @@ export class EBSFunctionTestSuite extends TestSuite {
                 EC2_EBS_GP2_GB("foo", "us-east-1")
             }, "unable to parse volume units")
         })
-
     }
-
 }

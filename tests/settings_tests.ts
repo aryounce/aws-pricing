@@ -117,5 +117,4 @@ export class SettingsTestSuite extends TestSuite {
     private ebsValidate(s: InvocationSettings): [boolean, string] {
         return new EBSSettingsValidator(s).validate()
     }
-
 }
