@@ -1,6 +1,6 @@
 import { TestSuite } from "../_framework/test_suite";
 import { TestRun } from "../_framework/test_run";
-import { EC2_EBS_GP2_GB } from "../../src/functions/gen/ec2_ebs_gen";
+import { EC2_EBS_GP2_GB, EC2_EBS_MAGNETIC_GB, EC2_EBS_IO1_GB, EC2_EBS_ST1_GB, EC2_EBS_SC1_GB } from "../../src/functions/gen/ec2_ebs_gen";
 import { EC2_EBS_GB, EC2_EBS_IO1_IOPS, EC2_EBS_SNAPSHOT_GB } from "../../src/functions/ebs";
 
 export class EBSFunctionTestSuite extends TestSuite {
@@ -22,6 +22,13 @@ export class EBSFunctionTestSuite extends TestSuite {
         t.describe("EBS Snapshots", () => {
             t.areClose(2500 * (0.05/730.0), EC2_EBS_SNAPSHOT_GB(2500, "us-east-1"), 0.000001)
             t.areClose(5500 * (0.055/730.0), EC2_EBS_SNAPSHOT_GB(5500, "ca-central-1"), 0.000001)
+        })
+
+        t.describe("EBS storage tests", () => {
+            t.areClose(550.0 * (0.05/730.0), EC2_EBS_MAGNETIC_GB(550.0, "us-east-1"), 0.000001)
+            t.areClose(550.0 * (0.125/730.0), EC2_EBS_IO1_GB(550.0, "us-east-1"), 0.000001)
+            t.areClose(550.0 * (0.045/730.0), EC2_EBS_ST1_GB(550.0, "us-east-1"), 0.000001)
+            t.areClose(550.0 * (0.025/730.0), EC2_EBS_SC1_GB(550.0, "us-east-1"), 0.000001)
         })
 
         t.describe("EBS with settings range", () => {
