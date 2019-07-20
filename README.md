@@ -22,6 +22,7 @@ The following services are currently supported with more to come:
 
 * EC2 instances (Linux and Windows)
 * Pricing options: ondemand and reserved
+* EBS
 
 ## EC2 Functions
 
@@ -90,7 +91,7 @@ For example, these are some of the alias functions:
 
 * `EC2_LINUX_CONV_RI_NO(instanceType, region, purchaseTerm)`
 * `EC2_LINUX_STD_RI_PARTIAL(instanceType, region, purchaseTerm)`
-* `EC2_LINUX_STD_RI_PARTIAL(instanceType, region, purchaseTerm)`
+* `EC2_WINDOWS_CONV_RI_ALL(instanceType, region, purchaseTerm)`
 
 Lastly, if you want pricing for MSSQL platforms you can use similar functions of the form:
 ```
@@ -104,6 +105,51 @@ Where `sqlLicense` is either *web*, *std*, or *enterprise* and `platform` is eit
 
 Prices are currently returned in hourly durations. The price is the *effective* hourly rate when using reserved instances.
 
+## EBS
+
+You can compute the cost of EBS storage and provisioned IOPS with the `EC2_EBS_*()` functions. The storage functions end in `_GB()` and compute the cost based on total number of Gigabytes consumed. Provisioned IOPS cost can be computed with the `_IOPS()` functions. Lastly, EBS snapshot usage cost can be computed.
+
+### EBS Storage Costs
+
+The generic function for computing storage cost accepts an optional settings range, similar to the EC2 functions above. The only required setting in the range is *region*. The two variants are:
+
+* `EC2_EBS_GB(settingsRange, volumeType, volumeSize, region: optional)`
+* `EC2_EBS_GB(volumeType, volumeSize, region)`
+
+The supported parameters are:
+
+* `volumeType`: The type of volume (*magnetic*, *gp2*, *io1*, *st1* or *sc1*)
+* `volumeSize`: Size in number of provisioned Gigabytes
+* `region`: Will override any region in a settings range, eg: *us-east-2*
+
+There are several alias functions that embed the volumeType in the function name in the form:
+```
+EC2_EBS_<MAGNETIC or GP2 or IO1 or ST1 or SC1>_GB(...)
+```
+
+For example, for General Purpose (gp2) storage you can also call:
+
+* `EC2_EBS_GP2_GB(settingsRange, volumeSize, region: optional)`
+* `EC2_EBS_GP2_GB(volumeSize, region)`
+
+### EBS Provisioned IOPS
+
+Provisioned IOPS pricing is only supported on *io1* volume types. Both functions take the number of *iops* to calculate for.
+
+* `EC2_EBS_IO1_IOPS(settingsRange, iops, region: optional)`
+* `EC2_EBS_IO1_IOPS(iops, region)`
+
+### EBS Snapshot storage
+
+EBS snapshot cost is measured by the amount of stored Gigabytes using the following functions.
+
+* `EC2_EBS_SNAPSHOT_GB(settingsRange, size, region: optional)`
+* `EC2_EBS_SNAPSHOT_GB(size, region)`
+
+### Pricing Duration
+
+The AWS pricing pages for EBS costs returns pricing amounts in monthly values, despite the actual billing being billed to the second. To match the EC2 functions hourly usage, the EBS cost functions in *AWS Pricing* return costs in hourly durations. This makes it easy to multiply the combined EC2 and EBS costs by 730 (hours in month) to compute a monthly cost.
+
 # Notes
 
 ## Pricing API
@@ -114,7 +160,6 @@ This currently pulls data from the pricing data files used on the main EC2 prici
 
 * Daily, Monthly, Yearly pricing
 * Data transfer
-* EBS
 * RDS
 * Elasticache
 * Upfront down-payments for Partial and All Upfront RI's, along with hourly rates
