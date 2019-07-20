@@ -15,4 +15,9 @@ export class Utils {
 
         return ret
     }
+
+    // Not available in ES5
+    public static includes(str: string, substr: string): boolean {
+        return str && str.indexOf(substr) !== -1
+    }
 }

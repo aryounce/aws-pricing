@@ -13,25 +13,6 @@ export class InvocationSettings {
         return this.settings[key]
     }
 
-    validate(): [boolean, string] {
-        let reqd = [SettingKeys.Region, SettingKeys.Platform, SettingKeys.PurchaseType]
-
-        let [ret, msg] = this.verifyOptions(reqd)
-        if (!ret) {
-            return [ret, msg]
-        }
-
-        let riOpts = [SettingKeys.OfferingClass, SettingKeys.PurchaseTerm, SettingKeys.PaymentOption]
-        if (this.get(SettingKeys.PurchaseType) === "reserved") {            
-            [ret, msg] = this.verifyOptions(riOpts)
-            if (!ret) {
-                return [ret, msg]
-            }
-        }
-
-        return [true, null]
-    }
-
     static loadFromMap(map: SettingsMap): InvocationSettings {
         let settings = {}
         for (let k in map) {
@@ -74,22 +55,6 @@ export class InvocationSettings {
         }
 
         return new InvocationSettings(settings)
-    }
-
-    private verifyOptions(options: SettingKeys[]): [boolean, string] {
-        for (let opt of options) {
-            let x = this.get(opt)
-            if (x === undefined) {
-                return [false, `Missing required option: ${opt}`]
-            }
-
-            let setting = ctxt().defaultSettings.getSetting(opt)
-            if (!setting.valid(x)) {
-                return [false, `Invalid setting of '${x}' for: ${opt}`]
-            }
-        }
-
-        return [true, null]
     }
 
     // XXX: backwards compat for some options that changed
