@@ -67,7 +67,7 @@ export class EBSPrice {
             throw `Unable to parse volume units '${this.volumeUnits}'`
         }
 
-        return new EBSVolumePrice(prices[0], parseFloat(this.volumeUnits))
+        return new EBSVolumePrice(prices[0], volumeUnitsNum)
     }
 
     private filterPricesVolumeUsage(prices) {
