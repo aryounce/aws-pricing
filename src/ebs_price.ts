@@ -3,7 +3,11 @@ import { ctxt } from "./context";
 import { EBSVolumePrice } from "./models/ebs_volume_price";
 import { Utils } from "./_utils";
 
+export enum EBSStorageType {Storage, Iops}
+
 export class EBSPrice {
+    private static storageTypes = ['storage', 'iops']
+
     private static volumeTypeMap = {
         'magnetic': 'Magnetic',
         'gp2': 'General Purpose',
@@ -12,7 +16,7 @@ export class EBSPrice {
         'io1': 'Provisioned IOPS',
     }
 
-    constructor(private readonly settings: any, private volumeType: string,
+    constructor(private readonly settings: any, private storageType: EBSStorageType, private volumeType: string,
         private volumeUnits: string) {
 
     }
@@ -28,6 +32,10 @@ export class EBSPrice {
             throw `Invalid EBS volume type '${this.volumeType}'`
         }
 
+        if (this.storageType === EBSStorageType.Iops && this.volumeType !== "io1") {
+            throw `IOPS pricing is only valid for io1 volumes`
+        }
+
         let pricePath = Utilities.formatString("/pricing/1.0/ec2/region/%s/ebs/index.json",
             this.settings.get('region'))
 
@@ -35,7 +43,13 @@ export class EBSPrice {
 
         let resp = JSON.parse(body)
 
-        let prices = this.filterPricesVolumeUsage(resp.prices)
+        let prices = null
+        
+        if (this.storageType == EBSStorageType.Storage) {
+            prices = this.filterPricesVolumeUsage(resp.prices)
+        } else {
+            prices = this.filterPricesVolumeIops(resp.prices)
+        }
 
         if (prices.length == 0) {
             throw `Unable to find matching EBS price for ${this.volumeType} in ${this.settings.get('region')}`
@@ -59,6 +73,12 @@ export class EBSPrice {
 
                 // The usagetype is prefixed with a region abbrev. outside of UE1
                 Utils.includes(price.attributes['aws:ec2:usagetype'], this.usageTypeFull())
+        })
+    }
+
+    private filterPricesVolumeIops(prices) {
+        return prices.filter(price => {
+            return Utils.includes(price.attributes['aws:ec2:usagetype'], 'EBS:VolumeP-IOPS.piops')
         })
     }
 

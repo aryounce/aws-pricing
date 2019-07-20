@@ -1,7 +1,7 @@
 import { TestSuite } from "../_framework/test_suite";
 import { TestRun } from "../_framework/test_run";
 import { EC2_EBS_GP2_GB } from "../../src/functions/gen/ec2_ebs_gen";
-import { EC2_EBS_GB } from "../../src/functions/ebs";
+import { EC2_EBS_GB, EC2_EBS_IO1_IOPS } from "../../src/functions/ebs";
 
 export class EBSFunctionTestSuite extends TestSuite {
     protected name(): string {
@@ -12,6 +12,11 @@ export class EBSFunctionTestSuite extends TestSuite {
         t.describe("EBS GP2", () => {
             t.areClose(400.0 * (0.10/730.0), EC2_EBS_GP2_GB("400", "us-east-1"), 0.000001)
             t.areClose(400.0 * (0.10/730.0), EC2_EBS_GP2_GB("400", "us-east-2"), 0.000001)
+        })
+
+        t.describe("EBS IO1 IOPs", () => {
+            t.areClose(15000 * (0.065/730.0), EC2_EBS_IO1_IOPS(15000, "us-east-1"), 0.000001)
+            t.areClose(20000 * (0.072/730.0), EC2_EBS_IO1_IOPS(20000, "ca-central-1"), 0.000001)
         })
 
         t.describe("EBS with settings range", () => {
@@ -27,6 +32,9 @@ export class EBSFunctionTestSuite extends TestSuite {
             t.areClose(400.0 * (0.10/730.0), EC2_EBS_GB(s, "gp2", 400), 0.000001)
             t.areClose(400.0 * (0.10/730.0), EC2_EBS_GB(s, "GP2", 400), 0.000001)
             t.areClose(400.0 * (0.125/730.0), EC2_EBS_GB(s, "io1", 400), 0.000001)
+
+            t.areClose(10000 * (0.065/730.0), EC2_EBS_IO1_IOPS(s, 10000), 0.000001)
+            t.areClose(10000 * (0.072/730.0), EC2_EBS_IO1_IOPS(s, 10000, "ca-central-1"), 0.000001)
         })
 
         t.describe("EBS invalid configs", () => {
