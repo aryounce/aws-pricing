@@ -3,7 +3,7 @@ import { ctxt } from "./context";
 import { EBSVolumePrice } from "./models/ebs_volume_price";
 import { Utils } from "./_utils";
 
-export enum EBSStorageType {Storage, Iops}
+export enum EBSStorageType {Storage, Iops, Snapshot}
 
 export class EBSPrice {
     private static storageTypes = ['storage', 'iops']
@@ -28,7 +28,8 @@ export class EBSPrice {
     }
 
     private loadPriceData(): EBSVolumePrice {
-        if (!EBSPrice.volumeTypeMap[this.volumeType]) {
+        // volumeType not set for Snapshots
+        if (this.storageType !== EBSStorageType.Snapshot && !EBSPrice.volumeTypeMap[this.volumeType]) {
             throw `Invalid EBS volume type '${this.volumeType}'`
         }
 
@@ -45,10 +46,12 @@ export class EBSPrice {
 
         let prices = null
         
-        if (this.storageType == EBSStorageType.Storage) {
+        if (this.storageType === EBSStorageType.Storage) {
             prices = this.filterPricesVolumeUsage(resp.prices)
-        } else {
+        } else if (this.storageType === EBSStorageType.Iops) {
             prices = this.filterPricesVolumeIops(resp.prices)
+        } else {
+            prices = this.filterPricesSnapshot(resp.prices)
         }
 
         if (prices.length == 0) {
@@ -79,6 +82,15 @@ export class EBSPrice {
     private filterPricesVolumeIops(prices) {
         return prices.filter(price => {
             return Utils.includes(price.attributes['aws:ec2:usagetype'], 'EBS:VolumeP-IOPS.piops')
+        })
+    }
+
+    private filterPricesSnapshot(prices) {
+        return prices.filter(price => {
+            return Utils.includes(price.attributes['aws:ec2:usagetype'], 'EBS:SnapshotUsage') &&
+
+                // XXX what is this?
+                !Utils.includes(price.attributes['aws:ec2:usagetype'], 'EBS:SnapshotUsageUnderBilling')
         })
     }
 
