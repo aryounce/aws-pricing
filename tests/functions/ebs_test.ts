@@ -72,6 +72,10 @@ export class EBSFunctionTestSuite extends TestSuite {
             t.willThrow(function() {
                 EC2_EBS_GP2_GB("foo", "us-east-1")
             }, "unable to parse volume units")
+
+            t.willThrow(function() {
+                EC2_EBS_GB(s, 400, "gp2")
+            }, "invalid EBS volume type")
         })
     }
 }
