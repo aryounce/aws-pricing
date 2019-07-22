@@ -20,7 +20,7 @@ function _ec2_ebs(settings: InvocationSettings, storageType: EBSStorageType, vol
     }
 
     if (volumeType) {
-        volumeType = volumeType.toLowerCase()
+        volumeType = volumeType.toString().toLowerCase()
     }
 
     let ebsPrices = new EBSPrice(settings, storageType, volumeType, volumeUnits.toString())
