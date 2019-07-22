@@ -20,9 +20,17 @@ Add the *AWS Pricing* [addon][addon] to your Google Sheets document.
 
 The following services are currently supported with more to come:
 
-* EC2 instances (Linux and Windows)
-* Pricing options: ondemand and reserved
-* EBS
+* EC2 instances (Linux, RHEL, SUSE and Windows)
+* EBS storage, Provisioned IOPS and snapshots
+* RDS DB instances
+
+Pricing options support on-demand and reserved purchasing.
+
+## Call syntax
+
+This addon supplies multiple custom functions that you can invoke from a Google Sheets cell. To invoke a custom function (or any function), start by typing a "`=`" followed by the name of the function. Oftentimes the sheets editor will popup a command completion dialog that searches as you type. All the functions here include parameter documentation that will appear when you've selected a particular function and help describe the order of parameters.
+
+Functions are documented here without the required leading "`=`" for ease of reading.
 
 ## EC2 Functions
 
@@ -148,7 +156,72 @@ EBS snapshot cost is measured by the amount of stored Gigabytes using the follow
 
 ### Pricing Duration
 
-The AWS pricing pages for EBS costs returns pricing amounts in monthly values, despite the actual billing being billed to the second. To match the EC2 functions hourly usage, the EBS cost functions in *AWS Pricing* return costs in hourly durations. This makes it easy to multiply the combined EC2 and EBS costs by 730 (hours in month) to compute a monthly cost.
+The AWS pricing pages for EBS costs returns pricing amounts in monthly values, despite the actual billing being billed to the second. To match the EC2 functions hourly usage, the EBS cost functions in *AWS Pricing* return costs in hourly durations. This makes it easy to multiply the combined EC2 and EBS costs by 730 (hours in month), for example, to compute a monthly cost.
+
+## RDS
+
+*AWS Pricing* supports custom functions for RDS on-demand and reserved-instance pricing.
+
+### DB Engines
+
+RDS DB instance pricing supports the following RDS DB engines:
+
+* Aurora MySQL (`RDS_AURORA_MYSQL*`)
+* Aurora PostgreSQL (`RDS_AURORA_POSTGRESQL*`)
+* MySQL (`RDS_MYSQL*`)
+* PostgreSQL (`RDS_POSTGRESQL*`)
+* MariaDB (`RDS_MARIADB*`)
+
+All RDS functions are prefixed with the name of the DB engine.
+
+### Using settings
+
+Similar to EC2, you can use a predefined range of custom settings to reduce repetition across multiple lookup calls. The following settings are used by RDS functions:
+
+* `region`
+* `purchase_type`
+* `purchase_term`
+* `payment_option`
+
+To use the settings in an RDS call, invoke the appropriate function for the DB engine like:
+```
+RDS_<ENGINE>(settingsRange, instanceType, region: optional)
+```
+
+For example, to lookup the price for an Aurora MySQL instance running on a *db.r4.2xlarge* use the following call. The purchase type and payment options will be pulled from the *settingsRange*, allowing easy adjustment across all calls referencing it.
+```
+RDS_AURORA_MYSQL(<settingsRange>, "db.r4.2xlarge")
+```
+
+The *region* parameter allows overriding the region for a single lookup.
+
+### On-demand instances
+
+To lookup the on-demand price for a DB instance you can use the explicit call:
+```
+RDS_<ENGINE>_OD(instanceType, region)
+```
+
+### Reserved instances
+
+To lookup reserved-instance pricing for DB instances uses the following call pattern:
+```
+RDS_<ENGINE>_RI(instanceType, region, purchaseTerm, paymentOption)
+```
+For example, the following call pulls the pricing for an MariaDB reserved instance on a 3yr, all-upfront RI:
+```
+RDS_MARIADB_RI("db.r4.2xlarge", "ca-central-1", 3, "all_upfront")
+```
+
+There are also alias functions for the three payment options:
+
+* `RDS_<ENGINE>_RI_NO(instanceType, region, purchaseTerm)`: no-upfront purchase (not valid for 3 year purchase terms)
+* `RDS_<ENGINE>_RI_PARTIAL(instanceType, region, purchaseTerm)`: partial-upfront purchase
+* `RDS_<ENGINE>_RI_ALL(instanceType, region, purchaseTerm)`: all-upfront purchase
+
+### Pricing duration
+
+All RDS functions return the effective price *per hour*.
 
 # Notes
 
@@ -160,7 +233,8 @@ This currently pulls data from the pricing data files used on the main EC2 prici
 
 * Daily, Monthly, Yearly pricing
 * Data transfer
-* RDS
+* RDS Aurora Serverless, Storage, IOPS, Aurora Global, Data Xfer
+* RDS SQL Server
 * Elasticache
 * Upfront down-payments for Partial and All Upfront RI's, along with hourly rates
 * More services as requested

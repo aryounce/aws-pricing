@@ -140,6 +140,99 @@ def gen_ebs(func_dir)
     f.close
 end
 
+
+def gen_rds(func_dir)
+    outfilename = 'rds_gen.ts'
+    outfile = File.join(func_dir, outfilename)
+    
+    f = create_file(outfile)
+    
+    f.write <<~EOF
+    import { _rds_settings, _rds_full } from "../rds";
+    import { RDSDbEngine } from "../../models/rds_db_engine";
+
+    EOF
+
+    engines = {
+        "AURORA_MYSQL" => "Aurora_Mysql",
+        "AURORA_POSTGRESQL" => "Aurora_Postgresql",
+        "MYSQL" => "Mysql",
+        "POSTGRESQL" => "Postgresql",
+        "MARIADB" => "Mariadb"
+    }
+
+    engines.each do |engine|
+        func = <<~EOF
+        /**
+         * Returns the instance price for a #{engine[1]} RDS DB instance
+         *
+         * @param settingsRange Two-column range of default EC2 instance settings
+         * @param instanceType Type of RDS instance
+         * @param region Override the region setting (optional)
+         * @returns price
+         * @customfunction
+         */
+        export function RDS_#{engine[0].upcase}(settingsRange: Array<Array<string>>, instanceType: string, region?: string) {
+            return _rds_settings(settingsRange, RDSDbEngine.#{engine[1]}, instanceType, region)
+        }
+
+        /**
+         * Returns the on-demand instance price for a #{engine[1]} RDS DB instance
+         *
+         * @param instanceType Type of RDS instance
+         * @param region AWS region of instance
+         * @returns price
+         * @customfunction
+         */
+        export function RDS_#{engine[0].upcase}_OD(instanceType: string, region: string) {
+            return _rds_full(RDSDbEngine.#{engine[1]}, instanceType, region, 'ondemand')
+        }
+
+        /**
+         * Returns the reserved instance price for a #{engine[1]} RDS DB instance
+         *
+         * @param instanceType Type of RDS instance
+         * @param region AWS region of instance
+         * @param purchaseTerm Duration of RI in years (1 or 3)
+         * @param paymentOption Payment terms (no_upfront, partial_upfront, all_upfront)
+         * @returns price
+         * @customfunction
+         */
+        export function RDS_#{engine[0].upcase}_RI(instanceType: string, region: string, purchaseTerm: string | number, paymentOption: string) {
+            return _rds_full(RDSDbEngine.#{engine[1]}, instanceType, region, 'reserved', purchaseTerm, paymentOption)
+        }
+
+        EOF
+        f.write(func)
+
+        
+        payment_options = {
+            "no_upfront" => "no",
+            "partial_upfront" => "partial",
+            "all_upfront" => "all"
+        }
+
+        payment_options.each do |payment_option|
+            func = <<~EOF
+            /**
+            * Returns the reserved instance price for a #{engine[1]} RDS DB instance with #{payment_option[0]} payment
+            *
+            * @param instanceType Type of RDS instance
+            * @param region AWS region of instance
+            * @param purchaseTerm Duration of RI in years (1 or 3)
+            * @returns price
+            * @customfunction
+            */
+            export function RDS_#{engine[0].upcase}_RI_#{payment_option[1].upcase}(instanceType: string, region: string, purchaseTerm: string | number) {
+                return _rds_full(RDSDbEngine.#{engine[1]}, instanceType, region, 'reserved', purchaseTerm, "#{payment_option[0]}")
+            }
+            EOF
+            f.write(func)
+        end
+    end
+
+    f.close
+end
 #
 # MAIN
 #
@@ -151,3 +244,4 @@ func_dir = File.join(topdir, 'src/functions/gen')
 
 gen_ec2_ri(func_dir)
 gen_ebs(func_dir)
+gen_rds(func_dir)
