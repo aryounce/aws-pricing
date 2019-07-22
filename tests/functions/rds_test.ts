@@ -1,6 +1,6 @@
 import { TestSuite } from "../_framework/test_suite";
 import { TestRun } from "../_framework/test_run";
-import { RDS_AURORA_MYSQL_OD, RDS_AURORA_MYSQL_RI, RDS_AURORA_MYSQL_RI_NO, RDS_AURORA_MYSQL_RI_PARTIAL, RDS_AURORA_MYSQL_RI_ALL, RDS_AURORA_POSTGRESQL_OD, RDS_MARIADB_OD, RDS_POSTGRESQL_OD, RDS_MYSQL_OD, RDS_AURORA_MYSQL } from "../../src/functions/gen/rds_gen";
+import { RDS_AURORA_MYSQL_OD, RDS_AURORA_MYSQL_RI, RDS_AURORA_MYSQL_RI_NO, RDS_AURORA_MYSQL_RI_PARTIAL, RDS_AURORA_MYSQL_RI_ALL, RDS_AURORA_POSTGRESQL_OD, RDS_MARIADB_OD, RDS_POSTGRESQL_OD, RDS_MYSQL_OD, RDS_AURORA_MYSQL, RDS_MARIADB_RI, RDS_AURORA_POSTGRESQL_RI, RDS_MYSQL_RI, RDS_POSTGRESQL_RI } from "../../src/functions/gen/rds_gen";
 
 export class RDSFunctionTestSuite extends TestSuite {
     protected name(): string {
@@ -28,6 +28,12 @@ export class RDSFunctionTestSuite extends TestSuite {
             t.areEqual(1.04, RDS_MARIADB_OD("db.r4.2xlarge", "ca-central-1"))
             t.areEqual(1.0809, RDS_POSTGRESQL_OD("DB.R4.2XLARGE", "CA-CENTRAL-1"))
             t.areEqual(1.04, RDS_MYSQL_OD("db.r4.2xlarge", "ca-central-1"))
+
+            // Verify all RI purchase types to ensure payload sizes fit in cache
+            t.areClose(0.404452, RDS_AURORA_POSTGRESQL_RI("db.r4.2xlarge", "us-east-1", 3, "all_upfront"), 0.000001)
+            t.areClose(0.348097, RDS_MARIADB_RI("db.r4.2xlarge", "us-east-1", 3, "all_upfront"), 0.000001)
+            t.areClose(0.348097, RDS_MYSQL_RI("db.r4.2xlarge", "us-east-1", 3, "all_upfront"), 0.000001)
+            t.areClose(0.362595, RDS_POSTGRESQL_RI("db.r4.2xlarge", "us-east-1", 3, "all_upfront"), 0.000001)
         })
 
         t.describe("RDS settings tests", () => {

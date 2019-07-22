@@ -3,6 +3,7 @@ import { RDSDbEngine } from "./models/rds_db_engine";
 import { PriceDuration } from "./price_converter";
 import { ctxt } from "./context";
 import { RDSInstancePrice } from "./models/rds_instance_price";
+import { Utils } from "./_utils";
 
 export class RDSPrice {
     constructor(private readonly settings: InvocationSettings, private readonly dbEngine: RDSDbEngine,
@@ -25,7 +26,7 @@ export class RDSPrice {
         let pricePath = Utilities.formatString("/pricing/1.0/rds/%s/%s/%sindex.json",
             this.dbEngineUrlParam(), this.purchaseTypeUrlParam(), this.azUrlParam())
 
-        let body = ctxt().awsDataLoader.loadPath(pricePath)
+        let body = ctxt().awsDataLoader.loadPath(pricePath, this.transformPayload)
 
         let resp = JSON.parse(body)
 
@@ -46,19 +47,55 @@ export class RDSPrice {
         return prices.filter(price => {
             let ret = price.attributes['aws:region'] == this.settings.get('region') &&
                 price.attributes['aws:rds:term'] === this.purchaseTypeAttr() &&
-                price.attributes['aws:rds:deploymentOption'] === 'Single-AZ' &&
-                price.attributes['aws:productFamily'] === 'Database Instance' &&
                 price.attributes['aws:rds:instanceType'] === this.instanceType
             if (!ret || !this.isReserved()) {
                 return ret
             }
 
             return price.attributes['aws:offerTermLeaseLength'] === this.purchaseTermAttr() &&
-                // There are no convertible RDS RIs
-                price.attributes['aws:offerTermOfferingClass'] === 'standard' &&
                 price.attributes['aws:offerTermPurchaseOption'] === this.paymentOptionAttr()
         })
     }
+
+    // The full RI payload is too large to cache, so filter and reduce to only required attributes
+    // XXX: these payloads when gzip'd are very close to max size, will need to adjust
+    // if more instance types are added
+    private transformPayload(data: string): string {
+        let ret: any = {}
+
+        let json = JSON.parse(data)
+
+        ret.metadata = json.metadata
+        ret.prices = []
+
+        for (let price of json.prices) {
+            // Ensure to filter out any products we won't look at
+            if (price.attributes['aws:productFamily'] !== 'Database Instance') {
+                continue
+            }
+
+            if (price.attributes['aws:offerTermOfferingClass'] &&
+                price.attributes['aws:offerTermOfferingClass'] !== 'standard') {
+                continue
+            }
+
+            let n: any = {}
+
+            n.price = price.price
+            n.unit = price.unit
+
+            n.attributes = Utils.slice(price.attributes,
+                ['aws:region', 'aws:rds:term', 'aws:rds:instanceType',
+                 'aws:offerTermLeaseLength', 'aws:offerTermPurchaseOption'])
+            n.calculatedPrice = Utils.slice(price.calculatedPrice,
+                ["effectiveHourlyRate", "upfrontRate"])
+
+            ret.prices.push(n)
+        }
+
+        return JSON.stringify(ret)
+    }
+
 
     private isReserved(): boolean {
         return this.settings.get('purchase_type') === 'reserved'
