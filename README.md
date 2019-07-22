@@ -148,7 +148,7 @@ EBS snapshot cost is measured by the amount of stored Gigabytes using the follow
 
 ### Pricing Duration
 
-The AWS pricing pages for EBS costs returns pricing amounts in monthly values, despite the actual billing being billed to the second. To match the EC2 functions hourly usage, the EBS cost functions in *AWS Pricing* return costs in hourly durations. This makes it easy to multiply the combined EC2 and EBS costs by 730 (hours in month) to compute a monthly cost.
+The AWS pricing pages for EBS costs returns pricing amounts in monthly values, despite the actual billing being billed to the second. To match the EC2 functions hourly usage, the EBS cost functions in *AWS Pricing* return costs in hourly durations. This makes it easy to multiply the combined EC2 and EBS costs by 730 (hours in month), for example, to compute a monthly cost.
 
 # Notes
 
@@ -160,7 +160,8 @@ This currently pulls data from the pricing data files used on the main EC2 prici
 
 * Daily, Monthly, Yearly pricing
 * Data transfer
-* RDS
+* RDS Aurora Serverless, Storage, IOPS, Aurora Global, Data Xfer
+* RDS SQL Server
 * Elasticache
 * Upfront down-payments for Partial and All Upfront RI's, along with hourly rates
 * More services as requested

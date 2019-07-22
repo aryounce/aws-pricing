@@ -4,3 +4,4 @@ node_modules/
 .clasprc.json
 help_dialog.html
 src/functions/gen/*.ts
+.vscode/
