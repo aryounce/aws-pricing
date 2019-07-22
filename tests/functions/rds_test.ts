@@ -50,6 +50,27 @@ export class RDSFunctionTestSuite extends TestSuite {
             s[3][1] = 'all_upfront'
             t.areClose(0.316210, RDS_AURORA_MYSQL(s, "db.r4.xlarge"), 0.000001)
         })
+
+        t.describe("RDS invalid settings", () => {
+            let s = [
+                ['region', 'us-east-1'],
+                ['purchase_type', 'reserved'],
+                ['purchase_term', '1'],
+                ['payment_option', 'partial_upfront']
+            ]
+
+            t.willThrow(function() {
+                RDS_AURORA_MYSQL(s, "db.r1.2xlarge")
+            }, "unable to find")
+
+            t.willThrow(function() {
+                RDS_AURORA_MYSQL(s, undefined)
+            }, "must specify a db instance")
+
+            t.willThrow(function() {
+                RDS_AURORA_MYSQL_RI("db.r4.xlarge", "us-east-1", 2, "no_upfront")
+            }, "purchase_term")
+        })
     }
 
 }
