@@ -26,6 +26,12 @@ The following services are currently supported with more to come:
 
 Pricing options support on-demand and reserved purchasing.
 
+## Call syntax
+
+This addon supplies multiple custom functions that you can invoke from a Google Sheets cell. To invoke a custom function (or any function), start by typing a "`=`" followed by the name of the function. Oftentimes the sheets editor will popup a command completion dialog that searches as you type. All the functions here include parameter documentation that will appear when you've selected a particular function and help describe the order of parameters.
+
+Functions are documented here without the required leading "`=`" for ease of reading.
+
 ## EC2 Functions
 
 ### Parameters
