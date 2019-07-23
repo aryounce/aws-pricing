@@ -1,6 +1,6 @@
 import { PriceDuration } from "./price_converter";
 import { ctxt } from "./context";
-import { EBSVolumePrice } from "./models/ebs_volume_price";
+import { StorageVolumePrice } from "./models/storage_volume_price";
 import { Utils } from "./_utils";
 
 export enum EBSStorageType {Storage, Iops, Snapshot}
@@ -27,7 +27,7 @@ export class EBSPrice {
         return priceData.totalPrice(duration)
     }
 
-    private loadPriceData(): EBSVolumePrice {
+    private loadPriceData(): StorageVolumePrice {
         // volumeType not set for Snapshots
         if (this.storageType !== EBSStorageType.Snapshot && !EBSPrice.volumeTypeMap[this.volumeType]) {
             throw `Invalid EBS volume type '${this.volumeType}'`
@@ -67,7 +67,7 @@ export class EBSPrice {
             throw `Unable to parse volume units '${this.volumeUnits}'`
         }
 
-        return new EBSVolumePrice(prices[0], volumeUnitsNum)
+        return new StorageVolumePrice(prices[0], volumeUnitsNum)
     }
 
     private filterPricesVolumeUsage(prices) {

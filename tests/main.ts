@@ -7,6 +7,7 @@ import { _setContext, _initContext, ctxt } from "../src/context";
 import { CacheLoaderTestSuite } from "./cache_loader_test";
 import { EBSFunctionTestSuite } from "./functions/ebs_test";
 import { RDSFunctionTestSuite } from "./functions/rds_test";
+import { RDSStorageFunctionTestSuite } from "./functions/rds_storage_test";
 
 function runAllTests(): string {
     return TestRunner.runAllTests(function(t) {
@@ -32,6 +33,7 @@ function runAllTests(): string {
         new EC2InstanceTestSuite().test(t)
         new EBSFunctionTestSuite().test(t)
         new RDSFunctionTestSuite().test(t)
+        new RDSStorageFunctionTestSuite().test(t)
         new PriceConverterTestSuite().test(t)
         new SettingsTestSuite().test(t)
         new CacheLoaderTestSuite().test(t)

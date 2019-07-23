@@ -1,6 +1,6 @@
 import { PriceConverter, PriceDuration } from "../price_converter";
 
-export class EBSVolumePrice {
+export class StorageVolumePrice {
     constructor(private readonly price: any, private units: number) {
 
     }

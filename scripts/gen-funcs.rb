@@ -140,7 +140,6 @@ def gen_ebs(func_dir)
     f.close
 end
 
-
 def gen_rds(func_dir)
     outfilename = 'rds_gen.ts'
     outfile = File.join(func_dir, outfilename)
@@ -233,6 +232,57 @@ def gen_rds(func_dir)
 
     f.close
 end
+
+def gen_rds_storage(func_dir)
+    outfilename = 'rds_storage_gen.ts'
+    outfile = File.join(func_dir, outfilename)
+
+    f = create_file(outfile)
+
+    f.write <<~EOF
+    import { RDS_STORAGE_GB } from "../rds_storage";
+
+    EOF
+
+    voltypes = ["aurora", "gp2", "piops", "magnetic"]
+
+    voltypes.each do |voltype|
+        func = <<~EOF
+        /**
+         * Returns the price of RDS storage for volume type #{voltype}.
+         *
+         * @param settingsRange Two-column range of default EC2 instance settings
+         * @param volumeSize Size of the volume in Gigabytes
+         * @param region Override the region from the settings range (optional)
+         * @returns price
+         * @customfunction
+         */
+        export function RDS_STORAGE_#{voltype.upcase}_GB(settingsRange: Array<Array<string>>, volumeSize: string|number, region?: string): number;
+
+        /**
+         * Returns the price of RDS storage for volume type #{voltype}.
+         *
+         * @param volumeSize Size of the volume in Gigabytes
+         * @param region
+         * @returns price
+         * @customfunction
+         */
+        export function RDS_STORAGE_#{voltype.upcase}_GB(volumeSize: string|number, region: string): number;
+
+        export function RDS_STORAGE_#{voltype.upcase}_GB(settingsOrSize, sizeOrRegion, region?: string): number {
+            if (typeof settingsOrSize === "string" || typeof settingsOrSize === "number") {
+                return RDS_STORAGE_GB("#{voltype}", settingsOrSize, sizeOrRegion)
+            } else {
+                return RDS_STORAGE_GB(settingsOrSize, "#{voltype}", sizeOrRegion, region)
+            }
+        }
+        EOF
+        f.write(func)
+    end
+
+    f.close
+end
+
 #
 # MAIN
 #
@@ -245,3 +295,4 @@ func_dir = File.join(topdir, 'src/functions/gen')
 gen_ec2_ri(func_dir)
 gen_ebs(func_dir)
 gen_rds(func_dir)
+gen_rds_storage(func_dir)
