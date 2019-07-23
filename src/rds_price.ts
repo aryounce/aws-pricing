@@ -87,9 +87,11 @@ export class RDSPrice {
             n.attributes = Utils.slice(price.attributes,
                 ['aws:region', 'aws:rds:term', 'aws:rds:instanceType',
                  'aws:offerTermLeaseLength', 'aws:offerTermPurchaseOption'])
-            n.calculatedPrice = Utils.slice(price.calculatedPrice,
-                ["effectiveHourlyRate", "upfrontRate"])
 
+            if (price.calculatedPrice) {
+                n.calculatedPrice = Utils.slice(price.calculatedPrice,
+                    ["effectiveHourlyRate", "upfrontRate"])
+            }
             ret.prices.push(n)
         }
 
