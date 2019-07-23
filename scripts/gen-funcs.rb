@@ -236,9 +236,9 @@ end
 def gen_rds_storage(func_dir)
     outfilename = 'rds_storage_gen.ts'
     outfile = File.join(func_dir, outfilename)
-    
+
     f = create_file(outfile)
-    
+
     f.write <<~EOF
     import { RDS_STORAGE_GB } from "../rds_storage";
 
@@ -250,7 +250,7 @@ def gen_rds_storage(func_dir)
         func = <<~EOF
         /**
          * Returns the price of RDS storage for volume type #{voltype}.
-         * 
+         *
          * @param settingsRange Two-column range of default EC2 instance settings
          * @param volumeSize Size of the volume in Gigabytes
          * @param region Override the region from the settings range (optional)
@@ -261,9 +261,9 @@ def gen_rds_storage(func_dir)
 
         /**
          * Returns the price of RDS storage for volume type #{voltype}.
-         * 
+         *
          * @param volumeSize Size of the volume in Gigabytes
-         * @param region 
+         * @param region
          * @returns price
          * @customfunction
          */
