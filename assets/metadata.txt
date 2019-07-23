@@ -1,7 +1,7 @@
 short_description
 -----------------
 
-Import AWS pricing data to your Google Spreadsheets for easy cloud cost analysis.
+Pull live AWS pricing data directly into your Google Spreadsheets for easy cloud cost analysis.
 
 long_description
 ----------------
@@ -13,7 +13,12 @@ The easy-to-use settings generator makes it simple to specify once the per-envir
 post-install tip
 ----------------
 
-Call one of the many EC2* functions from any cell to import the latest AWS pricing data.
+Use the Add On menu to generate a default settings sheet and named data range to set your AWS pricing options.
+
+Or invoke any EC2, EBS or RDS function directly from any cell.
+
+See the manual for more details.
+
 
 help URL
 --------
