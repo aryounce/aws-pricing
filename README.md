@@ -23,6 +23,7 @@ The following services are currently supported with more to come:
 * EC2 instances (Linux, RHEL, SUSE and Windows)
 * EBS storage, Provisioned IOPS and snapshots
 * RDS DB instances
+* RDS Storage
 
 Pricing options support on-demand and reserved purchasing.
 
@@ -32,7 +33,7 @@ This addon supplies multiple custom functions that you can invoke from a Google 
 
 Functions are documented here without the required leading "`=`" for ease of reading.
 
-## EC2 Functions
+## EC2 Instances
 
 ### Parameters
 
@@ -158,7 +159,7 @@ EBS snapshot cost is measured by the amount of stored Gigabytes using the follow
 
 The AWS pricing pages for EBS costs returns pricing amounts in monthly values, despite the actual billing being billed to the second. To match the EC2 functions hourly usage, the EBS cost functions in *AWS Pricing* return costs in hourly durations. This makes it easy to multiply the combined EC2 and EBS costs by 730 (hours in month), for example, to compute a monthly cost.
 
-## RDS
+## RDS Instances
 
 *AWS Pricing* supports custom functions for RDS on-demand and reserved-instance pricing.
 
@@ -223,6 +224,24 @@ There are also alias functions for the three payment options:
 
 All RDS functions return the effective price *per hour*.
 
+## RDS Storage
+
+You can compute the cost of provisioned RDS storage using the `RDS_STORAGE_*` functions. These functions all take the size of the volume in Gigabytes and return the hourly cost for the amount of provisioned storage.
+
+### RDS Storage Costs
+
+The generic RDS storage function can work with or without a predefined settings range. The only setting that these functions require is the *region* setting.
+
+* `RDS_STORAGE_GB(settingsRange, volumeType, volumeSize, region: optional)`: *region* overrides the *settingsRange* if specified
+* `RDS_STORAGE_GB(volumeType, volumeSize, region)`
+
+The supported `volumeType`'s are: *aurora*, *gp2*, *piops* and *magnetic*.
+
+There are two alias functions for each volume type as well. For example, for Aurora volumes you can also use the following alias:
+
+* `RDS_STORAGE_AURORA_GB(settingsRange, volumeSize, region: optional)`
+* `RDS_STORAGE_AURORA_GB(volumeSize, region)`
+
 # Notes
 
 ## Pricing API
@@ -233,7 +252,7 @@ This currently pulls data from the pricing data files used on the main EC2 prici
 
 * Daily, Monthly, Yearly pricing
 * Data transfer
-* RDS Aurora Serverless, Storage, IOPS, Aurora Global, Data Xfer
+* RDS Aurora Serverless, IOPS, Aurora Global, Data Xfer
 * RDS SQL Server
 * Elasticache
 * Upfront down-payments for Partial and All Upfront RI's, along with hourly rates
