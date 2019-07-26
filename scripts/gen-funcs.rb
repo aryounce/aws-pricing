@@ -43,7 +43,7 @@ def gen_ec2_ri(func_dir)
                 /**
                  * Returns the RI pricing for an instance type with a #{ri_class[0]}, #{payment_option[0].gsub("_", "-")} RI using #{platform}.
                  *
-                 * @param instanceType
+                 * @param {"m5.xlarge"} instanceType
                  * @param {"us-east-2"} region
                  * @param purchaseTerm in years (1 or 3)
                  * @returns price
@@ -68,7 +68,7 @@ def gen_ec2_ri(func_dir)
                 /**
                  * Returns the RI pricing for an instance type with a #{ri_class[0]}, #{payment_option[0].gsub("_", "-")} RI using #{sql_platform} SQL.
                  *
-                 * @param instanceType
+                 * @param {"m5.xlarge"} instanceType
                  * @param {"us-east-2"} region
                  * @param sqlLicense (std, web, or enterprise)
                  * @param purchaseTerm in years (1 or 3)
@@ -166,7 +166,7 @@ def gen_rds(func_dir)
          * Returns the instance price for a #{engine[1]} RDS DB instance
          *
          * @param {A2:B7} settingsRange Two-column range of default EC2 instance settings
-         * @param instanceType Type of RDS instance
+         * @param {"db.r4.xlarge"} instanceType Type of RDS instance
          * @param {"us-east-2"} region Override the region setting (optional)
          * @returns price
          * @customfunction
@@ -178,7 +178,7 @@ def gen_rds(func_dir)
         /**
          * Returns the on-demand instance price for a #{engine[1]} RDS DB instance
          *
-         * @param instanceType Type of RDS instance
+         * @param {"db.r4.xlarge"} instanceType Type of RDS instance
          * @param {"us-east-2"} region AWS region of instance
          * @returns price
          * @customfunction
@@ -190,7 +190,7 @@ def gen_rds(func_dir)
         /**
          * Returns the reserved instance price for a #{engine[1]} RDS DB instance
          *
-         * @param instanceType Type of RDS instance
+         * @param {"db.r4.xlarge"} instanceType Type of RDS instance
          * @param {"us-east-2"} region AWS region of instance
          * @param purchaseTerm Duration of RI in years (1 or 3)
          * @param paymentOption Payment terms (no_upfront, partial_upfront, all_upfront)
@@ -216,7 +216,7 @@ def gen_rds(func_dir)
             /**
             * Returns the reserved instance price for a #{engine[1]} RDS DB instance with #{payment_option[0]} payment
             *
-            * @param instanceType Type of RDS instance
+            * @param {"db.r4.xlarge"} instanceType Type of RDS instance
             * @param {"us-east-2"} region AWS region of instance
             * @param purchaseTerm Duration of RI in years (1 or 3)
             * @returns price
