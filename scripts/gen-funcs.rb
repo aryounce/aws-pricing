@@ -43,9 +43,9 @@ def gen_ec2_ri(func_dir)
                 /**
                  * Returns the RI pricing for an instance type with a #{ri_class[0]}, #{payment_option[0].gsub("_", "-")} RI using #{platform}.
                  *
-                 * @param {"m5.xlarge"} instanceType
+                 * @param {"m5.xlarge"} instanceType Instance type, eg. "m5.xlarge"
                  * @param {"us-east-2"} region
-                 * @param {1} purchaseTerm in years (1 or 3)
+                 * @param {1} purchaseTerm Duration of RI in years (1 or 3)
                  * @returns price
                  * @customfunction
                  */
@@ -68,10 +68,10 @@ def gen_ec2_ri(func_dir)
                 /**
                  * Returns the RI pricing for an instance type with a #{ri_class[0]}, #{payment_option[0].gsub("_", "-")} RI using #{sql_platform} SQL.
                  *
-                 * @param {"m5.xlarge"} instanceType
+                 * @param {"m5.xlarge"} instanceType Instance type, eg. "m5.xlarge"
                  * @param {"us-east-2"} region
                  * @param {"web"} sqlLicense (std, web, or enterprise)
-                 * @param {1} purchaseTerm in years (1 or 3)
+                 * @param {1} purchaseTerm Duration of RI in years (1 or 3)
                  * @returns price
                  * @customfunction
                  */
@@ -105,22 +105,22 @@ def gen_ebs(func_dir)
         vol_type_up = vol_type.upcase
         func = <<~EOF
         /**
-         * Returns the monthly cost for the amount of provisioned EBS #{vol_type_up} storage Gigabytes
+         * Returns the hourly cost for the amount of provisioned EBS #{vol_type_up} storage Gigabytes
          * 
          * @param {A2:B7} settingsRange Two-column range of default EC2 instance settings
          * @param {3000} size Size in GB of provisioned storage
          * @param {"us-east-2"} region Override region setting of settings (optional)
-         * @returns monthly price
+         * @returns price
          * @customfunction
          */
         export function EC2_EBS_#{vol_type_up}_GB(settingsRange: Array<Array<string>>, size: string | number, region?: string): number;
 
         /**
-        * Returns the monthly cost for the amount of provisioned EBS #{vol_type_up} storage Gigabytes
+        * Returns the hourly cost for the amount of provisioned EBS #{vol_type_up} storage Gigabytes
         * 
         * @param {3000} size Size in GB of provisioned storage
         * @param {"us-east-2"} region
-        * @returns monthly price
+        * @returns price
         * @customfunction
         */
         export function EC2_EBS_#{vol_type_up}_GB(size: string | number, region: string): number;

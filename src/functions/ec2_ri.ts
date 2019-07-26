@@ -1,10 +1,14 @@
 import { _ec2_full } from "./ec2";
 
 /**
- * Returns the on-demand pricing for given instance type, using Linux.
+ * Returns the reserved instance pricing for the given instance type and purchase options.
  * 
- * @param {"m5.xlarge"} instanceType
+ * @param {"m5.xlarge"} instanceType Instance type, eg. "m5.xlarge"
  * @param {"us-east-2"} region
+ * @param {"linux"} platform Instance platform, eg. "linux", "windows", etc.
+ * @param {"convertible"} offeringClass Either "standard" or "convertible"
+ * @param {1} purchaseTerm Duration of RI in years (1 or 3)
+ * @param {"all_upfront"} paymentOption Payment terms (no_upfront, partial_upfront, all_upfront)
  * @returns price
  * @customfunction
  */

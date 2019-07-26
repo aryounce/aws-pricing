@@ -34,7 +34,7 @@ export function EC2(settingsRange: Array<Array<string>>, instanceType: string, r
 /**
  * Returns the on-demand pricing for given instance type.
  *
- * @param {"m5.xlarge"} instanceType
+ * @param {"m5.xlarge"} instanceType Instance type, eg. "m5.xlarge"
  * @param {"us-east-2"} region
  * @param {"linux"} platform
  * @returns price
@@ -47,7 +47,7 @@ export function EC2_OD(instanceType: string, region: string, platform: string) {
 /**
  * Returns the on-demand pricing for given instance type, using Linux.
  *
- * @param {"m5.xlarge"} instanceType
+ * @param {"m5.xlarge"} instanceType Instance type, eg. "m5.xlarge"
  * @param {"us-east-2"} region
  * @returns price
  * @customfunction
@@ -59,7 +59,7 @@ export function EC2_LINUX_OD(instanceType: string, region: string) {
 /**
  * Returns the on-demand pricing for given instance type, using Linux MS SQL.
  *
- * @param {"m5.xlarge"} instanceType
+ * @param {"m5.xlarge"} instanceType Instance type, eg. "m5.xlarge"
  * @param {"us-east-2"} region
  * @param {"web"} sqlLicense (std, web, or enterprise)
  * @returns price
@@ -72,7 +72,7 @@ export function EC2_LINUX_MSSQL_OD(instanceType: string, region: string, sqlLice
 /**
  * Returns the on-demand pricing for given instance type, using RHEL.
  *
- * @param {"m5.xlarge"} instanceType
+ * @param {"m5.xlarge"} instanceType Instance type, eg. "m5.xlarge"
  * @param {"us-east-2"} region
  * @returns price
  * @customfunction
@@ -84,7 +84,7 @@ export function EC2_RHEL_OD(instanceType: string, region: string) {
 /**
  * Returns the on-demand pricing for given instance type, using SUSE.
  *
- * @param {"m5.xlarge"} instanceType
+ * @param {"m5.xlarge"} instanceType Instance type, eg. "m5.xlarge"
  * @param {"us-east-2"} region
  * @returns price
  * @customfunction
@@ -96,7 +96,7 @@ export function EC2_SUSE_OD(instanceType: string, region: string) {
 /**
  * Returns the on-demand pricing for given instance type, using Windows.
  *
- * @param {"m5.xlarge"} instanceType
+ * @param {"m5.xlarge"} instanceType Instance type, eg. "m5.xlarge"
  * @param {"us-east-2"} region
  * @returns price
  * @customfunction
@@ -108,9 +108,9 @@ export function EC2_WINDOWS_OD(instanceType: string, region: string) {
 /**
  * Returns the on-demand pricing for given instance type, using Windows MS SQL.
  *
- * @param {"m5.xlarge"} instanceType
+ * @param {"m5.xlarge"} instanceType Instance type, eg. "m5.xlarge"
  * @param {"us-east-2"} region
- * @param {"web"} sqlLicense
+ * @param {"web"} sqlLicense (std, web, or enterprise)
  * @returns price
  * @customfunction
  */
