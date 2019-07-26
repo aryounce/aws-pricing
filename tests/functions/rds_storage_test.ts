@@ -1,7 +1,7 @@
 import { TestSuite } from "../_framework/test_suite";
 import { TestRun } from "../_framework/test_run";
-import { RDS_STORAGE_GP2_GB, RDS_STORAGE_GB } from "../../src/functions/rds_storage";
-import { RDS_STORAGE_AURORA_GB, RDS_STORAGE_PIOPS_GB, RDS_STORAGE_MAGNETIC_GB } from "../../src/functions/gen/rds_storage_gen";
+import { RDS_STORAGE_GB } from "../../src/functions/rds_storage";
+import { RDS_STORAGE_AURORA_GB, RDS_STORAGE_PIOPS_GB, RDS_STORAGE_MAGNETIC_GB, RDS_STORAGE_GP2_GB } from "../../src/functions/gen/rds_storage_gen";
 
 export class RDSStorageFunctionTestSuite extends TestSuite {
     protected name(): string {
