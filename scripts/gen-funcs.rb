@@ -108,7 +108,7 @@ def gen_ebs(func_dir)
          * Returns the monthly cost for the amount of provisioned EBS #{vol_type_up} storage Gigabytes
          * 
          * @param {A2:B7} settingsRange Two-column range of default EC2 instance settings
-         * @param size Size in GB of provisioned storage
+         * @param {3000} size Size in GB of provisioned storage
          * @param {"us-east-2"} region Override region setting of settings (optional)
          * @returns monthly price
          * @customfunction
@@ -118,7 +118,7 @@ def gen_ebs(func_dir)
         /**
         * Returns the monthly cost for the amount of provisioned EBS #{vol_type_up} storage Gigabytes
         * 
-        * @param size Size in GB of provisioned storage
+        * @param {3000} size Size in GB of provisioned storage
         * @param {"us-east-2"} region
         * @returns monthly price
         * @customfunction
@@ -252,7 +252,7 @@ def gen_rds_storage(func_dir)
          * Returns the price of RDS storage for volume type #{voltype}.
          *
          * @param {A2:B7} settingsRange Two-column range of default EC2 instance settings
-         * @param volumeSize Size of the volume in Gigabytes
+         * @param {3000} volumeSize Size of the volume in Gigabytes
          * @param {"us-east-2"} region Override the region from the settings range (optional)
          * @returns price
          * @customfunction
@@ -262,7 +262,7 @@ def gen_rds_storage(func_dir)
         /**
          * Returns the price of RDS storage for volume type #{voltype}.
          *
-         * @param volumeSize Size of the volume in Gigabytes
+         * @param {3000} volumeSize Size of the volume in Gigabytes
          * @param {"us-east-2"} region
          * @returns price
          * @customfunction
