@@ -70,7 +70,7 @@ def gen_ec2_ri(func_dir)
                  *
                  * @param {"m5.xlarge"} instanceType
                  * @param {"us-east-2"} region
-                 * @param sqlLicense (std, web, or enterprise)
+                 * @param {"web"} sqlLicense (std, web, or enterprise)
                  * @param purchaseTerm in years (1 or 3)
                  * @returns price
                  * @customfunction

@@ -36,7 +36,7 @@ export function EC2(settingsRange: Array<Array<string>>, instanceType: string, r
  *
  * @param {"m5.xlarge"} instanceType
  * @param {"us-east-2"} region
- * @param platform
+ * @param {"linux"} platform
  * @returns price
  * @customfunction
  */
@@ -61,7 +61,7 @@ export function EC2_LINUX_OD(instanceType: string, region: string) {
  *
  * @param {"m5.xlarge"} instanceType
  * @param {"us-east-2"} region
- * @param sqlLicense (std, web, or enterprise)
+ * @param {"web"} sqlLicense (std, web, or enterprise)
  * @returns price
  * @customfunction
  */
@@ -110,7 +110,7 @@ export function EC2_WINDOWS_OD(instanceType: string, region: string) {
  *
  * @param {"m5.xlarge"} instanceType
  * @param {"us-east-2"} region
- * @param sqlLicense
+ * @param {"web"} sqlLicense
  * @returns price
  * @customfunction
  */
