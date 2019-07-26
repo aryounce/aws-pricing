@@ -9,6 +9,6 @@ import { _ec2_full } from "./ec2";
  * @customfunction
  */
 export function EC2_RI(instanceType: string, region: string, platform: string, offeringClass: string,
-    purchaseTerm: string, paymentOption: string) {
+    purchaseTerm: string | number, paymentOption: string) {
     return _ec2_full(instanceType, region, "reserved", platform, offeringClass, purchaseTerm, paymentOption)
 }

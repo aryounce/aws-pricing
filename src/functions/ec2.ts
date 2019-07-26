@@ -21,7 +21,7 @@ export function _ec2(settings: InvocationSettings, instanceType: string)  {
 }
 
 export function _ec2_full(instanceType: string, region: string, purchaseType: string, platform: string,
-    offeringClass?: string, purchaseTerm?: string, paymentOption?: string) {
+    offeringClass?: string, purchaseTerm?: string | number, paymentOption?: string) {
     _initContext()
 
     if (!instanceType) {

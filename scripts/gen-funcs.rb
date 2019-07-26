@@ -45,11 +45,11 @@ def gen_ec2_ri(func_dir)
                  *
                  * @param {"m5.xlarge"} instanceType
                  * @param {"us-east-2"} region
-                 * @param purchaseTerm in years (1 or 3)
+                 * @param {1} purchaseTerm in years (1 or 3)
                  * @returns price
                  * @customfunction
                  */
-                export function EC2_#{platform.upcase}_#{ri_class[1].upcase}_RI_#{payment_option[1].upcase}(instanceType: string, region: string, purchaseTerm: string) {
+                export function EC2_#{platform.upcase}_#{ri_class[1].upcase}_RI_#{payment_option[1].upcase}(instanceType: string, region: string, purchaseTerm: string | number) {
                     return EC2_RI(instanceType, region, "#{platform}", "#{ri_class[0]}", purchaseTerm, "#{payment_option[0]}")
                 }
     
@@ -71,11 +71,11 @@ def gen_ec2_ri(func_dir)
                  * @param {"m5.xlarge"} instanceType
                  * @param {"us-east-2"} region
                  * @param {"web"} sqlLicense (std, web, or enterprise)
-                 * @param purchaseTerm in years (1 or 3)
+                 * @param {1} purchaseTerm in years (1 or 3)
                  * @returns price
                  * @customfunction
                  */
-                export function EC2_#{sql_platform.upcase}_MSSQL_#{ri_class[1].upcase}_RI_#{payment_option[1].upcase}(instanceType: string, region: string, sqlLicense: string, purchaseTerm: string) {
+                export function EC2_#{sql_platform.upcase}_MSSQL_#{ri_class[1].upcase}_RI_#{payment_option[1].upcase}(instanceType: string, region: string, sqlLicense: string, purchaseTerm: string | number) {
                     return EC2_RI(instanceType, region, EC2Platform.msSqlLicenseToType("#{sql_platform}", sqlLicense), "#{ri_class[0]}", purchaseTerm, "#{payment_option[0]}")
                 }
     
@@ -192,7 +192,7 @@ def gen_rds(func_dir)
          *
          * @param {"db.r4.xlarge"} instanceType Type of RDS instance
          * @param {"us-east-2"} region AWS region of instance
-         * @param purchaseTerm Duration of RI in years (1 or 3)
+         * @param {1} purchaseTerm Duration of RI in years (1 or 3)
          * @param paymentOption Payment terms (no_upfront, partial_upfront, all_upfront)
          * @returns price
          * @customfunction
@@ -218,7 +218,7 @@ def gen_rds(func_dir)
             *
             * @param {"db.r4.xlarge"} instanceType Type of RDS instance
             * @param {"us-east-2"} region AWS region of instance
-            * @param purchaseTerm Duration of RI in years (1 or 3)
+            * @param {1} purchaseTerm Duration of RI in years (1 or 3)
             * @returns price
             * @customfunction
             */
