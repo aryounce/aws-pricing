@@ -104,27 +104,19 @@ def gen_ebs(func_dir)
     vol_types.each do |vol_type|
         vol_type_up = vol_type.upcase
         func = <<~EOF
-        /**
-         * Returns the hourly cost for the amount of provisioned EBS #{vol_type_up} storage Gigabytes
-         * 
-         * @param {A2:B7} settingsRange Two-column range of default EC2 instance settings
-         * @param {3000} size Size in GB of provisioned storage
-         * @param {"us-east-2"} region Override region setting of settings (optional)
+        export function EC2_EBS_#{vol_type_up}_GB(settingsRange: Array<Array<string>>, size: string | number, region?: string): number;
+        export function EC2_EBS_#{vol_type_up}_GB(size: string | number, region: string): number;
+
+         /**
+         * Returns the hourly cost for the amount of provisioned EBS #{vol_type_up} storage Gigabytes. Invoke as either:
+         * (settingsRange, size[, region]) or (size, region).
+         *
+         * @param {A2:B7 or 4000} settingsOrSize Settings range or volume size
+         * @param {4000 or "us-east-2"} sizeOrRegion Either a volume size or the region
+         * @param {"us-east-2"} region AWS region (optional)
          * @returns price
          * @customfunction
          */
-        export function EC2_EBS_#{vol_type_up}_GB(settingsRange: Array<Array<string>>, size: string | number, region?: string): number;
-
-        /**
-        * Returns the hourly cost for the amount of provisioned EBS #{vol_type_up} storage Gigabytes
-        * 
-        * @param {3000} size Size in GB of provisioned storage
-        * @param {"us-east-2"} region
-        * @returns price
-        * @customfunction
-        */
-        export function EC2_EBS_#{vol_type_up}_GB(size: string | number, region: string): number;
-
         export function EC2_EBS_#{vol_type_up}_GB(settingsOrSize, sizeOrRegion, region?) {
             if (typeof settingsOrSize === "string" || typeof settingsOrSize === "number") {
                 return EC2_EBS_GB("#{vol_type}", settingsOrSize.toString(), sizeOrRegion)
@@ -248,27 +240,20 @@ def gen_rds_storage(func_dir)
 
     voltypes.each do |voltype|
         func = <<~EOF
-        /**
-         * Returns the price of RDS storage for volume type #{voltype}.
-         *
-         * @param {A2:B7} settingsRange Two-column range of default EC2 instance settings
-         * @param {3000} volumeSize Size of the volume in Gigabytes
-         * @param {"us-east-2"} region Override the region from the settings range (optional)
-         * @returns price
-         * @customfunction
-         */
         export function RDS_STORAGE_#{voltype.upcase}_GB(settingsRange: Array<Array<string>>, volumeSize: string|number, region?: string): number;
 
+        export function RDS_STORAGE_#{voltype.upcase}_GB(volumeSize: string|number, region: string): number;
+
         /**
-         * Returns the price of RDS storage for volume type #{voltype}.
+         * Returns the price of RDS storage for a #{voltype} volume type. Invoke as either:
+         * (settingsRange, size[, region]) or (size, region).
          *
-         * @param {3000} volumeSize Size of the volume in Gigabytes
-         * @param {"us-east-2"} region
+         * @param {A2:B7 or 4000} settingsOrSize Settings range or volume size
+         * @param {4000 or "us-east-2"} sizeOrRegion Either a volume size or the region
+         * @param {"us-east-2"} region AWS region (optional)
          * @returns price
          * @customfunction
          */
-        export function RDS_STORAGE_#{voltype.upcase}_GB(volumeSize: string|number, region: string): number;
-
         export function RDS_STORAGE_#{voltype.upcase}_GB(settingsOrSize, sizeOrRegion, region?: string): number {
             if (typeof settingsOrSize === "string" || typeof settingsOrSize === "number") {
                 return RDS_STORAGE_GB("#{voltype}", settingsOrSize, sizeOrRegion)
