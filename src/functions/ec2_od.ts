@@ -7,7 +7,7 @@ import { _ec2, _ec2_full } from "./ec2";
 /**
  * Returns the on-demand pricing for given instance type using the provided settings.
  *
- * @param settingsRange Two-column range of default EC2 instance settings
+ * @param {A2:B7} settingsRange Two-column range of default EC2 instance settings
  * @param instanceType Instance type, eg. "m5.xlarge"
  * @param region Override region setting for this call (optional)
  * @returns price
