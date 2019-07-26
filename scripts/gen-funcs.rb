@@ -43,13 +43,13 @@ def gen_ec2_ri(func_dir)
                 /**
                  * Returns the RI pricing for an instance type with a #{ri_class[0]}, #{payment_option[0].gsub("_", "-")} RI using #{platform}.
                  *
-                 * @param instanceType
-                 * @param region
-                 * @param purchaseTerm in years (1 or 3)
+                 * @param {"m5.xlarge"} instanceType Instance type, eg. "m5.xlarge"
+                 * @param {"us-east-2"} region
+                 * @param {1} purchaseTerm Duration of RI in years (1 or 3)
                  * @returns price
                  * @customfunction
                  */
-                export function EC2_#{platform.upcase}_#{ri_class[1].upcase}_RI_#{payment_option[1].upcase}(instanceType: string, region: string, purchaseTerm: string) {
+                export function EC2_#{platform.upcase}_#{ri_class[1].upcase}_RI_#{payment_option[1].upcase}(instanceType: string, region: string, purchaseTerm: string | number) {
                     return EC2_RI(instanceType, region, "#{platform}", "#{ri_class[0]}", purchaseTerm, "#{payment_option[0]}")
                 }
     
@@ -68,14 +68,14 @@ def gen_ec2_ri(func_dir)
                 /**
                  * Returns the RI pricing for an instance type with a #{ri_class[0]}, #{payment_option[0].gsub("_", "-")} RI using #{sql_platform} SQL.
                  *
-                 * @param instanceType
-                 * @param region
-                 * @param sqlLicense (std, web, or enterprise)
-                 * @param purchaseTerm in years (1 or 3)
+                 * @param {"m5.xlarge"} instanceType Instance type, eg. "m5.xlarge"
+                 * @param {"us-east-2"} region
+                 * @param {"web"} sqlLicense (std, web, or enterprise)
+                 * @param {1} purchaseTerm Duration of RI in years (1 or 3)
                  * @returns price
                  * @customfunction
                  */
-                export function EC2_#{sql_platform.upcase}_MSSQL_#{ri_class[1].upcase}_RI_#{payment_option[1].upcase}(instanceType: string, region: string, sqlLicense: string, purchaseTerm: string) {
+                export function EC2_#{sql_platform.upcase}_MSSQL_#{ri_class[1].upcase}_RI_#{payment_option[1].upcase}(instanceType: string, region: string, sqlLicense: string, purchaseTerm: string | number) {
                     return EC2_RI(instanceType, region, EC2Platform.msSqlLicenseToType("#{sql_platform}", sqlLicense), "#{ri_class[0]}", purchaseTerm, "#{payment_option[0]}")
                 }
     
@@ -105,22 +105,22 @@ def gen_ebs(func_dir)
         vol_type_up = vol_type.upcase
         func = <<~EOF
         /**
-         * Returns the monthly cost for the amount of provisioned EBS #{vol_type_up} storage Gigabytes
+         * Returns the hourly cost for the amount of provisioned EBS #{vol_type_up} storage Gigabytes
          * 
-         * @param settingsRange Two-column range of default EC2 instance settings
-         * @param size Size in GB of provisioned storage
-         * @param region Override region setting of settings (optional)
-         * @returns monthly price
+         * @param {A2:B7} settingsRange Two-column range of default EC2 instance settings
+         * @param {3000} size Size in GB of provisioned storage
+         * @param {"us-east-2"} region Override region setting of settings (optional)
+         * @returns price
          * @customfunction
          */
         export function EC2_EBS_#{vol_type_up}_GB(settingsRange: Array<Array<string>>, size: string | number, region?: string): number;
 
         /**
-        * Returns the monthly cost for the amount of provisioned EBS #{vol_type_up} storage Gigabytes
+        * Returns the hourly cost for the amount of provisioned EBS #{vol_type_up} storage Gigabytes
         * 
-        * @param size Size in GB of provisioned storage
-        * @param region
-        * @returns monthly price
+        * @param {3000} size Size in GB of provisioned storage
+        * @param {"us-east-2"} region
+        * @returns price
         * @customfunction
         */
         export function EC2_EBS_#{vol_type_up}_GB(size: string | number, region: string): number;
@@ -165,9 +165,9 @@ def gen_rds(func_dir)
         /**
          * Returns the instance price for a #{engine[1]} RDS DB instance
          *
-         * @param settingsRange Two-column range of default EC2 instance settings
-         * @param instanceType Type of RDS instance
-         * @param region Override the region setting (optional)
+         * @param {A2:B7} settingsRange Two-column range of default EC2 instance settings
+         * @param {"db.r4.xlarge"} instanceType Type of RDS instance
+         * @param {"us-east-2"} region Override the region setting (optional)
          * @returns price
          * @customfunction
          */
@@ -178,8 +178,8 @@ def gen_rds(func_dir)
         /**
          * Returns the on-demand instance price for a #{engine[1]} RDS DB instance
          *
-         * @param instanceType Type of RDS instance
-         * @param region AWS region of instance
+         * @param {"db.r4.xlarge"} instanceType Type of RDS instance
+         * @param {"us-east-2"} region AWS region of instance
          * @returns price
          * @customfunction
          */
@@ -190,10 +190,10 @@ def gen_rds(func_dir)
         /**
          * Returns the reserved instance price for a #{engine[1]} RDS DB instance
          *
-         * @param instanceType Type of RDS instance
-         * @param region AWS region of instance
-         * @param purchaseTerm Duration of RI in years (1 or 3)
-         * @param paymentOption Payment terms (no_upfront, partial_upfront, all_upfront)
+         * @param {"db.r4.xlarge"} instanceType Type of RDS instance
+         * @param {"us-east-2"} region AWS region of instance
+         * @param {1} purchaseTerm Duration of RI in years (1 or 3)
+         * @param {"all_upfront"} paymentOption Payment terms (no_upfront, partial_upfront, all_upfront)
          * @returns price
          * @customfunction
          */
@@ -216,9 +216,9 @@ def gen_rds(func_dir)
             /**
             * Returns the reserved instance price for a #{engine[1]} RDS DB instance with #{payment_option[0]} payment
             *
-            * @param instanceType Type of RDS instance
-            * @param region AWS region of instance
-            * @param purchaseTerm Duration of RI in years (1 or 3)
+            * @param {"db.r4.xlarge"} instanceType Type of RDS instance
+            * @param {"us-east-2"} region AWS region of instance
+            * @param {1} purchaseTerm Duration of RI in years (1 or 3)
             * @returns price
             * @customfunction
             */
@@ -251,9 +251,9 @@ def gen_rds_storage(func_dir)
         /**
          * Returns the price of RDS storage for volume type #{voltype}.
          *
-         * @param settingsRange Two-column range of default EC2 instance settings
-         * @param volumeSize Size of the volume in Gigabytes
-         * @param region Override the region from the settings range (optional)
+         * @param {A2:B7} settingsRange Two-column range of default EC2 instance settings
+         * @param {3000} volumeSize Size of the volume in Gigabytes
+         * @param {"us-east-2"} region Override the region from the settings range (optional)
          * @returns price
          * @customfunction
          */
@@ -262,8 +262,8 @@ def gen_rds_storage(func_dir)
         /**
          * Returns the price of RDS storage for volume type #{voltype}.
          *
-         * @param volumeSize Size of the volume in Gigabytes
-         * @param region
+         * @param {3000} volumeSize Size of the volume in Gigabytes
+         * @param {"us-east-2"} region
          * @returns price
          * @customfunction
          */
