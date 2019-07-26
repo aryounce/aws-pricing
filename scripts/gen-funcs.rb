@@ -193,7 +193,7 @@ def gen_rds(func_dir)
          * @param {"db.r4.xlarge"} instanceType Type of RDS instance
          * @param {"us-east-2"} region AWS region of instance
          * @param {1} purchaseTerm Duration of RI in years (1 or 3)
-         * @param paymentOption Payment terms (no_upfront, partial_upfront, all_upfront)
+         * @param {"all_upfront"} paymentOption Payment terms (no_upfront, partial_upfront, all_upfront)
          * @returns price
          * @customfunction
          */
