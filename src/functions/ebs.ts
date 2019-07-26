@@ -71,7 +71,7 @@ export function EC2_EBS_GB(settingsOrType, typeOrSize, sizeOrRegion, region?: st
  * 
  * @param {A2:B7} settingsRange Two-column range of default EC2 instance settings
  * @param iops Number of provisioned IOPS
- * @param region Override region setting of settings (optional)
+ * @param {"us-east-2"} region Override region setting of settings (optional)
  * @returns monthly price
  * @customfunction
  */
@@ -81,7 +81,7 @@ export function EC2_EBS_IO1_IOPS(settingsRange: Array<Array<string>>, iops: stri
 * Returns the monthly cost for the amount of provisioned EBS IO1 IOPS
 * 
 * @param iops Number of provisioned IOPS
-* @param region
+* @param {"us-east-2"} region
 * @returns monthly price
 * @customfunction
 */
@@ -121,7 +121,7 @@ export function EC2_EBS_IO1_IOPS(settingsOrIops, iopsOrRegion, region?) {
  * 
  * @param {A2:B7} settingsRange Two-column range of default EC2 instance settings
  * @param size the number of Gigabytes stored
- * @param region Override region setting of settings (optional)
+ * @param {"us-east-2"} region Override region setting of settings (optional)
  * @returns monthly price
  * @customfunction
  */
@@ -131,7 +131,7 @@ export function EC2_EBS_SNAPSHOT_GB(settingsRange: Array<Array<string>>, size: s
 * Returns the monthly cost for the amount of EBS snapshot data stored in Gigabytes
 * 
 * @param size the number of Gigabytes stored
-* @param region
+* @param {"us-east-2"} region
 * @returns monthly price
 * @customfunction
 */

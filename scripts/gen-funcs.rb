@@ -44,7 +44,7 @@ def gen_ec2_ri(func_dir)
                  * Returns the RI pricing for an instance type with a #{ri_class[0]}, #{payment_option[0].gsub("_", "-")} RI using #{platform}.
                  *
                  * @param instanceType
-                 * @param region
+                 * @param {"us-east-2"} region
                  * @param purchaseTerm in years (1 or 3)
                  * @returns price
                  * @customfunction
@@ -69,7 +69,7 @@ def gen_ec2_ri(func_dir)
                  * Returns the RI pricing for an instance type with a #{ri_class[0]}, #{payment_option[0].gsub("_", "-")} RI using #{sql_platform} SQL.
                  *
                  * @param instanceType
-                 * @param region
+                 * @param {"us-east-2"} region
                  * @param sqlLicense (std, web, or enterprise)
                  * @param purchaseTerm in years (1 or 3)
                  * @returns price
@@ -109,7 +109,7 @@ def gen_ebs(func_dir)
          * 
          * @param {A2:B7} settingsRange Two-column range of default EC2 instance settings
          * @param size Size in GB of provisioned storage
-         * @param region Override region setting of settings (optional)
+         * @param {"us-east-2"} region Override region setting of settings (optional)
          * @returns monthly price
          * @customfunction
          */
@@ -119,7 +119,7 @@ def gen_ebs(func_dir)
         * Returns the monthly cost for the amount of provisioned EBS #{vol_type_up} storage Gigabytes
         * 
         * @param size Size in GB of provisioned storage
-        * @param region
+        * @param {"us-east-2"} region
         * @returns monthly price
         * @customfunction
         */
@@ -167,7 +167,7 @@ def gen_rds(func_dir)
          *
          * @param {A2:B7} settingsRange Two-column range of default EC2 instance settings
          * @param instanceType Type of RDS instance
-         * @param region Override the region setting (optional)
+         * @param {"us-east-2"} region Override the region setting (optional)
          * @returns price
          * @customfunction
          */
@@ -179,7 +179,7 @@ def gen_rds(func_dir)
          * Returns the on-demand instance price for a #{engine[1]} RDS DB instance
          *
          * @param instanceType Type of RDS instance
-         * @param region AWS region of instance
+         * @param {"us-east-2"} region AWS region of instance
          * @returns price
          * @customfunction
          */
@@ -191,7 +191,7 @@ def gen_rds(func_dir)
          * Returns the reserved instance price for a #{engine[1]} RDS DB instance
          *
          * @param instanceType Type of RDS instance
-         * @param region AWS region of instance
+         * @param {"us-east-2"} region AWS region of instance
          * @param purchaseTerm Duration of RI in years (1 or 3)
          * @param paymentOption Payment terms (no_upfront, partial_upfront, all_upfront)
          * @returns price
@@ -217,7 +217,7 @@ def gen_rds(func_dir)
             * Returns the reserved instance price for a #{engine[1]} RDS DB instance with #{payment_option[0]} payment
             *
             * @param instanceType Type of RDS instance
-            * @param region AWS region of instance
+            * @param {"us-east-2"} region AWS region of instance
             * @param purchaseTerm Duration of RI in years (1 or 3)
             * @returns price
             * @customfunction
@@ -253,7 +253,7 @@ def gen_rds_storage(func_dir)
          *
          * @param {A2:B7} settingsRange Two-column range of default EC2 instance settings
          * @param volumeSize Size of the volume in Gigabytes
-         * @param region Override the region from the settings range (optional)
+         * @param {"us-east-2"} region Override the region from the settings range (optional)
          * @returns price
          * @customfunction
          */
@@ -263,7 +263,7 @@ def gen_rds_storage(func_dir)
          * Returns the price of RDS storage for volume type #{voltype}.
          *
          * @param volumeSize Size of the volume in Gigabytes
-         * @param region
+         * @param {"us-east-2"} region
          * @returns price
          * @customfunction
          */

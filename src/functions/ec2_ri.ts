@@ -4,7 +4,7 @@ import { _ec2_full } from "./ec2";
  * Returns the on-demand pricing for given instance type, using Linux.
  * 
  * @param instanceType
- * @param region
+ * @param {"us-east-2"} region
  * @returns price
  * @customfunction
  */

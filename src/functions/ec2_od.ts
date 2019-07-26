@@ -9,7 +9,7 @@ import { _ec2, _ec2_full } from "./ec2";
  *
  * @param {A2:B7} settingsRange Two-column range of default EC2 instance settings
  * @param instanceType Instance type, eg. "m5.xlarge"
- * @param region Override region setting for this call (optional)
+ * @param {"us-east-2"} region Override region setting for this call (optional)
  * @returns price
  * @customfunction
  */
@@ -35,7 +35,7 @@ export function EC2(settingsRange: Array<Array<string>>, instanceType: string, r
  * Returns the on-demand pricing for given instance type.
  *
  * @param instanceType
- * @param region
+ * @param {"us-east-2"} region
  * @param platform
  * @returns price
  * @customfunction
@@ -48,7 +48,7 @@ export function EC2_OD(instanceType: string, region: string, platform: string) {
  * Returns the on-demand pricing for given instance type, using Linux.
  *
  * @param instanceType
- * @param region
+ * @param {"us-east-2"} region
  * @returns price
  * @customfunction
  */
@@ -60,7 +60,7 @@ export function EC2_LINUX_OD(instanceType: string, region: string) {
  * Returns the on-demand pricing for given instance type, using Linux MS SQL.
  *
  * @param instanceType
- * @param region
+ * @param {"us-east-2"} region
  * @param sqlLicense (std, web, or enterprise)
  * @returns price
  * @customfunction
@@ -73,7 +73,7 @@ export function EC2_LINUX_MSSQL_OD(instanceType: string, region: string, sqlLice
  * Returns the on-demand pricing for given instance type, using RHEL.
  *
  * @param instanceType
- * @param region
+ * @param {"us-east-2"} region
  * @returns price
  * @customfunction
  */
@@ -85,7 +85,7 @@ export function EC2_RHEL_OD(instanceType: string, region: string) {
  * Returns the on-demand pricing for given instance type, using SUSE.
  *
  * @param instanceType
- * @param region
+ * @param {"us-east-2"} region
  * @returns price
  * @customfunction
  */
@@ -97,7 +97,7 @@ export function EC2_SUSE_OD(instanceType: string, region: string) {
  * Returns the on-demand pricing for given instance type, using Windows.
  *
  * @param instanceType
- * @param region
+ * @param {"us-east-2"} region
  * @returns price
  * @customfunction
  */
@@ -109,7 +109,7 @@ export function EC2_WINDOWS_OD(instanceType: string, region: string) {
  * Returns the on-demand pricing for given instance type, using Windows MS SQL.
  *
  * @param instanceType
- * @param region
+ * @param {"us-east-2"} region
  * @param sqlLicense
  * @returns price
  * @customfunction

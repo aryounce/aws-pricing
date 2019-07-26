@@ -46,7 +46,7 @@ function _rds_storage_full(volumeType: RDSStorage, volumeSize: string|number, re
  * @param {A2:B7} settingsRange Two-column range of default EC2 instance settings
  * @param volumeType type of RDS storage volume (aurora, gp2, piops, or magnetic)
  * @param volumeSize Size of the volume in Gigabytes
- * @param region Override the region from the settings range (optional)
+ * @param {"us-east-2"} region Override the region from the settings range (optional)
  * @returns price
  * @customfunction
  */
@@ -57,7 +57,7 @@ export function RDS_STORAGE_GB(settingsRange: Array<Array<string>>, volumeType: 
  *
  * @param volumeType type of RDS storage volume (aurora, gp2, piops, or magnetic)
  * @param volumeSize Size of the volume in Gigabytes
- * @param region
+ * @param {"us-east-2"} region
  * @returns price
  * @customfunction
  */
