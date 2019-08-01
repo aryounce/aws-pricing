@@ -23,7 +23,10 @@ export class Regions implements ISettings {
         'ap-southeast-1': 'Asia Pacific (Singapore)',
         'ap-southeast-2': 'Asia Pacific (Sydney)',
         'ap-south-1': 'Asia Pacific (Mumbai)',
-        'sa-east-1': 'South America (São Paulo)'
+        'me-south-1': 'Middle East (Bahrain)',
+        'sa-east-1': 'South America (São Paulo)',
+        'us-gov-east-1': 'GovCloud (US-East)',
+        'us-gov-west-1': 'GovCloud (US-West)'
     }
 
     private readonly available: Array<string>
