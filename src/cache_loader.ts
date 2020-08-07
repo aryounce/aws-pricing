@@ -29,6 +29,12 @@ export class CacheLoader {
 
         let encoded = Utilities.base64Encode(gzBlob.getBytes())
 
+        // XXX: If we exceed the maximum length don't attempt to cache
+        //
+        if (encoded.length > 100_000) {
+            return
+        }
+
         if (expirationInSeconds) {
             this.cache.put(keyEncode, encoded, expirationInSeconds)
         } else {
