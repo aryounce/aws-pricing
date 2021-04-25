@@ -127,13 +127,13 @@ The generic function for computing storage cost accepts an optional settings ran
 
 The supported parameters are:
 
-* `volumeType`: The type of volume (*magnetic*, *gp2*, *io1*, *st1* or *sc1*)
+* `volumeType`: The type of volume (*magnetic*, *gp2*, *io1*, *io2*, *st1* or *sc1*)
 * `volumeSize`: Size in number of provisioned Gigabytes
 * `region`: Will override any region in a settings range, eg: *us-east-2*
 
 There are several alias functions that embed the volumeType in the function name in the form:
 ```
-EC2_EBS_<MAGNETIC or GP2 or IO1 or ST1 or SC1>_GB(...)
+EC2_EBS_<MAGNETIC or GP2 or IO1 or IO2 or ST1 or SC1>_GB(...)
 ```
 
 For example, for General Purpose (gp2) storage you can also call:
@@ -143,10 +143,15 @@ For example, for General Purpose (gp2) storage you can also call:
 
 ### EBS Provisioned IOPS
 
-Provisioned IOPS pricing is only supported on *io1* volume types. Both functions take the number of *iops* to calculate for.
+Provisioned IOPS pricing is only supported on *io1* and *io2* volume types. Both functions take the number of *iops* to calculate for.
 
 * `EC2_EBS_IO1_IOPS(settingsRange, iops, region: optional)`
 * `EC2_EBS_IO1_IOPS(iops, region)`
+
+For IO2 IOPS, the functions are the same but will calculate rates using the tiered pricing model.
+
+* `EC2_EBS_IO2_IOPS(settingsRange, iops, region: optional)`
+* `EC2_EBS_IO2_IOPS(iops, region)`
 
 ### EBS Snapshot storage
 
