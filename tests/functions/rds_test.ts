@@ -11,17 +11,18 @@ export class RDSFunctionTestSuite extends TestSuite {
         t.describe("RDS func tests", () => {
             t.areEqual(0.58, RDS_AURORA_MYSQL_OD("db.r5.xlarge", "us-east-1"))
             t.areClose(0.379999, RDS_AURORA_MYSQL_RI("db.r5.xlarge", "us-east-1", 1, "no_upfront"), 0.000001)
-            t.areClose(0.322694, RDS_AURORA_MYSQL_RI("db.r5.xlarge", "us-east-1", 1, "partial_upfront"), 0.000001)
+            // db.r5.xlarge no longer offered in partial upfront
+            t.areClose(0.288806, RDS_AURORA_MYSQL_RI("db.r6g.xlarge", "us-east-1", 1, "partial_upfront"), 0.000001)
             t.areClose(0.316210, RDS_AURORA_MYSQL_RI("db.r5.xlarge", "us-east-1", 1, "all_upfront"), 0.000001)
 
             t.willThrow(function() {
                 RDS_AURORA_MYSQL_RI("db.r5.xlarge", "us-east-1", 3, "no_upfront")
             }, "not supported")
-            t.areClose(0.215129, RDS_AURORA_MYSQL_RI("db.r5.xlarge", "us-east-1", 3, "partial_upfront"), 0.000001)
+            t.areClose(0.192570, RDS_AURORA_MYSQL_RI("db.r6g.xlarge", "us-east-1", 3, "partial_upfront"), 0.000001)
             t.areClose(0.202207, RDS_AURORA_MYSQL_RI("db.r5.xlarge", "us-east-1", 3, "all_upfront"), 0.000001)
 
             t.areClose(0.379999, RDS_AURORA_MYSQL_RI_NO("db.r5.xlarge", "us-east-1", 1), 0.000001)
-            t.areClose(0.322694, RDS_AURORA_MYSQL_RI_PARTIAL("db.r5.xlarge", "us-east-1", 1), 0.000001)
+            t.areClose(0.288806, RDS_AURORA_MYSQL_RI_PARTIAL("db.r6g.xlarge", "us-east-1", 1), 0.000001)
             t.areClose(0.316210, RDS_AURORA_MYSQL_RI_ALL("db.r5.xlarge", "us-east-1", 1), 0.000001)
 
             t.areEqual(1.16, RDS_AURORA_POSTGRESQL_OD("db.r5.2xlarge", "us-east-1"))
@@ -52,9 +53,9 @@ export class RDSFunctionTestSuite extends TestSuite {
                 ['payment_option', 'partial_upfront']
             ]
 
-            t.areClose(0.322694, RDS_AURORA_MYSQL(s, "db.r5.xlarge"), 0.000001)
+            t.areClose(0.288806, RDS_AURORA_MYSQL(s, "db.r6g.xlarge"), 0.000001)
             s[3][1] = 'all_upfront'
-            t.areClose(0.316210, RDS_AURORA_MYSQL(s, "db.r5.xlarge"), 0.000001)
+            t.areClose(0.282990, RDS_AURORA_MYSQL(s, "db.r6g.xlarge"), 0.000001)
         })
 
         t.describe("RDS invalid settings", () => {
