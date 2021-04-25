@@ -248,6 +248,13 @@ There are two alias functions for each volume type as well. For example, for Aur
 
 This currently pulls data from the pricing data files used on the main EC2 pricing pages. Unfortunately, these data files are not supported by AWS and hence may break at some point in the future. These files are more compact than the published [bulk pricing API](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/using-ppslong.html), roughly 100KB vs 30MB, so they are better suited for quick lookups.
 
+## Discontinued instance sizes/offerings
+
+This addon pulls directly from the AWS pricing data files. Oftentimes AWS will discontinue certain instance size configurations or
+purchase offerings. While it may still technically be possible to purchase the offering through AWS, the pricing data is no longer
+offered in the current pricing files. In this case you may see a method throw an error that it can not find the pricing information. The addon
+could probably be smarter at pulling from legacy pricing locations, but that's not supported for all services.
+
 ## Future support
 
 * Daily, Monthly, Yearly pricing
