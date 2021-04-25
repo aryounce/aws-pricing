@@ -59,7 +59,11 @@ export class EBSPrice {
         }
 
         if (prices.length > 1) {
-            throw `Too many matches for EBS volume type ${this.volumeType}`
+            if (this.storageType === EBSStorageType.Snapshot) {
+                throw `Too many matches for EBS Snapshot storage`
+            } else {
+                throw `Too many matches for EBS volume type ${this.volumeType}`
+            }
         }
 
         let volumeUnitsNum = parseFloat(this.volumeUnits)
@@ -87,10 +91,9 @@ export class EBSPrice {
 
     private filterPricesSnapshot(prices) {
         return prices.filter(price => {
-            return Utils.includes(price.attributes['aws:ec2:usagetype'], 'EBS:SnapshotUsage') &&
-
-                // XXX what is this?
-                !Utils.includes(price.attributes['aws:ec2:usagetype'], 'EBS:SnapshotUsageUnderBilling')
+            // This may be prefixed with the region abbrev, there are also
+            // suffixes like `UnderBilling` and `.outposts`
+            return Utils.endsWith(price.attributes['aws:ec2:usagetype'], "EBS:SnapshotUsage")
         })
     }
 
