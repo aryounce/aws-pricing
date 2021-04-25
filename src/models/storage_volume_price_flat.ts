@@ -1,8 +1,9 @@
+import { StorageVolumePrice } from "./_storage_volume_price";
 import { PriceConverter, PriceDuration } from "../price_converter";
 
-export class StorageVolumePrice {
+export class StorageVolumePriceFlat extends StorageVolumePrice {
     constructor(private readonly price: any, private units: number) {
-
+        super()
     }
 
     totalPrice(duration: PriceDuration): number {

@@ -1,7 +1,8 @@
 import { InvocationSettings } from "./settings/invocation_settings";
 import { RDSStorage } from "./models/rds_storage";
 import { PriceDuration } from "./price_converter";
-import { StorageVolumePrice } from "./models/storage_volume_price";
+import { StorageVolumePrice } from "./models/_storage_volume_price";
+import { StorageVolumePriceFlat } from "./models/storage_volume_price_flat";
 import { ctxt } from "./context";
 
 export class RDSStoragePrice {
@@ -34,7 +35,7 @@ export class RDSStoragePrice {
             throw `Too many matches for RDS storage type ${this.storageTypeStr()}`
         }
 
-        return new StorageVolumePrice(prices[0], this.storageSize)
+        return new StorageVolumePriceFlat(prices[0], this.storageSize)
     }
 
     private filterRDSStorage(prices) {

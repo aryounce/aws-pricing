@@ -1,6 +1,8 @@
 import { PriceDuration } from "./price_converter";
 import { ctxt } from "./context";
-import { StorageVolumePrice } from "./models/storage_volume_price";
+import { StorageVolumePrice } from "./models/_storage_volume_price";
+import { StorageVolumePriceFlat } from "./models/storage_volume_price_flat";
+import { StorageVolumePriceTiered } from "./models/storage_volume_price_tiered";
 import { Utils } from "./_utils";
 
 export enum EBSStorageType {Storage, Iops, Snapshot}
@@ -14,6 +16,7 @@ export class EBSPrice {
         'st1': 'Throughput Optimized HDD',
         'sc1': 'Cold HDD',
         'io1': 'Provisioned IOPS',
+        'io2': 'Provisioned IOPS',
     }
 
     constructor(private readonly settings: any, private storageType: EBSStorageType, private volumeType: string,
@@ -33,8 +36,13 @@ export class EBSPrice {
             throw `Invalid EBS volume type '${this.volumeType}'`
         }
 
-        if (this.storageType === EBSStorageType.Iops && this.volumeType !== "io1") {
-            throw `IOPS pricing is only valid for io1 volumes`
+        if (this.storageType === EBSStorageType.Iops && this.volumeType !== "io1" && this.volumeType !== "io2") {
+            throw `IOPS pricing is only valid for io1 & io2 volumes`
+        }
+
+        let volumeUnitsNum = parseFloat(this.volumeUnits)
+        if (!volumeUnitsNum) {
+            throw `Unable to parse volume units '${this.volumeUnits}'`
         }
 
         let pricePath = Utilities.formatString("/pricing/1.0/ec2/region/%s/ebs/index.json",
@@ -44,8 +52,12 @@ export class EBSPrice {
 
         let resp = JSON.parse(body)
 
+        // io2 IOPS is tiered
+        if (this.storageType === EBSStorageType.Iops && this.volumeType === "io2") {
+            return this.tieredIO2IOPS(resp.prices, volumeUnitsNum);
+        }
+
         let prices = null
-        
         if (this.storageType === EBSStorageType.Storage) {
             prices = this.filterPricesVolumeUsage(resp.prices)
         } else if (this.storageType === EBSStorageType.Iops) {
@@ -66,12 +78,22 @@ export class EBSPrice {
             }
         }
 
-        let volumeUnitsNum = parseFloat(this.volumeUnits)
-        if (!volumeUnitsNum) {
-            throw `Unable to parse volume units '${this.volumeUnits}'`
+        return new StorageVolumePriceFlat(prices[0], volumeUnitsNum)
+    }
+
+    private tieredIO2IOPS(prices, volumeUnitsNum : number) : StorageVolumePrice {
+        let price1 = this.filterPricesVolumeIopsIO2(prices, 'tier1')
+        let price2 = this.filterPricesVolumeIopsIO2(prices, 'tier2')
+        let price3 = this.filterPricesVolumeIopsIO2(prices, 'tier3')
+
+        if (price1.length !== 1 || price2.length !== 1 || price3.length !== 1) {
+            throw `Unable to find tiered pricing for IO2 IOPS`
         }
 
-        return new StorageVolumePrice(prices[0], volumeUnitsNum)
+        let tiers : Array<number> = [0.0, 32000.0, 64000.0]
+        let priceTiers : Array<any> = [price1[0], price2[0], price3[0]]
+
+        return new StorageVolumePriceTiered(tiers, priceTiers, volumeUnitsNum)
     }
 
     private filterPricesVolumeUsage(prices) {
@@ -85,7 +107,20 @@ export class EBSPrice {
 
     private filterPricesVolumeIops(prices) {
         return prices.filter(price => {
-            return Utils.includes(price.attributes['aws:ec2:usagetype'], 'EBS:VolumeP-IOPS.piops')
+            return Utils.endsWith(price.attributes['aws:ec2:usagetype'], 'EBS:VolumeP-IOPS.piops')
+        })
+    }
+
+    private filterPricesVolumeIopsIO2(prices, tier: string) {
+        let usageType = 'EBS:VolumeP-IOPS.io2';
+        if (tier === 'tier2') {
+            usageType = 'EBS:VolumeP-IOPS.io2.tier2';
+        } else if (tier === 'tier3') {
+            usageType = 'EBS:VolumeP-IOPS.io2.tier3';
+        }
+
+        return prices.filter(price => {
+            return Utils.endsWith(price.attributes['aws:ec2:usagetype'], usageType)
         })
     }
 
@@ -104,6 +139,8 @@ export class EBSPrice {
             return usageStr
         } else if (this.volumeType === "io1") {
             return Utilities.formatString("%s.%s", usageStr, "piops")
+        } else if (this.volumeType === "io2") {
+            return Utilities.formatString("%s.%s", usageStr, "io2")
         } else {
             return Utilities.formatString("%s.%s", usageStr, this.volumeType)
         }
