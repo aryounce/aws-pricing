@@ -28,7 +28,7 @@ export class EBSFunctionTestSuite extends TestSuite {
             t.areClose(550.0 * (0.05/730.0), EC2_EBS_MAGNETIC_GB(550.0, "us-east-1"), 0.000001)
             t.areClose(550.0 * (0.125/730.0), EC2_EBS_IO1_GB(550.0, "us-east-1"), 0.000001)
             t.areClose(550.0 * (0.045/730.0), EC2_EBS_ST1_GB(550.0, "us-east-1"), 0.000001)
-            t.areClose(550.0 * (0.025/730.0), EC2_EBS_SC1_GB(550.0, "us-east-1"), 0.000001)
+            t.areClose(550.0 * (0.015/730.0), EC2_EBS_SC1_GB(550.0, "us-east-1"), 0.000001)
         })
 
         t.describe("EBS with settings range", () => {

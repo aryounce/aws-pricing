@@ -94,20 +94,20 @@ export class EC2FunctionTestSuite extends TestSuite {
         })
 
         t.describe("EC2 RI", () => {
-            t.areClose(0.116447, EC2(this.linuxRi('us-east-1', 'standard', 1, 'partial_upfront'), "m5.xlarge"), 0.00001)
+            t.areClose(0.115648, EC2(this.linuxRi('us-east-1', 'standard', 1, 'partial_upfront'), "m5.xlarge"), 0.00001)
             t.areClose(0.134123, EC2(this.linuxRi('us-east-1', 'convertible', 1, 'partial_upfront'), "m5.xlarge"), 0.00001)
-            t.areClose(0.123, EC2(this.linuxRi('us-east-1', 'standard', 1, 'no_upfront'), "m5.xlarge"), 0.00001)
-            t.areClose(0.114498, EC2(this.linuxRi('us-east-1', 'standard', 1, 'all_upfront'), "m5.xlarge"), 0.00001)
-            t.areClose(0.073706, EC2(this.linuxRi('us-east-1', 'standard', 3, 'all_upfront'), "m5.xlarge"), 0.00001)
+            t.areClose(0.121, EC2(this.linuxRi('us-east-1', 'standard', 1, 'no_upfront'), "m5.xlarge"), 0.00001)
+            t.areClose(0.1129, EC2(this.linuxRi('us-east-1', 'standard', 1, 'all_upfront'), "m5.xlarge"), 0.00001)
+            t.areClose(0.072184, EC2(this.linuxRi('us-east-1', 'standard', 3, 'all_upfront'), "m5.xlarge"), 0.00001)
 
-            t.areClose(0.099201, EC2(this.linuxRi('us-west-1', 'standard', 3, 'all_upfront'), "m5.xlarge"), 0.00001)
+            t.areClose(0.084209, EC2(this.linuxRi('us-west-1', 'standard', 3, 'all_upfront'), "m5.xlarge"), 0.00001)
         })
 
         t.describe("EC2 RI functions", () => {
             t.areClose(0.131621, EC2_LINUX_CONV_RI_ALL("m5.xlarge", "us-east-1", "1"), 0.00001)
             t.areClose(0.191667, EC2_RHEL_CONV_RI_ALL("m5.xlarge", "us-east-1", "1"), 0.00001)
             t.areClose(0.199201, EC2_LINUX_MSSQL_CONV_RI_ALL("m5.xlarge", "us-east-1", "web", "1"), 0.00001)
-            t.areClose(0.742195, EC2_WINDOWS_MSSQL_STD_RI_PARTIAL("m5.xlarge", "us-east-2", "std", "3"), 0.00001)
+            t.areClose(0.740395, EC2_WINDOWS_MSSQL_STD_RI_PARTIAL("m5.xlarge", "us-east-2", "std", "3"), 0.00001)
         })
     }
 
