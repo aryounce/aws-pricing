@@ -59,7 +59,11 @@ export class EBSPrice {
         }
 
         if (prices.length > 1) {
-            throw `Too many matches for EBS volume type ${this.volumeType}`
+            if (this.storageType === EBSStorageType.Snapshot) {
+                throw `Too many matches for EBS Snapshot storage`
+            } else {
+                throw `Too many matches for EBS volume type ${this.volumeType}`
+            }
         }
 
         let volumeUnitsNum = parseFloat(this.volumeUnits)
