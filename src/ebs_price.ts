@@ -13,10 +13,17 @@ export class EBSPrice {
     private static volumeTypeMap = {
         'magnetic': 'Magnetic',
         'gp2': 'General Purpose',
+        'gp3': 'General Purpose',
         'st1': 'Throughput Optimized HDD',
         'sc1': 'Cold HDD',
         'io1': 'Provisioned IOPS',
         'io2': 'Provisioned IOPS',
+    }
+
+    private static iopsVolumeTypesMap = {
+        'io1': true,
+        'io2': true,
+        'gp3': true,
     }
 
     constructor(private readonly settings: any, private storageType: EBSStorageType, private volumeType: string,
@@ -36,8 +43,8 @@ export class EBSPrice {
             throw `Invalid EBS volume type '${this.volumeType}'`
         }
 
-        if (this.storageType === EBSStorageType.Iops && this.volumeType !== "io1" && this.volumeType !== "io2") {
-            throw `IOPS pricing is only valid for io1 & io2 volumes`
+        if (this.storageType === EBSStorageType.Iops && !EBSPrice.iopsVolumeTypesMap[this.volumeType]) {
+            throw `IOPS pricing is not supported for volume type ${this.volumeType}`
         }
 
         let volumeUnitsNum = parseFloat(this.volumeUnits)
@@ -54,7 +61,11 @@ export class EBSPrice {
 
         // io2 IOPS is tiered
         if (this.storageType === EBSStorageType.Iops && this.volumeType === "io2") {
-            return this.tieredIO2IOPS(resp.prices, volumeUnitsNum);
+            return this.tieredIO2IOPS(resp.prices, volumeUnitsNum)
+        }
+
+        if (this.storageType === EBSStorageType.Iops && this.volumeType === "gp3") {
+            return this.tieredGP3IOPS(resp.prices, volumeUnitsNum)
         }
 
         let prices = null
@@ -92,6 +103,23 @@ export class EBSPrice {
 
         let tiers : Array<number> = [0.0, 32000.0, 64000.0]
         let priceTiers : Array<any> = [price1[0], price2[0], price3[0]]
+
+        return new StorageVolumePriceTiered(tiers, priceTiers, volumeUnitsNum)
+    }
+
+    private tieredGP3IOPS(prices, volumeUnitsNum : number) : StorageVolumePrice {
+        let priceTier = prices.filter(price => {
+            return Utils.endsWith(price.attributes['aws:ec2:usagetype'], 'EBS:VolumeP-IOPS.gp3')
+        })
+
+        if (priceTier.length !== 1) {
+            throw `Unable to find pricing for GP3 IOPS`
+        }
+
+        let tiers : Array<number> = [0.0, 3000.0];
+
+        // We fake the first tier since it is free
+        let priceTiers : Array<any> = [{price: {USD: 0.0}}, priceTier[0]]
 
         return new StorageVolumePriceTiered(tiers, priceTiers, volumeUnitsNum)
     }

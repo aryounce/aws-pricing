@@ -1,7 +1,7 @@
 import { TestSuite } from "../_framework/test_suite";
 import { TestRun } from "../_framework/test_run";
-import { EC2_EBS_GP2_GB, EC2_EBS_MAGNETIC_GB, EC2_EBS_IO1_GB, EC2_EBS_IO2_GB, EC2_EBS_ST1_GB, EC2_EBS_SC1_GB } from "../../src/functions/gen/ec2_ebs_gen";
-import { EC2_EBS_GB, EC2_EBS_IO1_IOPS, EC2_EBS_IO2_IOPS, EC2_EBS_SNAPSHOT_GB } from "../../src/functions/ebs";
+import { EC2_EBS_GP2_GB, EC2_EBS_GP3_GB, EC2_EBS_MAGNETIC_GB, EC2_EBS_IO1_GB, EC2_EBS_IO2_GB, EC2_EBS_ST1_GB, EC2_EBS_SC1_GB } from "../../src/functions/gen/ec2_ebs_gen";
+import { EC2_EBS_GB, EC2_EBS_IO1_IOPS, EC2_EBS_IO2_IOPS, EC2_EBS_GP3_IOPS, EC2_EBS_SNAPSHOT_GB } from "../../src/functions/ebs";
 
 export class EBSFunctionTestSuite extends TestSuite {
     protected name(): string {
@@ -12,6 +12,11 @@ export class EBSFunctionTestSuite extends TestSuite {
         t.describe("EBS GP2", () => {
             t.areClose(400.0 * (0.10/730.0), EC2_EBS_GP2_GB("400", "us-east-1"), 0.000001)
             t.areClose(400.0 * (0.10/730.0), EC2_EBS_GP2_GB("400", "us-east-2"), 0.000001)
+        })
+
+        t.describe("EBS GP3", () => {
+            t.areClose(400.0 * (0.08/730.0), EC2_EBS_GP3_GB("400", "us-east-1"), 0.000001)
+            t.areClose(400.0 * (0.08/730.0), EC2_EBS_GP3_GB("400", "us-east-2"), 0.000001)
         })
 
         t.describe("EBS IO1 IOPs", () => {
@@ -30,6 +35,12 @@ export class EBSFunctionTestSuite extends TestSuite {
 
              t.areClose(32000 * (0.065/730.0) + 32000 * (0.0455/730.0) + (70000-64000) * (0.03185/730.0),
              EC2_EBS_IO2_IOPS(70000, "us-east-1"), 0.000001)
+        })
+
+        t.describe("EBS GP3 IOPs - tiered", () => {
+            t.areClose(0.0, EC2_EBS_GP3_IOPS(2800, "us-east-1"), 0.000001)
+
+             t.areClose((7000 - 3000) * (0.005/730.0), EC2_EBS_GP3_IOPS(7000, "us-east-1"), 0.000001)
         })
 
         t.describe("EBS Snapshots", () => {
@@ -75,7 +86,7 @@ export class EBSFunctionTestSuite extends TestSuite {
             ]
 
             t.willThrow(function() {
-                EC2_EBS_GB(s, "gp3", 400)
+                EC2_EBS_GB(s, "gp1", 400)
             }, "invalid EBS volume type")
 
             t.willThrow(function() {

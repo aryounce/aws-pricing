@@ -99,7 +99,7 @@ def gen_ebs(func_dir)
 
     EOF
 
-    vol_types = ['magnetic', 'gp2', 'st1', 'sc1', 'io1', 'io2']
+    vol_types = ['magnetic', 'gp2', 'gp3', 'st1', 'sc1', 'io1', 'io2']
 
     vol_types.each do |vol_type|
         vol_type_up = vol_type.upcase

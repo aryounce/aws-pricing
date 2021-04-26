@@ -28,6 +28,33 @@ function _ec2_ebs(settings: InvocationSettings, storageType: EBSStorageType, vol
     return ebsPrices.get(PriceDuration.Hourly)
 }
 
+function _ec2_ebs_iops(volumeType: string, settingsOrIops, iopsOrRegion, region?) {
+    let volumeIops: string = null
+    let settings: InvocationSettings = null
+
+    if (!settingsOrIops) {
+        throw `Must specify parameter`
+    }
+
+    if (typeof settingsOrIops === "string" || typeof settingsOrIops === "number") {
+        volumeIops = settingsOrIops.toString()
+
+        settings = InvocationSettings.loadFromMap({'region': iopsOrRegion})
+    } else {
+        let overrides = {}
+
+        if (region) {
+            overrides['region'] = region
+        }
+
+        volumeIops = iopsOrRegion.toString()
+
+        settings = InvocationSettings.loadFromRange(settingsOrIops, overrides)
+    }
+
+    return _ec2_ebs(settings, EBSStorageType.Iops, volumeType, volumeIops)
+}
+
 export function EC2_EBS_GB(settingsRange: Array<Array<string>>, volumeType: string, volumeSize: string | number, region?: string): number;
 export function EC2_EBS_GB(volumeType: string, volumeSize: string | number, region: string): number
 
@@ -94,30 +121,7 @@ export function EC2_EBS_IO1_IOPS(iops: string | number, region: string): number;
 export function EC2_EBS_IO1_IOPS(settingsOrIops, iopsOrRegion, region?) {
     _initContext()
 
-    let volumeIops: string = null
-    let settings: InvocationSettings = null
-
-    if (!settingsOrIops) {
-        throw `Must specify parameter`
-    }
-
-    if (typeof settingsOrIops === "string" || typeof settingsOrIops === "number") {
-        volumeIops = settingsOrIops.toString()
-
-        settings = InvocationSettings.loadFromMap({'region': iopsOrRegion})
-    } else {
-        let overrides = {}
-
-        if (region) {
-            overrides['region'] = region
-        }
-
-        volumeIops = iopsOrRegion.toString()
-
-        settings = InvocationSettings.loadFromRange(settingsOrIops, overrides)
-    }
-
-    return _ec2_ebs(settings, EBSStorageType.Iops, 'io1', volumeIops)
+    return _ec2_ebs_iops('io1', settingsOrIops, iopsOrRegion, region)
 }
 
 export function EC2_EBS_IO2_IOPS(settingsRange: Array<Array<string>>, iops: string | number, region?: string): number;
@@ -136,30 +140,26 @@ export function EC2_EBS_IO2_IOPS(iops: string | number, region: string): number;
 export function EC2_EBS_IO2_IOPS(settingsOrIops, iopsOrRegion, region?) {
     _initContext()
 
-    let volumeIops: string = null
-    let settings: InvocationSettings = null
+    return _ec2_ebs_iops('io2', settingsOrIops, iopsOrRegion, region)
+}
 
-    if (!settingsOrIops) {
-        throw `Must specify parameter`
-    }
+export function EC2_EBS_GP3_IOPS(settingsRange: Array<Array<string>>, iops: string | number, region?: string): number;
+export function EC2_EBS_GP3_IOPS(iops: string | number, region: string): number;
 
-    if (typeof settingsOrIops === "string" || typeof settingsOrIops === "number") {
-        volumeIops = settingsOrIops.toString()
+/**
+ * Returns the hourly cost for the amount of provisioned EBS GP3 IOPS. Invoke as either:
+ * (settingsRange, iops[, region]) or (iops, region).
+ *
+ * @param {A2:B7 or 2500} settingsOrIops Settings range or number of iops
+ * @param {2500 or "us-east-2"} iopsOrRegion Number of iops or region
+ * @param {"us-east-2"} region AWS region (optional)
+ * @returns price
+ * @customfunction
+ */
+export function EC2_EBS_GP3_IOPS(settingsOrIops, iopsOrRegion, region?) {
+    _initContext()
 
-        settings = InvocationSettings.loadFromMap({'region': iopsOrRegion})
-    } else {
-        let overrides = {}
-
-        if (region) {
-            overrides['region'] = region
-        }
-
-        volumeIops = iopsOrRegion.toString()
-
-        settings = InvocationSettings.loadFromRange(settingsOrIops, overrides)
-    }
-
-    return _ec2_ebs(settings, EBSStorageType.Iops, 'io2', volumeIops)
+    return _ec2_ebs_iops('gp3', settingsOrIops, iopsOrRegion, region)
 }
 
 export function EC2_EBS_SNAPSHOT_GB(settingsRange: Array<Array<string>>, size: string | number, region?: string): number;
