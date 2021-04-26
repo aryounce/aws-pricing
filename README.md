@@ -143,7 +143,8 @@ For example, for General Purpose (gp2) storage you can also call:
 
 ### EBS Provisioned IOPS
 
-Provisioned IOPS pricing is only supported on *io1* and *io2* volume types. Both functions take the number of *iops* to calculate for.
+Provisioned IOPS pricing is only supported on *io1*, *io2* and *gp3* volume types.
+Both functions take the number of *iops* to calculate for.
 
 * `EC2_EBS_IO1_IOPS(settingsRange, iops, region: optional)`
 * `EC2_EBS_IO1_IOPS(iops, region)`
@@ -152,6 +153,11 @@ For IO2 IOPS, the functions are the same but will calculate rates using the tier
 
 * `EC2_EBS_IO2_IOPS(settingsRange, iops, region: optional)`
 * `EC2_EBS_IO2_IOPS(iops, region)`
+
+For GP3 IOPS it is similar tiered pricing, but the first tier is free.
+
+* `EC2_EBS_GP3_IOPS(settingsRange, iops, region: optional)`
+* `EC2_EBS_GP3_IOPS(iops, region)`
 
 ### EBS Snapshot storage
 
