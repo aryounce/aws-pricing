@@ -6,6 +6,7 @@ interface AwsDataLoaderTransform {
 
 export class AwsDataLoader {
     static readonly baseHost = 'https://a0.p.awsstatic.com'
+    static readonly baseHostV2 = 'https://b0.p.awsstatic.com'
     static readonly expireTimeSeconds = 3600
 
     private readonly cache: CacheLoader
@@ -44,6 +45,11 @@ export class AwsDataLoader {
     // Cache bust the URL by adding a timestamp
     // TODO: will not work with existing query params
     private buildUrl(path: string) : string {
+        if (path.indexOf("/ec2/") !== -1) {
+            return Utilities.formatString("%s%s?timestamp=%d",
+                AwsDataLoader.baseHostV2, path, Date.now())
+        }
+
         return Utilities.formatString("%s%s?timestamp=%d",
             AwsDataLoader.baseHost, path, Date.now())
     }

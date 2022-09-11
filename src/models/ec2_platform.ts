@@ -41,7 +41,14 @@ export class EC2Platform {
     }
 
     static typeToUriPath(os: EC2PlatformType): string {
-        return EC2Platform.typeToString(os).replace("_", "-").toLowerCase()
+        switch (os) {
+            case EC2PlatformType.Linux: {
+                return "Linux"
+            }
+            default: {
+                return "unknown"
+            }
+        }
     }
 
     static typeToString(os: EC2PlatformType): string {

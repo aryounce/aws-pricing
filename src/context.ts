@@ -39,7 +39,7 @@ export class Context {
 }
 
 // Provide a single static reference to context
-let _mainContext: Context = null
+let _mainContext: Context
 
 export function _initContext(app = SpreadsheetApp) {
     if (_mainContext != null) {
@@ -50,12 +50,12 @@ export function _initContext(app = SpreadsheetApp) {
 
     let awsLoader = new AwsDataLoader()
 
-    let context = new Context.Builder()
+    let ctx = new Context.Builder()
         .withAwsDataLoader(awsLoader)
         .withSpreadsheetApp(app)
         .withRegionsList(RegionsList.load(awsLoader))
         .build()
-    _setContext(context)
+    _setContext(ctx)
 }
 
 export function _setContext(context: Context) {

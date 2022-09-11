@@ -3,6 +3,7 @@ import { InstancePrice } from "./models/instance_price";
 import { EC2Instance } from "./models/ec2_instance";
 import { PriceDuration } from "./price_converter";
 import { ctxt } from "./context";
+import { Regions } from "./settings/regions";
 import { SettingKeys } from "./settings/setting_keys";
 import { Utils } from "./_utils";
 
@@ -31,27 +32,15 @@ export class EC2Price {
         return pType
     }
 
-    private ec2PrevGenPriceDataPath(region: string, purchaseType: string, platform: EC2PlatformType): string {
-        return Utilities.formatString('/pricing/1.0/ec2/region/%s/previous-generation/%s/%s/index.json',
-            region, this.purchaseTypeToUri(purchaseType), EC2Platform.typeToUriPath(platform))
-    }
-
     private ec2PriceDataPath(region: string, purchaseType: string, platform: EC2PlatformType): string {
-        return Utilities.formatString('/pricing/1.0/ec2/region/%s/%s/%s/index.json',
-            region, this.purchaseTypeToUri(purchaseType), EC2Platform.typeToUriPath(platform))
+        return Utilities.formatString('/pricing/2.0/meteredUnitMaps/ec2/USD/current/%s/%s/%s/index.json',
+        this.purchaseTypeToUri(purchaseType), Regions.getDisplay(region), EC2Platform.typeToUriPath(platform))
     }
 
     private ec2GetPrice(instance: EC2Instance, region: string, purchaseType: string, platform: EC2PlatformType): InstancePrice {
-        let pricePath = null
-    
-        if (instance.isPreviousGeneration()) {
-            pricePath = this.ec2PrevGenPriceDataPath(region, purchaseType, platform)
-        } else {
-            pricePath = this.ec2PriceDataPath(region, purchaseType, platform)
-        }
-
+        let pricePath = this.ec2PriceDataPath(region, purchaseType, platform)
         let prices = this.loadPriceData(pricePath);
-    
+
         let insts = null
         if (this.isReserved()) {
             insts = this.filterReserved(prices)
@@ -65,7 +54,7 @@ export class EC2Price {
         if (insts.length == 0) {
             throw `Can not find instance type ${instance.getInstanceType()} of ${EC2Platform.typeToString(platform)} in ${region}`
         }
-        
+
         return new InstancePrice(insts[0], this.isReserved())
     }
 
@@ -91,7 +80,7 @@ export class EC2Price {
     }
 
     private purchaseTypeToUri(purchaseType: string): string {
-        return purchaseType === "ondemand" ? "ondemand" : "reserved-instance"
+        return purchaseType === "ondemand" ? "ec2-ondemand-without-sec-sel" : "reserved-instance"
     }
 
     private filterReserved(prices) {
@@ -105,7 +94,7 @@ export class EC2Price {
 
     private filterOnDemand(prices) {
         return prices.filter(price => {
-            return price.attributes['aws:ec2:instanceType'] === this.instance.getInstanceType()
+            return price.attributes['Instance Type'] === this.instance.getInstanceType()
         })
     }
 

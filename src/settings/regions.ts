@@ -32,6 +32,10 @@ export class Regions implements ISettings {
     private readonly available: Array<string>
     private readonly availableMap: {[key: string]: boolean}
 
+    static getDisplay(name: string): string {
+        return Regions.nameToDisplay[name]
+    }
+
     constructor(regionsList: RegionsList) {
         this.available = regionsList.regions
         this.availableMap = Utils.lookupMap(this.available)
