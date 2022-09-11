@@ -5,11 +5,9 @@ import { StorageVolumePriceFlat } from "./models/storage_volume_price_flat";
 import { StorageVolumePriceTiered } from "./models/storage_volume_price_tiered";
 import { Utils } from "./_utils";
 
-export enum EBSStorageType {Storage, Iops, Snapshot}
+export enum EBSStorageType {Storage, Iops, Snapshot, Throughput}
 
 export class EBSPrice {
-    private static storageTypes = ['storage', 'iops']
-
     private static volumeTypeMap = {
         'magnetic': 'Magnetic',
         'gp2': 'General Purpose',
@@ -25,6 +23,8 @@ export class EBSPrice {
         'io2': true,
         'gp3': true,
     }
+
+    static readonly ebsCalcJson = "https://calculator.aws/pricing/2.0/meteredUnitMaps/ec2/USD/current/ebs-calculator.json"
 
     constructor(private readonly settings: any, private storageType: EBSStorageType, private volumeType: string,
         private volumeUnits: string) {
@@ -47,9 +47,17 @@ export class EBSPrice {
             throw `IOPS pricing is not supported for volume type ${this.volumeType}`
         }
 
+        if (this.storageType === EBSStorageType.Throughput && this.volumeType !== "gp3") {
+            throw `Throughput pricing is only supported for gp3 volumes`
+        }
+
         let volumeUnitsNum = parseFloat(this.volumeUnits)
         if (!volumeUnitsNum) {
             throw `Unable to parse volume units '${this.volumeUnits}'`
+        }
+
+        if (this.storageType === EBSStorageType.Throughput) {
+            return this.tieredGP3Throughput(volumeUnitsNum)
         }
 
         let pricePath = Utilities.formatString("/pricing/1.0/ec2/region/%s/ebs/index.json",
@@ -108,6 +116,27 @@ export class EBSPrice {
     }
 
     private tieredGP3IOPS(prices, volumeUnitsNum : number) : StorageVolumePrice {
+        let priceTier = prices.filter(price => {
+            return Utils.endsWith(price.attributes['aws:ec2:usagetype'], 'EBS:VolumeP-IOPS.gp3')
+        })
+
+        if (priceTier.length !== 1) {
+            throw `Unable to find pricing for GP3 IOPS`
+        }
+
+        let tiers : Array<number> = [0.0, 3000.0];
+
+        // We fake the first tier since it is free
+        let priceTiers : Array<any> = [{price: {USD: 0.0}}, priceTier[0]]
+
+        return new StorageVolumePriceTiered(tiers, priceTiers, volumeUnitsNum)
+    }
+
+    private tieredGP3Throughput(volumeUnitsNum : number) : StorageVolumePrice {
+        let body = ctxt().awsDataLoader.loadPath()
+
+        let resp = JSON.parse(body)
+
         let priceTier = prices.filter(price => {
             return Utils.endsWith(price.attributes['aws:ec2:usagetype'], 'EBS:VolumeP-IOPS.gp3')
         })

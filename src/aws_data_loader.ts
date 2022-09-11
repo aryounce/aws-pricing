@@ -14,25 +14,35 @@ export class AwsDataLoader {
         this.cache = new CacheLoader(CacheService.getScriptCache())
     }
 
+    loadUrl(url: string, transform?: AwsDataLoaderTransform): string {
+        return this.loadFullUrl(url, transform)
+    }
+
     loadPath(path: string, transform?: AwsDataLoaderTransform): string {
-        let data = this.cache.get(path)
+        let url = this.buildUrl(path)
+
+        return this.loadFullUrl(url, transform)
+    }
+
+    private loadFullUrl(url: string, transform?: AwsDataLoaderTransform): string {
+        let data = this.cache.get(url)
         if (data != null) {
             return data
         }
 
-        let url = this.buildUrl(path)
-        data = this.loadUrl(url)
+        data = this.fetchUrl(url)
 
         if (transform) {
             data = transform(data)
         }
 
-        this.cache.put(path, data, AwsDataLoader.expireTimeSeconds)
+        this.cache.put(url, data, AwsDataLoader.expireTimeSeconds)
 
         return data
+
     }
 
-    private loadUrl(url: string) {
+    private fetchUrl(url: string) {
         let resp = UrlFetchApp.fetch(url)
         if (resp.getResponseCode() != 200) {
             throw "Unable to load the URL: " + url;

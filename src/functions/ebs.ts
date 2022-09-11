@@ -11,7 +11,7 @@ function _ec2_ebs(settings: InvocationSettings, storageType: EBSStorageType, vol
     }
 
     if (!volumeUnits) {
-        throw `Must specify EBS volume units (iops or size)`
+        throw `Must specify EBS volume units (iops, size or throughput)`
     }
 
     let [ret, msg] = new EBSSettingsValidator(settings).validate()
@@ -53,6 +53,33 @@ function _ec2_ebs_iops(volumeType: string, settingsOrIops, iopsOrRegion, region?
     }
 
     return _ec2_ebs(settings, EBSStorageType.Iops, volumeType, volumeIops)
+}
+
+function _ec2_ebs_throughput(volumeType: string, settingsOrThroughput, throughputOrRegion, region?) {
+    let throughput: string = null
+    let settings: InvocationSettings = null
+
+    if (!settingsOrThroughput) {
+        throw `Must specify parameter`
+    }
+
+    if (typeof settingsOrThroughput === "string" || typeof settingsOrThroughput === "number") {
+        throughput = settingsOrThroughput.toString()
+
+        settings = InvocationSettings.loadFromMap({'region': throughputOrRegion})
+    } else {
+        let overrides = {}
+
+        if (region) {
+            overrides['region'] = region
+        }
+
+        throughput = throughputOrRegion.toString()
+
+        settings = InvocationSettings.loadFromRange(settingsOrThroughput, overrides)
+    }
+
+    return _ec2_ebs(settings, EBSStorageType.Throughput, volumeType, throughput)
 }
 
 export function EC2_EBS_GB(settingsRange: Array<Array<string>>, volumeType: string, volumeSize: string | number, region?: string): number;
@@ -160,6 +187,25 @@ export function EC2_EBS_GP3_IOPS(settingsOrIops, iopsOrRegion, region?) {
     _initContext()
 
     return _ec2_ebs_iops('gp3', settingsOrIops, iopsOrRegion, region)
+}
+
+export function EC2_EBS_GP3_THROUGHPUT(settingsRange: Array<Array<string>>, throughput: string | number, region?: string): number;
+export function EC2_EBS_GP3_THROUGHPUT(throughput: string | number, region: string): number;
+
+/**
+ * Returns the hourly cost for the amount of provisioned EBS GP3 throughput. Invoke as either:
+ * (settingsRange, throughput[, region]) or (throughput, region).
+ *
+ * @param {A2:B7 or 225} settingsOrThroughput Settings range or MB/s of throughput
+ * @param {225 or "us-east-2"} throughputOrRegion MB/s of throughput or region
+ * @param {"us-east-2"} region AWS region (optional)
+ * @returns price
+ * @customfunction
+ */
+export function EC2_EBS_GP3_THROUGHPUT(settingsOrThroughput, throughputOrRegion, region?) {
+    _initContext()
+
+    return _ec2_ebs_throughput('gp3', settingsOrThroughput, throughputOrRegion, region)
 }
 
 export function EC2_EBS_SNAPSHOT_GB(settingsRange: Array<Array<string>>, size: string | number, region?: string): number;

@@ -159,6 +159,14 @@ For GP3 IOPS it is similar tiered pricing, but the first tier is free.
 * `EC2_EBS_GP3_IOPS(settingsRange, iops, region: optional)`
 * `EC2_EBS_GP3_IOPS(iops, region)`
 
+## EBS Provisioned Throughput
+
+EBS GP3 supports provisioned throughput. For those volumes the following method will
+return the cost for the given amount of MB/sec of provisioned throughput.
+
+* `EC2_EBS_GP3_THROUGHPUT(settingsRange, throughput, region: optional)`
+* `EC2_EBS_GP3_THROUGHPUT(throughput, region)`
+
 ### EBS Snapshot storage
 
 EBS snapshot cost is measured by the amount of stored Gigabytes using the following functions.
