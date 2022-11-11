@@ -2,7 +2,7 @@ import { EC2PlatformType, EC2Platform } from "./models/ec2_platform";
 import { InstancePrice } from "./models/instance_price";
 import { EC2Instance } from "./models/ec2_instance";
 import { PriceDuration } from "./price_converter";
-import { ctxt } from "./context";
+import { Context } from "./context";
 import { SettingKeys } from "./settings/setting_keys";
 import { Utils } from "./_utils";
 
@@ -73,9 +73,9 @@ export class EC2Price {
         let body: string
         
         if (this.isReserved()) {
-            body = ctxt().awsDataLoader.loadPath(pricePath, this.tranformReserved)
+            body = Context.ctxt().awsDataLoader.loadPath(pricePath, this.tranformReserved)
         } else {
-            body = ctxt().awsDataLoader.loadPath(pricePath)
+            body = Context.ctxt().awsDataLoader.loadPath(pricePath)
         }
 
         let resp = JSON.parse(body)

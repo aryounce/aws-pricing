@@ -3,7 +3,7 @@ import { RDSStorage, _rds_storage_type_str_to_type } from "../models/rds_storage
 import { RDSStorageSettingsValidator } from "../settings/rds_storage_settings_validator";
 import { RDSStoragePrice } from "../rds_storage_price";
 import { PriceDuration } from "../price_converter";
-import { _initContext } from "../context";
+import { Context } from "../context";
 
 function _rds_storage(settings: InvocationSettings, volumeType: RDSStorage, volumeSize: string|number) {
     if (!volumeSize) {
@@ -64,7 +64,7 @@ export function RDS_STORAGE_GB(settingsRange: Array<Array<string>>, volumeType: 
 export function RDS_STORAGE_GB(volumeType: string, volumeSize: string | number, region: string): number
 
 export function RDS_STORAGE_GB(settingsOrType, typeOrSize, sizeOrRegion, region?: string): number {
-    _initContext()
+    Context._initContext()
 
     if (!settingsOrType) {
         throw `Must specify a parameter`

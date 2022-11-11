@@ -1,8 +1,8 @@
 import { EC2Platform } from "../models/ec2_platform";
 import { InvocationSettings } from "../settings/invocation_settings";
-import { _initContext } from "../context";
+import { Context } from "../context";
 import { SettingKeys } from "../settings/setting_keys";
-import { _ec2, _ec2_full } from "./ec2";
+import { EC2Functions } from "./ec2";
 
 /**
  * Returns the on-demand pricing for given instance type using the provided settings.
@@ -14,7 +14,7 @@ import { _ec2, _ec2_full } from "./ec2";
  * @customfunction
  */
 export function EC2(settingsRange: Array<Array<string>>, instanceType: string, region?: string) {
-    _initContext()
+    Context._initContext()
 
     if (!settingsRange) {
         throw "Missing required settings range"
@@ -28,7 +28,7 @@ export function EC2(settingsRange: Array<Array<string>>, instanceType: string, r
 
     let settings = InvocationSettings.loadFromRange(settingsRange, overrides)
 
-    return _ec2(settings, instanceType)
+    return EC2Functions._ec2(settings, instanceType)
 }
 
 /**
@@ -41,7 +41,7 @@ export function EC2(settingsRange: Array<Array<string>>, instanceType: string, r
  * @customfunction
  */
 export function EC2_OD(instanceType: string, region: string, platform: string) {
-    return _ec2_full(instanceType, region, "ondemand", platform)
+    return EC2Functions._ec2_full(instanceType, region, "ondemand", platform)
 }
 
 /**

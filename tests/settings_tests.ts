@@ -1,6 +1,6 @@
 import { TestSuite } from "./_framework/test_suite";
 import { TestRun } from "./_framework/test_run";
-import { ctxt } from "../src/context";
+import { Context } from "../src/context";
 import { InvocationSettings } from "../src/settings/invocation_settings";
 import { EC2SettingsValidator } from "../src/settings/ec2_settings_validator";
 import { EBSSettingsValidator } from "../src/settings/ebs_settings_validator";
@@ -12,9 +12,9 @@ export class SettingsTestSuite extends TestSuite {
 
     protected run(t: TestRun) {
         t.describe("validate settings", function() {
-            let r = ctxt().defaultSettings.getSetting('region')
+            let r = Context.ctxt().defaultSettings.getSetting('region')
 
-            t.isTrue(ctxt().defaultSettings.getSetting('region') != undefined)
+            t.isTrue(Context.ctxt().defaultSettings.getSetting('region') != undefined)
         })
 
         t.describe("invocation settings valid", () => {

@@ -1,4 +1,4 @@
-import { ctxt } from "../context";
+import { Context } from "../context";
 import { SettingKeys } from "./setting_keys";
 
 interface SettingsMap {
@@ -49,7 +49,7 @@ export class InvocationSettings {
         this.fixLegacy(settings)
 
         for (let k in settings) {
-            if (!ctxt().defaultSettings.isSetting(k)) {
+            if (!Context.ctxt().defaultSettings.isSetting(k)) {
                 delete settings[k]
             }
         }

@@ -1,7 +1,7 @@
 import { InvocationSettings } from "./settings/invocation_settings";
 import { RDSDbEngine } from "./models/rds_db_engine";
 import { PriceDuration } from "./price_converter";
-import { ctxt } from "./context";
+import { Context } from "./context";
 import { RDSInstancePrice } from "./models/rds_instance_price";
 import { Utils } from "./_utils";
 
@@ -26,7 +26,7 @@ export class RDSPrice {
         let pricePath = Utilities.formatString("/pricing/1.0/rds/%s/%s/%sindex.json",
             this.dbEngineUrlParam(), this.purchaseTypeUrlParam(), this.azUrlParam())
 
-        let body = ctxt().awsDataLoader.loadPath(pricePath, this.transformPayload)
+        let body = Context.ctxt().awsDataLoader.loadPath(pricePath, this.transformPayload)
 
         let resp = JSON.parse(body)
 
