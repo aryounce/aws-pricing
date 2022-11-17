@@ -279,16 +279,6 @@ purchase offerings. While it may still technically be possible to purchase the o
 offered in the current pricing files. In this case you may see a method throw an error that it can not find the pricing information. The addon
 could probably be smarter at pulling from legacy pricing locations, but that's not supported for all services.
 
-## Future support
-
-* Daily, Monthly, Yearly pricing
-* Data transfer
-* RDS Aurora Serverless, IOPS, Aurora Global, Data Xfer
-* RDS SQL Server
-* Elasticache
-* Upfront down-payments for Partial and All Upfront RI's, along with hourly rates
-* More services as requested
-
 ## References
 
 * Inspired by [aws-pricing-helper](https://github.com/marcy-terui/gs-aws-pricing-helper)
