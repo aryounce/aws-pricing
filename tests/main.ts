@@ -3,7 +3,7 @@ import { EC2FunctionTestSuite } from "./functions/ec2_test";
 import { EC2InstanceTestSuite } from "./ec2_instance_test";
 import { PriceConverterTestSuite } from "./price_converter_test";
 import { SettingsTestSuite } from "./settings_tests";
-import { _setContext, _initContext, ctxt } from "../src/context";
+import { Context } from "../src/context";
 import { CacheLoaderTestSuite } from "./cache_loader_test";
 import { EBSFunctionTestSuite } from "./functions/ebs_test";
 import { RDSFunctionTestSuite } from "./functions/rds_test";
@@ -11,7 +11,7 @@ import { RDSStorageFunctionTestSuite } from "./functions/rds_storage_test";
 
 function runAllTests(): string {
     return TestRunner.runAllTests(function(t) {
-        _initContext(null)
+        Context._initContext(null)
 
         t.describe("validate test runner", function() {
             t.areEqual(1, 1)

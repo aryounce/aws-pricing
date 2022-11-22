@@ -1,5 +1,5 @@
 import { SettingsFormBuilder } from "./settings/settings_form_builder";
-import { _initContext, ctxt } from "./context";
+import { Context } from "./context";
 import { SettingsFormProcessor } from "./settings/settings_form_processor";
 import { SettingsSheetGenerator } from "./settings/settings_sheet_generator";
 
@@ -18,7 +18,7 @@ function onInstall(e) {
   }
 
 function _showManualDialog() {
-    _initContext()
+    Context._initContext()
 
     let ui = SpreadsheetApp.getUi()
     let html = HtmlService.createHtmlOutputFromFile('help_dialog')
@@ -27,7 +27,7 @@ function _showManualDialog() {
 }
 
 function _newDefaultsSheet() {
-    _initContext()
+    Context._initContext()
 
     let builder = new SettingsFormBuilder(SpreadsheetApp)
 
@@ -35,10 +35,10 @@ function _newDefaultsSheet() {
 }
 
 function _processFormSubmit(values) {
-    _initContext()
+    Context._initContext()
 
-    let sheetGenerator = new SettingsSheetGenerator(ctxt().spreadsheetApp.getActive(),
-        ctxt().defaultSettings)
+    let sheetGenerator = new SettingsSheetGenerator(Context.ctxt().spreadsheetApp.getActive(),
+        Context.ctxt().defaultSettings)
     let processor = new SettingsFormProcessor(sheetGenerator)
 
     processor.process(values)

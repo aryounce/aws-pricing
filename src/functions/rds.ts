@@ -2,11 +2,11 @@ import { RDSDbEngine } from "../models/rds_db_engine";
 import { InvocationSettings } from "../settings/invocation_settings";
 import { RDSPrice } from "../rds_price";
 import { PriceDuration } from "../price_converter";
-import { _initContext } from "../context";
+import { Context } from "../context";
 import { RDSSettingsValidator } from "../settings/rds_settings_validator";
 
 function _rds(settings: InvocationSettings, dbEngine: RDSDbEngine, instanceType: string): number {
-    if (dbEngine === undefined || dbEngine === null) {
+  if (dbEngine === undefined || dbEngine === null) {
         throw `Must specify DB engine`
     }
 
@@ -26,7 +26,7 @@ function _rds(settings: InvocationSettings, dbEngine: RDSDbEngine, instanceType:
 
 export function _rds_full(dbEngine: RDSDbEngine, instanceType: string, region: string,
     purchaseType: string, purchaseTerm?: string | number, paymentOption?: string) {
-    _initContext()
+    Context._initContext()
 
     let settingsMap = {
         'region': region,
@@ -44,7 +44,7 @@ export function _rds_full(dbEngine: RDSDbEngine, instanceType: string, region: s
 }
 
 export function _rds_settings(settingsRange: Array<Array<string>>, dbEngine: RDSDbEngine, instanceType: string, region?: string) {
-    _initContext()
+    Context._initContext()
 
     if (!settingsRange) {
         throw `Must specify settings range`

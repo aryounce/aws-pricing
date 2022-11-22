@@ -1,5 +1,5 @@
 import { PriceDuration } from "./price_converter";
-import { ctxt } from "./context";
+import { Context } from "./context";
 import { StorageVolumePrice } from "./models/_storage_volume_price";
 import { StorageVolumePriceFlat } from "./models/storage_volume_price_flat";
 import { StorageVolumePriceTiered } from "./models/storage_volume_price_tiered";
@@ -55,7 +55,7 @@ export class EBSPrice {
         let pricePath = Utilities.formatString("/pricing/1.0/ec2/region/%s/ebs/index.json",
             this.settings.get('region'))
 
-        let body = ctxt().awsDataLoader.loadPath(pricePath)
+        let body = Context.ctxt().awsDataLoader.loadPath(pricePath)
 
         let resp = JSON.parse(body)
 

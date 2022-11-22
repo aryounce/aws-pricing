@@ -3,7 +3,7 @@ import { RDSStorage } from "./models/rds_storage";
 import { PriceDuration } from "./price_converter";
 import { StorageVolumePrice } from "./models/_storage_volume_price";
 import { StorageVolumePriceFlat } from "./models/storage_volume_price_flat";
-import { ctxt } from "./context";
+import { Context } from "./context";
 
 export class RDSStoragePrice {
     constructor(private readonly settings: InvocationSettings, private readonly storageType: RDSStorage,
@@ -21,7 +21,7 @@ export class RDSStoragePrice {
         // All RDS storage loads from single URL
         let url = '/pricing/1.0/rds/database-storage/index.json'
         
-        let body = ctxt().awsDataLoader.loadPath(url)
+        let body = Context.ctxt().awsDataLoader.loadPath(url)
 
         let resp = JSON.parse(body)
 

@@ -2,7 +2,7 @@ import { EBSPrice, EBSStorageType } from "../ebs_price";
 import { PriceDuration } from "../price_converter";
 import { InvocationSettings } from "../settings/invocation_settings";
 import { EBSSettingsValidator } from "../settings/ebs_settings_validator";
-import { _initContext } from "../context";
+import { Context } from "../context";
 
 function _ec2_ebs(settings: InvocationSettings, storageType: EBSStorageType, volumeType: string, volumeUnits: string | number) {
 
@@ -70,7 +70,7 @@ export function EC2_EBS_GB(volumeType: string, volumeSize: string | number, regi
  * @customfunction
  */
 export function EC2_EBS_GB(settingsOrType, typeOrSize, sizeOrRegion, region?: string): number {
-    _initContext()
+    Context._initContext()
 
     let settings: InvocationSettings = null
     let volumeType: string = null
@@ -119,7 +119,7 @@ export function EC2_EBS_IO1_IOPS(iops: string | number, region: string): number;
  * @customfunction
  */
 export function EC2_EBS_IO1_IOPS(settingsOrIops, iopsOrRegion, region?) {
-    _initContext()
+    Context._initContext()
 
     return _ec2_ebs_iops('io1', settingsOrIops, iopsOrRegion, region)
 }
@@ -138,7 +138,7 @@ export function EC2_EBS_IO2_IOPS(iops: string | number, region: string): number;
  * @customfunction
  */
 export function EC2_EBS_IO2_IOPS(settingsOrIops, iopsOrRegion, region?) {
-    _initContext()
+    Context._initContext()
 
     return _ec2_ebs_iops('io2', settingsOrIops, iopsOrRegion, region)
 }
@@ -157,7 +157,7 @@ export function EC2_EBS_GP3_IOPS(iops: string | number, region: string): number;
  * @customfunction
  */
 export function EC2_EBS_GP3_IOPS(settingsOrIops, iopsOrRegion, region?) {
-    _initContext()
+    Context._initContext()
 
     return _ec2_ebs_iops('gp3', settingsOrIops, iopsOrRegion, region)
 }
@@ -176,7 +176,7 @@ export function EC2_EBS_SNAPSHOT_GB(size: string | number, region: string): numb
  * @customfunction
  */
 export function EC2_EBS_SNAPSHOT_GB(settingsOrSize, sizeOrRegion, region?) {
-    _initContext()
+    Context._initContext()
 
     let volumeSize: string = null
     let settings: InvocationSettings = null

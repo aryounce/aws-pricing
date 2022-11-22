@@ -1,4 +1,4 @@
-import { ctxt } from "../context";
+import { Context } from "../context";
 import { ISettings } from "./isettings";
 import { SettingKeys } from "./setting_keys";
 
@@ -16,7 +16,7 @@ export class SettingsFormBuilder {
     }
 
     generate(submitCb: string) {
-        let defaultSettings = ctxt().defaultSettings
+        let defaultSettings = Context.ctxt().defaultSettings
         let settings: SettingFormOption[] = [
             this.newSettingOption(SettingKeys.Region),
             this.newSettingOption(SettingKeys.Platform),
@@ -81,7 +81,7 @@ export class SettingsFormBuilder {
     private newSettingOption(key: SettingKeys, toggle?: boolean): SettingFormOption {
         let opt: SettingFormOption = {
             key: key,
-            setting: ctxt().defaultSettings.getSetting(key)
+            setting: Context.ctxt().defaultSettings.getSetting(key)
         }
 
         if (toggle) {

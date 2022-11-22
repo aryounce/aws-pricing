@@ -1,5 +1,5 @@
 import { SettingKeys } from "./setting_keys";
-import { ctxt } from "../context";
+import { Context } from "../context";
 
 export abstract class SettingsValidator {
     abstract validate(): [boolean, string];
@@ -12,7 +12,7 @@ export abstract class SettingsValidator {
                 return [false, `Missing required option: ${opt}`]
             }
 
-            let setting = ctxt().defaultSettings.getSetting(opt)
+            let setting = Context.ctxt().defaultSettings.getSetting(opt)
             if (!setting.valid(x)) {
                 return [false, `Invalid setting of '${x}' for: ${opt}`]
             }
