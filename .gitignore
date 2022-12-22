@@ -5,3 +5,4 @@ node_modules/
 help_dialog.html
 src/functions/gen/*.ts
 .vscode/
+pnpm-lock.yaml

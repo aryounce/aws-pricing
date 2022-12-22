@@ -5,7 +5,7 @@ interface AwsDataLoaderTransform {
 }
 
 export class AwsDataLoader {
-    static readonly baseHost = 'https://a0.p.awsstatic.com'
+    static readonly baseHost = 'https://cdn.x.macroscope.io/aws-pricing/retro'
     static readonly expireTimeSeconds = 3600
 
     private readonly cache: CacheLoader
