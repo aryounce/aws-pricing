@@ -68,7 +68,8 @@ function _ec2_full(instanceType: string, region: string, purchaseType: string, p
     return _ec2(settings, instanceType)
 }
 
-export const EC2Functions = {
+// don't export. Otherwise bug in clasp
+const EC2Functions = {
   _ec2,
   _ec2_full
 }

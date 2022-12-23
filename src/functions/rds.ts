@@ -24,7 +24,7 @@ function _rds(settings: InvocationSettings, dbEngine: RDSDbEngine, instanceType:
     return new RDSPrice(settings, dbEngine, instanceType).get(PriceDuration.Hourly)
 }
 
-export function _rds_full(dbEngine: RDSDbEngine, instanceType: string, region: string,
+function _rds_full(dbEngine: RDSDbEngine, instanceType: string, region: string,
     purchaseType: string, purchaseTerm?: string | number, paymentOption?: string) {
     Context._initContext()
 
@@ -43,7 +43,7 @@ export function _rds_full(dbEngine: RDSDbEngine, instanceType: string, region: s
     return _rds(settings, dbEngine, instanceType)
 }
 
-export function _rds_settings(settingsRange: Array<Array<string>>, dbEngine: RDSDbEngine, instanceType: string, region?: string) {
+function _rds_settings(settingsRange: Array<Array<string>>, dbEngine: RDSDbEngine, instanceType: string, region?: string) {
     Context._initContext()
 
     if (!settingsRange) {
@@ -58,4 +58,10 @@ export function _rds_settings(settingsRange: Array<Array<string>>, dbEngine: RDS
     let settings = InvocationSettings.loadFromRange(settingsRange, overrides)
 
     return _rds(settings, dbEngine, instanceType)
+}
+
+// don't export. Otherwise bug in clasp
+const RDSFunctions = {
+    _rds_full,
+    _rds_settings
 }

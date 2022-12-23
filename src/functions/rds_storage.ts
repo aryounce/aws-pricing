@@ -50,7 +50,7 @@ function _rds_storage_full(volumeType: RDSStorage, volumeSize: string|number, re
  * @returns price
  * @customfunction
  */
-export function RDS_STORAGE_GB(settingsRange: Array<Array<string>>, volumeType: string, volumeSize: string|number, region?: string): number;
+function RDS_STORAGE_GB(settingsRange: Array<Array<string>>, volumeType: string, volumeSize: string|number, region?: string): number;
 
 /**
  * Returns the price of RDS storage for the given volume type.
@@ -61,9 +61,9 @@ export function RDS_STORAGE_GB(settingsRange: Array<Array<string>>, volumeType: 
  * @returns price
  * @customfunction
  */
-export function RDS_STORAGE_GB(volumeType: string, volumeSize: string | number, region: string): number
+function RDS_STORAGE_GB(volumeType: string, volumeSize: string | number, region: string): number
 
-export function RDS_STORAGE_GB(settingsOrType, typeOrSize, sizeOrRegion, region?: string): number {
+function RDS_STORAGE_GB(settingsOrType, typeOrSize, sizeOrRegion, region?: string): number {
     Context._initContext()
 
     if (!settingsOrType) {
@@ -91,3 +91,6 @@ export function RDS_STORAGE_GB(settingsOrType, typeOrSize, sizeOrRegion, region?
     }
 }
 
+export const RDS_STORAGE_Functions = {
+    RDS_STORAGE_GB
+}
