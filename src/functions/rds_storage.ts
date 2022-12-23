@@ -1,5 +1,6 @@
 import { InvocationSettings } from "../settings/invocation_settings";
-import { RDSStorage, _rds_storage_type_str_to_type } from "../models/rds_storage";
+// don't import function _rds_storage_type_str_to_type, otherwise clasp bug
+import { RDSStorage } from "../models/rds_storage";
 import { RDSStorageSettingsValidator } from "../settings/rds_storage_settings_validator";
 import { RDSStoragePrice } from "../rds_storage_price";
 import { PriceDuration } from "../price_converter";
@@ -91,6 +92,7 @@ function RDS_STORAGE_GB(settingsOrType, typeOrSize, sizeOrRegion, region?: strin
     }
 }
 
-export const RDS_STORAGE_Functions = {
+// don't export const. Otherwise bug in clasp
+const RDS_STORAGE_Functions = {
     RDS_STORAGE_GB
 }
