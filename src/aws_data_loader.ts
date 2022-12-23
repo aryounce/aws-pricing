@@ -33,7 +33,12 @@ export class AwsDataLoader {
     }
 
     private loadUrl(url: string) {
-        let resp = UrlFetchApp.fetch(url)
+        let resp;
+        try {
+            resp = UrlFetchApp.fetch(url);
+        } catch (e) {
+            throw `This feature is not supported in this version. Please visit www.macroscope.io/aws-pricing-addon to get the latest version.`
+        }
         if (resp.getResponseCode() != 200) {
             throw "Unable to load the URL: " + url;
         }

@@ -63,7 +63,10 @@ export class EC2Price {
             throw `Found too many instances that matched ${this.instance.getInstanceType()}`
         }
         if (insts.length == 0) {
-            throw `Can not find instance type ${instance.getInstanceType()} of ${EC2Platform.typeToString(platform)} in ${region}`
+            if(instance.isValid())
+              throw `Instance type ${instance.getInstanceType()} is not supported in this version. Please visit www.macroscope.io/aws-pricing-addon to get the latest version.`
+            else
+              throw `Can not find instance type ${instance.getInstanceType()} of ${EC2Platform.typeToString(platform)} in ${region}`
         }
         
         return new InstancePrice(insts[0], this.isReserved())
