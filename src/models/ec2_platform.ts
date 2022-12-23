@@ -58,7 +58,7 @@ export class EC2Platform {
     }
 
     static typeToUriPath(os: EC2PlatformType): string {
-        return EC2Platform.typeToString(os).replace("_", "-").toLowerCase()
+        return EC2Platform.typeToString(os).toLowerCase();
     }
 
     static typeToString(os: EC2PlatformType): string {
