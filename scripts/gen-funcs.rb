@@ -19,7 +19,7 @@ def gen_ec2_ri(func_dir)
     f = create_file(outfile)
     
     f.write <<~EOF
-    import { EC2_RI } from "../ec2_ri";
+    import { EC2_RI_Functions } from "../ec2_ri";
     import { EC2Platform } from "../../models/ec2_platform";
     
     EOF
@@ -49,8 +49,8 @@ def gen_ec2_ri(func_dir)
                  * @returns price
                  * @customfunction
                  */
-                export function EC2_#{platform.upcase}_#{ri_class[1].upcase}_RI_#{payment_option[1].upcase}(instanceType: string, region: string, purchaseTerm: string | number) {
-                    return EC2_RI(instanceType, region, "#{platform}", "#{ri_class[0]}", purchaseTerm, "#{payment_option[0]}")
+                function EC2_#{platform.upcase}_#{ri_class[1].upcase}_RI_#{payment_option[1].upcase}(instanceType: string, region: string, purchaseTerm: string | number) {
+                    return EC2_RI_Functions.EC2_RI(instanceType, region, "#{platform}", "#{ri_class[0]}", purchaseTerm, "#{payment_option[0]}")
                 }
     
                 EOF
@@ -75,8 +75,8 @@ def gen_ec2_ri(func_dir)
                  * @returns price
                  * @customfunction
                  */
-                export function EC2_#{sql_platform.upcase}_MSSQL_#{ri_class[1].upcase}_RI_#{payment_option[1].upcase}(instanceType: string, region: string, sqlLicense: string, purchaseTerm: string | number) {
-                    return EC2_RI(instanceType, region, EC2Platform.msSqlLicenseToType("#{sql_platform}", sqlLicense), "#{ri_class[0]}", purchaseTerm, "#{payment_option[0]}")
+                function EC2_#{sql_platform.upcase}_MSSQL_#{ri_class[1].upcase}_RI_#{payment_option[1].upcase}(instanceType: string, region: string, sqlLicense: string, purchaseTerm: string | number) {
+                    return EC2_RI_Functions.EC2_RI(instanceType, region, EC2Platform.msSqlLicenseToType("#{sql_platform}", sqlLicense), "#{ri_class[0]}", purchaseTerm, "#{payment_option[0]}")
                 }
     
                 EOF
@@ -84,6 +84,18 @@ def gen_ec2_ri(func_dir)
             end
         end
     end
+
+    f.write <<~EOF
+
+    // don't export variables, results in clasp error
+    const EC2_RI_GENFunctions = {
+    EC2_LINUX_CONV_RI_ALL,
+    EC2_LINUX_MSSQL_CONV_RI_ALL,
+    EC2_RHEL_CONV_RI_ALL,
+    EC2_WINDOWS_MSSQL_STD_RI_PARTIAL,
+    };
+
+    EOF
     
     f.close
 end
@@ -95,7 +107,7 @@ def gen_ebs(func_dir)
     f = create_file(outfile)
     
     f.write <<~EOF
-    import { EC2_EBS_GB } from "../ebs";
+    import { EBSFunctions } from "../ebs";
 
     EOF
 
@@ -104,8 +116,8 @@ def gen_ebs(func_dir)
     vol_types.each do |vol_type|
         vol_type_up = vol_type.upcase
         func = <<~EOF
-        export function EC2_EBS_#{vol_type_up}_GB(settingsRange: Array<Array<string>>, size: string | number, region?: string): number;
-        export function EC2_EBS_#{vol_type_up}_GB(size: string | number, region: string): number;
+        function EC2_EBS_#{vol_type_up}_GB(settingsRange: Array<Array<string>>, size: string | number, region?: string): number;
+        function EC2_EBS_#{vol_type_up}_GB(size: string | number, region: string): number;
 
          /**
          * Returns the hourly cost for the amount of provisioned EBS #{vol_type_up} storage Gigabytes. Invoke as either:
@@ -117,17 +129,32 @@ def gen_ebs(func_dir)
          * @returns price
          * @customfunction
          */
-        export function EC2_EBS_#{vol_type_up}_GB(settingsOrSize, sizeOrRegion, region?) {
+        function EC2_EBS_#{vol_type_up}_GB(settingsOrSize, sizeOrRegion, region?) {
             if (typeof settingsOrSize === "string" || typeof settingsOrSize === "number") {
-                return EC2_EBS_GB("#{vol_type}", settingsOrSize.toString(), sizeOrRegion)
+                return EBSFunctions.EC2_EBS_GB("#{vol_type}", settingsOrSize.toString(), sizeOrRegion)
             } else {
-                return EC2_EBS_GB(settingsOrSize, "#{vol_type}", sizeOrRegion, region)
+                return EBSFunctions.EC2_EBS_GB(settingsOrSize, "#{vol_type}", sizeOrRegion, region)
             }
         }
 
         EOF
         f.write(func)
     end
+
+    f.write <<~EOF
+    
+    // don't export variables, results in clasp error
+    const EC2_EBS_GENFunctions = {
+        EC2_EBS_MAGNETIC_GB,
+        EC2_EBS_GP2_GB,
+        EC2_EBS_GP3_GB, 
+        EC2_EBS_ST1_GB,
+        EC2_EBS_SC1_GB,
+        EC2_EBS_IO1_GB,
+        EC2_EBS_IO2_GB 
+    }
+
+    EOF
 
     f.close
 end
@@ -139,7 +166,7 @@ def gen_rds(func_dir)
     f = create_file(outfile)
     
     f.write <<~EOF
-    import { _rds_settings, _rds_full } from "../rds";
+    import { RDSFunctions } from "../rds";
     import { RDSDbEngine } from "../../models/rds_db_engine";
 
     EOF
@@ -163,8 +190,8 @@ def gen_rds(func_dir)
          * @returns price
          * @customfunction
          */
-        export function RDS_#{engine[0].upcase}(settingsRange: Array<Array<string>>, instanceType: string, region?: string) {
-            return _rds_settings(settingsRange, RDSDbEngine.#{engine[1]}, instanceType, region)
+        function RDS_#{engine[0].upcase}(settingsRange: Array<Array<string>>, instanceType: string, region?: string) {
+            return RDSFunctions._rds_settings(settingsRange, RDSDbEngine.#{engine[1]}, instanceType, region)
         }
 
         /**
@@ -175,8 +202,8 @@ def gen_rds(func_dir)
          * @returns price
          * @customfunction
          */
-        export function RDS_#{engine[0].upcase}_OD(instanceType: string, region: string) {
-            return _rds_full(RDSDbEngine.#{engine[1]}, instanceType, region, 'ondemand')
+        function RDS_#{engine[0].upcase}_OD(instanceType: string, region: string) {
+            return RDSFunctions._rds_full(RDSDbEngine.#{engine[1]}, instanceType, region, 'ondemand')
         }
 
         /**
@@ -189,8 +216,8 @@ def gen_rds(func_dir)
          * @returns price
          * @customfunction
          */
-        export function RDS_#{engine[0].upcase}_RI(instanceType: string, region: string, purchaseTerm: string | number, paymentOption: string) {
-            return _rds_full(RDSDbEngine.#{engine[1]}, instanceType, region, 'reserved', purchaseTerm, paymentOption)
+        function RDS_#{engine[0].upcase}_RI(instanceType: string, region: string, purchaseTerm: string | number, paymentOption: string) {
+            return RDSFunctions._rds_full(RDSDbEngine.#{engine[1]}, instanceType, region, 'reserved', purchaseTerm, paymentOption)
         }
 
         EOF
@@ -214,13 +241,20 @@ def gen_rds(func_dir)
             * @returns price
             * @customfunction
             */
-            export function RDS_#{engine[0].upcase}_RI_#{payment_option[1].upcase}(instanceType: string, region: string, purchaseTerm: string | number) {
-                return _rds_full(RDSDbEngine.#{engine[1]}, instanceType, region, 'reserved', purchaseTerm, "#{payment_option[0]}")
+            function RDS_#{engine[0].upcase}_RI_#{payment_option[1].upcase}(instanceType: string, region: string, purchaseTerm: string | number) {
+                return RDSFunctions._rds_full(RDSDbEngine.#{engine[1]}, instanceType, region, 'reserved', purchaseTerm, "#{payment_option[0]}")
             }
             EOF
             f.write(func)
         end
     end
+
+    f.write <<~EOF
+
+    // don't export variables, results in clasp error
+    const RDS_GENFunctions = { RDS_AURORA_MYSQL_OD, RDS_AURORA_MYSQL_RI, RDS_AURORA_MYSQL_RI_NO, RDS_AURORA_MYSQL_RI_PARTIAL, RDS_AURORA_MYSQL_RI_ALL, RDS_AURORA_POSTGRESQL_OD, RDS_MARIADB_OD, RDS_POSTGRESQL_OD, RDS_MYSQL_OD, RDS_AURORA_MYSQL, RDS_MARIADB_RI, RDS_AURORA_POSTGRESQL_RI, RDS_MYSQL_RI, RDS_POSTGRESQL_RI }
+
+    EOF
 
     f.close
 end
@@ -232,7 +266,7 @@ def gen_rds_storage(func_dir)
     f = create_file(outfile)
 
     f.write <<~EOF
-    import { RDS_STORAGE_GB } from "../rds_storage";
+    import { RDS_STORAGE_Functions } from "../rds_storage";
 
     EOF
 
@@ -240,9 +274,9 @@ def gen_rds_storage(func_dir)
 
     voltypes.each do |voltype|
         func = <<~EOF
-        export function RDS_STORAGE_#{voltype.upcase}_GB(settingsRange: Array<Array<string>>, volumeSize: string|number, region?: string): number;
+        function RDS_STORAGE_#{voltype.upcase}_GB(settingsRange: Array<Array<string>>, volumeSize: string|number, region?: string): number;
 
-        export function RDS_STORAGE_#{voltype.upcase}_GB(volumeSize: string|number, region: string): number;
+        function RDS_STORAGE_#{voltype.upcase}_GB(volumeSize: string|number, region: string): number;
 
         /**
          * Returns the price of RDS storage for a #{voltype} volume type. Invoke as either:
@@ -254,16 +288,28 @@ def gen_rds_storage(func_dir)
          * @returns price
          * @customfunction
          */
-        export function RDS_STORAGE_#{voltype.upcase}_GB(settingsOrSize, sizeOrRegion, region?: string): number {
+        function RDS_STORAGE_#{voltype.upcase}_GB(settingsOrSize, sizeOrRegion, region?: string): number {
             if (typeof settingsOrSize === "string" || typeof settingsOrSize === "number") {
-                return RDS_STORAGE_GB("#{voltype}", settingsOrSize, sizeOrRegion)
+                return RDS_STORAGE_Functions.RDS_STORAGE_GB("#{voltype}", settingsOrSize, sizeOrRegion)
             } else {
-                return RDS_STORAGE_GB(settingsOrSize, "#{voltype}", sizeOrRegion, region)
+                return RDS_STORAGE_Functions.RDS_STORAGE_GB(settingsOrSize, "#{voltype}", sizeOrRegion, region)
             }
         }
         EOF
         f.write(func)
     end
+
+    f.write <<~EOF
+    
+    // don't export variables, results in clasp error
+    const RDS_STORAGE_GENFunctions = {
+    RDS_STORAGE_AURORA_GB,
+    RDS_STORAGE_PIOPS_GB,
+    RDS_STORAGE_MAGNETIC_GB,
+    RDS_STORAGE_GP2_GB,
+    };
+
+    EOF
 
     f.close
 end
