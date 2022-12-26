@@ -64,7 +64,7 @@ export class EC2Price {
         }
         if (insts.length == 0) {
             if(instance.isValid())
-              throw `Instance type ${instance.getInstanceType()} is not supported in this version. Please visit www.macroscope.io/aws-pricing-addon to get the latest version.`
+              throw `Instance type ${instance.getInstanceType()} is not supported.`
             else
               throw `Can not find instance type ${instance.getInstanceType()} of ${EC2Platform.typeToString(platform)} in ${region}`
         }

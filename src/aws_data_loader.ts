@@ -37,7 +37,7 @@ export class AwsDataLoader {
         try {
             resp = UrlFetchApp.fetch(url);
         } catch (e) {
-            throw `This feature is not supported in this version. Please visit www.macroscope.io/aws-pricing-addon to get the latest version.`
+            throw `This feature is not supported.`
         }
         if (resp.getResponseCode() != 200) {
             throw "Unable to load the URL: " + url;
