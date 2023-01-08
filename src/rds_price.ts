@@ -124,11 +124,7 @@ export class RDSPrice {
     }
 
     private azUrlParam(): string {
-        if (this.isAurora()) {
-            return ""
-        } else {
-            return "single-az/"
-        }
+        return "single_az";
     }
 
     private isAurora(): boolean {
