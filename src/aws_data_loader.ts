@@ -33,7 +33,12 @@ export class AwsDataLoader {
     }
 
     private loadUrl(url: string) {
-        let resp = UrlFetchApp.fetch(url)
+        let resp;
+        try {
+            resp = UrlFetchApp.fetch(url);
+        } catch (e) {
+            throw `This feature is not supported.`
+        }
         if (resp.getResponseCode() != 200) {
             throw "Unable to load the URL: " + url;
         }

@@ -55,8 +55,8 @@ function _ec2_ebs_iops(volumeType: string, settingsOrIops, iopsOrRegion, region?
     return _ec2_ebs(settings, EBSStorageType.Iops, volumeType, volumeIops)
 }
 
-export function EC2_EBS_GB(settingsRange: Array<Array<string>>, volumeType: string, volumeSize: string | number, region?: string): number;
-export function EC2_EBS_GB(volumeType: string, volumeSize: string | number, region: string): number
+function EC2_EBS_GB(settingsRange: Array<Array<string>>, volumeType: string, volumeSize: string | number, region?: string): number;
+function EC2_EBS_GB(volumeType: string, volumeSize: string | number, region: string): number
 
 /**
  * Returns the hourly cost for the amount of provisioned EBS storage. Invoke as either:
@@ -69,7 +69,7 @@ export function EC2_EBS_GB(volumeType: string, volumeSize: string | number, regi
  * @returns price
  * @customfunction
  */
-export function EC2_EBS_GB(settingsOrType, typeOrSize, sizeOrRegion, region?: string): number {
+function EC2_EBS_GB(settingsOrType, typeOrSize, sizeOrRegion, region?: string): number {
     Context._initContext()
 
     let settings: InvocationSettings = null
@@ -105,8 +105,8 @@ export function EC2_EBS_GB(settingsOrType, typeOrSize, sizeOrRegion, region?: st
     return _ec2_ebs(settings, EBSStorageType.Storage, volumeType, volumeSize)
 }
 
-export function EC2_EBS_IO1_IOPS(settingsRange: Array<Array<string>>, iops: string | number, region?: string): number;
-export function EC2_EBS_IO1_IOPS(iops: string | number, region: string): number;
+function EC2_EBS_IO1_IOPS(settingsRange: Array<Array<string>>, iops: string | number, region?: string): number;
+function EC2_EBS_IO1_IOPS(iops: string | number, region: string): number;
 
 /**
  * Returns the hourly cost for the amount of provisioned EBS IO1 IOPS. Invoke as either:
@@ -118,14 +118,14 @@ export function EC2_EBS_IO1_IOPS(iops: string | number, region: string): number;
  * @returns price
  * @customfunction
  */
-export function EC2_EBS_IO1_IOPS(settingsOrIops, iopsOrRegion, region?) {
+function EC2_EBS_IO1_IOPS(settingsOrIops, iopsOrRegion, region?) {
     Context._initContext()
 
     return _ec2_ebs_iops('io1', settingsOrIops, iopsOrRegion, region)
 }
 
-export function EC2_EBS_IO2_IOPS(settingsRange: Array<Array<string>>, iops: string | number, region?: string): number;
-export function EC2_EBS_IO2_IOPS(iops: string | number, region: string): number;
+function EC2_EBS_IO2_IOPS(settingsRange: Array<Array<string>>, iops: string | number, region?: string): number;
+function EC2_EBS_IO2_IOPS(iops: string | number, region: string): number;
 
 /**
  * Returns the hourly cost for the amount of provisioned EBS IO2 IOPS. Invoke as either:
@@ -137,14 +137,14 @@ export function EC2_EBS_IO2_IOPS(iops: string | number, region: string): number;
  * @returns price
  * @customfunction
  */
-export function EC2_EBS_IO2_IOPS(settingsOrIops, iopsOrRegion, region?) {
+function EC2_EBS_IO2_IOPS(settingsOrIops, iopsOrRegion, region?) {
     Context._initContext()
 
     return _ec2_ebs_iops('io2', settingsOrIops, iopsOrRegion, region)
 }
 
-export function EC2_EBS_GP3_IOPS(settingsRange: Array<Array<string>>, iops: string | number, region?: string): number;
-export function EC2_EBS_GP3_IOPS(iops: string | number, region: string): number;
+function EC2_EBS_GP3_IOPS(settingsRange: Array<Array<string>>, iops: string | number, region?: string): number;
+function EC2_EBS_GP3_IOPS(iops: string | number, region: string): number;
 
 /**
  * Returns the hourly cost for the amount of provisioned EBS GP3 IOPS. Invoke as either:
@@ -156,14 +156,14 @@ export function EC2_EBS_GP3_IOPS(iops: string | number, region: string): number;
  * @returns price
  * @customfunction
  */
-export function EC2_EBS_GP3_IOPS(settingsOrIops, iopsOrRegion, region?) {
+function EC2_EBS_GP3_IOPS(settingsOrIops, iopsOrRegion, region?) {
     Context._initContext()
 
     return _ec2_ebs_iops('gp3', settingsOrIops, iopsOrRegion, region)
 }
 
-export function EC2_EBS_SNAPSHOT_GB(settingsRange: Array<Array<string>>, size: string | number, region?: string): number;
-export function EC2_EBS_SNAPSHOT_GB(size: string | number, region: string): number;
+function EC2_EBS_SNAPSHOT_GB(settingsRange: Array<Array<string>>, size: string | number, region?: string): number;
+function EC2_EBS_SNAPSHOT_GB(size: string | number, region: string): number;
 
 /**
  * Returns the hourly cost for the amount of EBS snapshot data stored in Gigabytes. Invoke as either:
@@ -175,7 +175,7 @@ export function EC2_EBS_SNAPSHOT_GB(size: string | number, region: string): numb
  * @returns price
  * @customfunction
  */
-export function EC2_EBS_SNAPSHOT_GB(settingsOrSize, sizeOrRegion, region?) {
+function EC2_EBS_SNAPSHOT_GB(settingsOrSize, sizeOrRegion, region?) {
     Context._initContext()
 
     let volumeSize: string = null
@@ -203,3 +203,12 @@ export function EC2_EBS_SNAPSHOT_GB(settingsOrSize, sizeOrRegion, region?) {
 
     return _ec2_ebs(settings, EBSStorageType.Snapshot, null, volumeSize)
 }
+
+// don't export. Otherwise bug in clasp
+const EBSFunctions = {
+  EC2_EBS_GB,
+  EC2_EBS_IO1_IOPS,
+  EC2_EBS_IO2_IOPS,
+  EC2_EBS_GP3_IOPS,
+  EC2_EBS_SNAPSHOT_GB,
+};
