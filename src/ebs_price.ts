@@ -109,7 +109,7 @@ export class EBSPrice {
 
     private tieredGP3IOPS(prices, volumeUnitsNum : number) : StorageVolumePrice {
         let priceTier = prices.filter(price => {
-            return Utils.endsWith(price.attributes['aws:ec2:usagetype'], 'EBS:VolumeUsage.gp3')
+            return Utils.endsWith(price.attributes['aws:ec2:usagetype'], 'EBS:VolumeP-IOPS.gp3')
         })
 
         if (priceTier.length !== 1) {
@@ -135,7 +135,7 @@ export class EBSPrice {
 
     private filterPricesVolumeIops(prices) {
         return prices.filter(price => {
-            return price.attributes['aws:ec2:usagetype'] === 'EBS:VolumeUsage.piops';
+            return price.attributes['aws:ec2:usagetype'] === 'EBS:VolumeP-IOPS.piops';
         })
     }
 

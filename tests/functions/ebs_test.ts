@@ -38,7 +38,7 @@ export class EBSFunctionTestSuite extends TestSuite {
         })
 
         t.describe("EBS GP3 IOPs - tiered", () => {
-            t.areClose(0.0, EBSFunctions.EC2_EBS_GP3_IOPS(2800, "us-east-1"), 0.000001)
+             t.areClose(0.0, EBSFunctions.EC2_EBS_GP3_IOPS(2800, "us-east-1"), 0.000001)
 
              t.areClose((7000 - 3000) * (0.005/730.0), EBSFunctions.EC2_EBS_GP3_IOPS(7000, "us-east-1"), 0.000001)
         })
