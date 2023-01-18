@@ -9,8 +9,6 @@ function onOpen(e) {
     menu.addItem("New settings sheet", '_newDefaultsSheet')
     menu.addItem('Show manual', '_showManualDialog')
     menu.addToUi()
-
-    Logger.log("Started aws-pricing")
 }
 
 function onInstall(e) {
