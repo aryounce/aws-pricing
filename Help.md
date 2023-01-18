@@ -1,20 +1,6 @@
 # AWS Pricing add-on for Google Sheets
 
-The AWS Pricing [Google Sheets add-on][addon] allows you to incorporate the latest AWS pricing data in your Google Sheets spreadsheets. This makes it easy to perform cloud cost analysis directly in Sheets without error-prone copy-and-paste from pricing websites. Pricing data tracks the latest discounts from AWS.
-
-## Examples
-
-The following function entered into a Google Sheet cell will return
-the hourly price of an m5.xlarge Linux instance running on-demand in us-east-2 region, currently $0.192:
-```
-=EC2_LINUX_OD("m5.xlarge", "us-east-2")
-```
-
-# Installation
-
-Add the *AWS Pricing* [addon][addon] to your Google Sheets document.
-
-# Usage
+The AWS Pricing Google Sheets add-on allows you to incorporate the latest AWS pricing data in your Google Sheets spreadsheets. This makes it easy to perform cloud cost analysis directly in Sheets without error-prone copy-and-paste from pricing websites. Pricing data tracks the latest discounts from AWS.
 
 ## Supported services
 
@@ -252,22 +238,3 @@ There are two alias functions for each volume type as well. For example, for Aur
 
 * `RDS_STORAGE_AURORA_GB(settingsRange, volumeSize, region: optional)`
 * `RDS_STORAGE_AURORA_GB(volumeSize, region)`
-
-# Notes
-
-## Pricing API
-
-This currently pulls data from the pricing data files used on the main EC2 pricing pages. Unfortunately, these data files are not supported by AWS and hence may break at some point in the future. These files are more compact than the published [bulk pricing API](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/using-ppslong.html), roughly 100KB vs 30MB, so they are better suited for quick lookups.
-
-## Discontinued instance sizes/offerings
-
-This addon pulls directly from the AWS pricing data files. Oftentimes AWS will discontinue certain instance size configurations or
-purchase offerings. While it may still technically be possible to purchase the offering through AWS, the pricing data is no longer
-offered in the current pricing files. In this case you may see a method throw an error that it can not find the pricing information. The addon
-could probably be smarter at pulling from legacy pricing locations, but that's not supported for all services.
-
-## References
-
-* Inspired by [aws-pricing-helper](https://github.com/marcy-terui/gs-aws-pricing-helper)
-
-[addon]: https://chrome.google.com/webstore/detail/aws-pricing/obdnfnkckkmjcpeegkhkmpnoiaidhicd
