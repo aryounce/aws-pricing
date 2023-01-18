@@ -1,6 +1,6 @@
 {
   "name": "aws-pricing",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "AWS pricing in your Google Sheets",
   "main": "index.js",
   "directories": {
@@ -17,8 +17,8 @@
     "marked": "marked",
     "gencode": "./scripts/gen-funcs.rb",
     "build-help": "./scripts/build-help.sh",
-    "deploy": "npm run gencode && npm run build-help && clasp push",
-    "release": "npm run deploy && ./scripts/release.sh",
+    "deploy": "npm run gencode && make help-dialog && clasp push",
+    "release": "npm run deploy && ./scripts/prepare-release.sh",
     "test": "npm run deploy && echo && clasp run runAllTests"
   },
   "repository": {
@@ -28,7 +28,7 @@
   "author": "Mike Heffner",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mheffner/aws-pricing/issues"
+    "url": "https://github.com/getmacroscope/aws-pricing/issues"
   },
-  "homepage": "https://github.com/mheffner/aws-pricing#readme"
+  "homepage": "https://github.com/getmacroscope/aws-pricing#readme"
 }
