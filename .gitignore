@@ -6,3 +6,4 @@ help_dialog.html
 src/functions/gen/*.ts
 pnpm-lock.yaml
 .vscode/
+src/test-temp.js
