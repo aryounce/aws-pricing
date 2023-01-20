@@ -1,7 +1,8 @@
-tmp/
 .clasp.json
-node_modules/
 .clasprc.json
+tmp/
+node_modules/
 help_dialog.html
 src/functions/gen/*.ts
+pnpm-lock.yaml
 .vscode/

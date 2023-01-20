@@ -12,7 +12,12 @@ import { EC2Functions } from "./ec2";
  * @returns price
  * @customfunction
  */
-export function EC2_RI(instanceType: string, region: string, platform: string, offeringClass: string,
+function EC2_RI(instanceType: string, region: string, platform: string, offeringClass: string,
     purchaseTerm: string | number, paymentOption: string) {
     return EC2Functions._ec2_full(instanceType, region, "reserved", platform, offeringClass, purchaseTerm, paymentOption)
+}
+
+// don't export. Otherwise bug in clasp
+const EC2_RI_Functions = {
+    EC2_RI
 }

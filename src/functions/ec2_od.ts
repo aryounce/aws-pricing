@@ -13,7 +13,7 @@ import { EC2Functions } from "./ec2";
  * @returns price
  * @customfunction
  */
-export function EC2(settingsRange: Array<Array<string>>, instanceType: string, region?: string) {
+function EC2(settingsRange: Array<Array<string>>, instanceType: string, region?: string) {
     Context._initContext()
 
     if (!settingsRange) {
@@ -40,7 +40,7 @@ export function EC2(settingsRange: Array<Array<string>>, instanceType: string, r
  * @returns price
  * @customfunction
  */
-export function EC2_OD(instanceType: string, region: string, platform: string) {
+function EC2_OD(instanceType: string, region: string, platform: string) {
     return EC2Functions._ec2_full(instanceType, region, "ondemand", platform)
 }
 
@@ -52,7 +52,7 @@ export function EC2_OD(instanceType: string, region: string, platform: string) {
  * @returns price
  * @customfunction
  */
-export function EC2_LINUX_OD(instanceType: string, region: string) {
+function EC2_LINUX_OD(instanceType: string, region: string) {
     return EC2_OD(instanceType, region, "linux")
 }
 
@@ -65,7 +65,7 @@ export function EC2_LINUX_OD(instanceType: string, region: string) {
  * @returns price
  * @customfunction
  */
-export function EC2_LINUX_MSSQL_OD(instanceType: string, region: string, sqlLicense: string) {
+function EC2_LINUX_MSSQL_OD(instanceType: string, region: string, sqlLicense: string) {
     return EC2_OD(instanceType, region, EC2Platform.msSqlLicenseToType("linux", sqlLicense))
 }
 
@@ -77,7 +77,7 @@ export function EC2_LINUX_MSSQL_OD(instanceType: string, region: string, sqlLice
  * @returns price
  * @customfunction
  */
-export function EC2_RHEL_OD(instanceType: string, region: string) {
+function EC2_RHEL_OD(instanceType: string, region: string) {
     return EC2_OD(instanceType, region, "rhel")
 }
 
@@ -89,7 +89,7 @@ export function EC2_RHEL_OD(instanceType: string, region: string) {
  * @returns price
  * @customfunction
  */
-export function EC2_SUSE_OD(instanceType: string, region: string) {
+function EC2_SUSE_OD(instanceType: string, region: string) {
     return EC2_OD(instanceType, region, "suse")
 }
 
@@ -101,7 +101,7 @@ export function EC2_SUSE_OD(instanceType: string, region: string) {
  * @returns price
  * @customfunction
  */
-export function EC2_WINDOWS_OD(instanceType: string, region: string) {
+function EC2_WINDOWS_OD(instanceType: string, region: string) {
     return EC2_OD(instanceType, region, "windows")
 }
 
@@ -114,6 +114,19 @@ export function EC2_WINDOWS_OD(instanceType: string, region: string) {
  * @returns price
  * @customfunction
  */
-export function EC2_WINDOWS_MSSQL_OD(instanceType: string, region: string, sqlLicense: string) {
+function EC2_WINDOWS_MSSQL_OD(instanceType: string, region: string, sqlLicense: string) {
     return EC2_OD(instanceType, region, EC2Platform.msSqlLicenseToType("windows", sqlLicense))
 }
+
+// don't export. Otherwise bug in clasp
+const EC2_OD_Functions = {
+    EC2_OD,
+    EC2_LINUX_OD,
+    EC2_WINDOWS_OD,
+    EC2_RHEL_OD,
+    EC2_SUSE_OD,
+    EC2,
+    EC2_LINUX_MSSQL_OD,
+    EC2_WINDOWS_MSSQL_OD
+}
+

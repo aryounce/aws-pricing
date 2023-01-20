@@ -5,7 +5,7 @@ interface AwsDataLoaderTransform {
 }
 
 export class AwsDataLoader {
-    static readonly baseHost = 'https://a0.p.awsstatic.com'
+    static readonly baseHost = 'https://cdn.x.macroscope.io/aws-pricing/retro'
     static readonly expireTimeSeconds = 3600
 
     private readonly cache: CacheLoader
@@ -33,7 +33,12 @@ export class AwsDataLoader {
     }
 
     private loadUrl(url: string) {
-        let resp = UrlFetchApp.fetch(url)
+        let resp;
+        try {
+            resp = UrlFetchApp.fetch(url);
+        } catch (e) {
+            throw `This feature is not supported.`
+        }
         if (resp.getResponseCode() != 200) {
             throw "Unable to load the URL: " + url;
         }

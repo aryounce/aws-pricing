@@ -16,10 +16,7 @@ export class Context {
             return
         }
 
-        Logger.log("Initializing context")
-
         let awsLoader = new AwsDataLoader()
-
         let context = new Context.Builder()
             .withAwsDataLoader(awsLoader)
             .withSpreadsheetApp(app)

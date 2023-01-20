@@ -3,8 +3,8 @@ import { Utils } from "../_utils";
 
 // TODO: dedup with EC2Platform
 export class Platforms implements ISettings {
-    private static readonly available = ['linux', 'windows', 'rhel', 'suse', 'linux_std', 'linux_web',
-        'linux_enterprise', 'windows_std', 'windows_web', 'windows_enterprise']
+    private static readonly available = ['linux', 'windows', 'rhel', 'suse', 'linux_std', 'linux_web', 'linux_enterprise', 'windows_std', 'windows_web', 'windows_enterprise', 'rhel-ha', 'rhel-ha_std', 'rhel-ha_enterprise', 'rhel_std', 'rhel_web', 'rhel_enterprise'];
+
     private static readonly availableMap = Utils.lookupMap(Platforms.available)
 
     name(): string {

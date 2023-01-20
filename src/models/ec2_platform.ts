@@ -1,5 +1,4 @@
-export enum EC2PlatformType {Linux, Rhel, Suse, Windows, Windows_Std, Windows_Web, Windows_Enterprise,
-    Linux_Std, Linux_Web, Linux_Enterprise }
+export enum EC2PlatformType {Linux, Rhel, Suse, Windows, Windows_Std, Windows_Web, Windows_Enterprise, Linux_Std, Linux_Web, Linux_Enterprise, Rhel_ha, Rhel_ha_Enterprise, Rhel_ha_Std, Rhel_Enterprise, Rhel_Std, Rhel_Web }
 
 export class EC2Platform {
     static nameToType(name: string): EC2PlatformType {
@@ -34,6 +33,24 @@ export class EC2Platform {
             case "linux_enterprise": {
                 return EC2PlatformType.Linux_Enterprise
             }
+            case "rhel-ha": {
+                return EC2PlatformType.Rhel_ha //
+            }
+            case "rhel-ha_enterprise": {
+                return EC2PlatformType.Rhel_ha_Enterprise
+            }
+            case "rhel-ha_std": {
+                return EC2PlatformType.Rhel_ha_Std
+            }
+            case "rhel_enterprise": {
+                return EC2PlatformType.Rhel_Enterprise
+            }
+            case "rhel_std": {
+                return EC2PlatformType.Rhel_Std
+            }
+            case "rhel_web": {
+                return EC2PlatformType.Rhel_Web
+            }
             default: {
                 return null
             }
@@ -41,7 +58,7 @@ export class EC2Platform {
     }
 
     static typeToUriPath(os: EC2PlatformType): string {
-        return EC2Platform.typeToString(os).replace("_", "-").toLowerCase()
+        return EC2Platform.typeToString(os).toLowerCase();
     }
 
     static typeToString(os: EC2PlatformType): string {

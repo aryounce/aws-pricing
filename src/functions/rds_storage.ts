@@ -1,5 +1,6 @@
 import { InvocationSettings } from "../settings/invocation_settings";
-import { RDSStorage, _rds_storage_type_str_to_type } from "../models/rds_storage";
+// don't import function _rds_storage_type_str_to_type, otherwise clasp bug
+import { RDSStorage } from "../models/rds_storage";
 import { RDSStorageSettingsValidator } from "../settings/rds_storage_settings_validator";
 import { RDSStoragePrice } from "../rds_storage_price";
 import { PriceDuration } from "../price_converter";
@@ -50,7 +51,7 @@ function _rds_storage_full(volumeType: RDSStorage, volumeSize: string|number, re
  * @returns price
  * @customfunction
  */
-export function RDS_STORAGE_GB(settingsRange: Array<Array<string>>, volumeType: string, volumeSize: string|number, region?: string): number;
+function RDS_STORAGE_GB(settingsRange: Array<Array<string>>, volumeType: string, volumeSize: string|number, region?: string): number;
 
 /**
  * Returns the price of RDS storage for the given volume type.
@@ -61,9 +62,9 @@ export function RDS_STORAGE_GB(settingsRange: Array<Array<string>>, volumeType: 
  * @returns price
  * @customfunction
  */
-export function RDS_STORAGE_GB(volumeType: string, volumeSize: string | number, region: string): number
+function RDS_STORAGE_GB(volumeType: string, volumeSize: string | number, region: string): number
 
-export function RDS_STORAGE_GB(settingsOrType, typeOrSize, sizeOrRegion, region?: string): number {
+function RDS_STORAGE_GB(settingsOrType, typeOrSize, sizeOrRegion, region?: string): number {
     Context._initContext()
 
     if (!settingsOrType) {
@@ -91,3 +92,7 @@ export function RDS_STORAGE_GB(settingsOrType, typeOrSize, sizeOrRegion, region?
     }
 }
 
+// don't export const. Otherwise bug in clasp
+const RDS_STORAGE_Functions = {
+    RDS_STORAGE_GB
+}

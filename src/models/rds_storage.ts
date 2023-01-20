@@ -5,7 +5,7 @@ export enum RDSStorage {
     Magnetic
 }
 
-export function _rds_storage_type_str_to_type(type: string): RDSStorage {
+function _rds_storage_type_str_to_type(type: string): RDSStorage {
     switch (type.toLowerCase()) {
         case 'aurora': {
             return RDSStorage.Aurora
@@ -23,4 +23,9 @@ export function _rds_storage_type_str_to_type(type: string): RDSStorage {
             return null
         }
     }
+}
+
+// don't export variables, otherwise clasp bug
+const RDSStorageFunctions = {
+    _rds_storage_type_str_to_type
 }
