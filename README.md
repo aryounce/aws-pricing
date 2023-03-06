@@ -6,11 +6,6 @@
 
 ---
 
-> **Warning**
-> This is currently broken and failing due to the bug described in https://github.com/mheffner/aws-pricing/issues/46 (see https://github.com/mheffner/aws-pricing/issues/46#issuecomment-1290822647 for more details). We're actively working on the issue and will post progress as it happens.
-
----
-
 The AWS Pricing [Google Sheets add-on](https://workspace.google.com/marketplace/app/aws_pricing/328915503637) allows you to incorporate the latest AWS pricing data in your Google Sheets spreadsheets. This makes it easy to perform cloud cost analysis directly in Sheets without error-prone copy-and-paste from pricing websites. Pricing data tracks the latest discounts from AWS.
 
 For usage examples and documentation see the [help file](Help.md).
