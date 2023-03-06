@@ -2,9 +2,7 @@
 
 :mega: **An announcement about the future of the AWS Pricing add-on for Google Sheets.**
 
-[Strake](https://getstrake.com), in collaboration with [@mheffner](https://github.com/mheffner), is excited to announce that we are inheriting Mike's Google Sheets add-on to continue the great work he started. In the near future we will be getting the plugin back into a working state with the latest AWS pricing data. In addition we're actively reviewing all existing issues and will be responding after they have been prioritized.
-
-We're excited to bring AWS pricing data back to your Google Sheets and we'll be announcing some expanded features soon. In the meantime feel free to raise issues, and to collaborate on the project please reach out to us at hello@macroscope.io. We'd love to hear from you.
+[Strake](https://getstrake.com), in collaboration with [@mheffner](https://github.com/mheffner), is excited to announce that we are inheriting Mike's Google Sheets add-on to continue the great work he started. This repo has been retired and replaced by our [new version](https://github.com/getstrake/aws-pricing-sheets-addon). Also, all existing issues that have not been addressed by the new version have been [migrated to the new repo](https://github.com/getstrake/aws-pricing-sheets-addon/issues).
 
 ---
 
